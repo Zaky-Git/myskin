@@ -1,17 +1,24 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import deteksiKanker from "./Pages/DeteksiKanker.vue";
+import homePage from "./Pages/HomePage.vue";
+
 const routes = [
     {
         path: "/",
-        component: () => import("./Pages/homeRoute.vue"),
+        component: deteksiKanker,
+        meta: { layout: "landing" },
     },
     {
-        path: "/test",
-        component: () => import("./Pages/testRoute.vue"),
+        path: "/dashboard",
+        component: homePage,
+        meta: { layout: "dashboard" },
     },
 ];
 
-export default createRouter({
+const router = createRouter({
     history: createWebHistory(),
     routes,
 });
+
+export default router;

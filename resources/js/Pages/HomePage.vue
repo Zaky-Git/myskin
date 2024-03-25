@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>HOME</h1>
+    <h1>HOME page dokter</h1>
     <router-link to="/test"> Take me to Test page </router-link>
     <button @click.prevent="getValue">Trigger Endpoint</button>
     <p v-if="response">

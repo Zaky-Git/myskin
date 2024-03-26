@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('verified');
             $table->date('birthdate')->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
     }

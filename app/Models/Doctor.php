@@ -22,6 +22,7 @@ class Doctor extends Model
         'lastName',
         'number',
         'email',
+        'verified',
         'password',
         'birthdate',
     ];

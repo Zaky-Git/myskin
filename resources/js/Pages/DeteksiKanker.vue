@@ -24,7 +24,7 @@
                 </div>
                 <div class="text-muted poppin-font fixed-bottom text-center mb-4 fs-6">
                     <p>
-                        *Hasil deteksi belum dipastikan benar karena web hanya memberikan indikasi awal, silahkan <a href="/jawa">login</a> untuk verifikasi hasil deteksi oleh Dokter.
+                        *Hasil deteksi belum dipastikan benar karena web hanya memberikan indikasi awal, silahkan <a href="/">login</a> untuk verifikasi hasil deteksi oleh Dokter.
                     </p>
                 </div>
             </div>
@@ -33,7 +33,8 @@
 
 <script setup>
 import axios from "axios";
-import { ref } from "vue";import '/resources/css/app.css'
+import { ref } from "vue";
+import '/resources/css/app.css'
 const response = ref("");
 
 const getValue = async () => {
@@ -44,4 +45,5 @@ const getValue = async () => {
         console.error(error);
     }
 };
+
 </script>

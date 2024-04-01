@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'PoppinFont';
+    src: url('/public/fonts/Poppins-Medium.otf') format('opentype');
+}
+
+.poppin-font {
+    font-family: 'PoppinFont', sans-serif;
+}
+body {
+    background-color: #EBF7FF;
+}

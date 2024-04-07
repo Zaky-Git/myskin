@@ -18,3 +18,8 @@ button.btn-ms{
     background-color: #2AA8FF;
     color: white;
 }
+
+button.btn-ms:hover {
+    background-color: #0077cc;
+    color: white;
+}

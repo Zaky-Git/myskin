@@ -9,7 +9,7 @@
                         Masukkan gambar untuk mendeteksi kanker dari gambar yang diberikan.
                     </h5>
                 </div>
-                <button type="button" class="btn btn-primary mb-4 poppin-font" href="">
+                <button type="button" class="btn btn-ms mb-4 poppin-font" href="">
                     Pilih Gambar
                 </button>
             </div>

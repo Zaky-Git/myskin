@@ -9,7 +9,7 @@
 
 ## About MySkin
 
-sebuah sistem deteksi kanker kulit melanoma menggunakan Convolutional Neural Networks (CNN) melalui platform web bernama MySkin menggunakan Laravel 11 dan Vue 3 dengan tujuan untuk memberikan layanan kepada pengguna yang ingin melakukan deteksi melanoma.
+sebuah sistem deteksi kanker kulit melanoma menggunakan Convolutional Neural Networks (CNN) melalui platform web bernama MySkin menggunakan Laravel 11 dan Reactjs dengan tujuan untuk memberikan layanan kepada pengguna yang ingin melakukan deteksi melanoma.
 
 ## Clone Project
 di folder react :

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axiosClient from "../../axios-client";
+import { useStateContext } from "../contexts/ContextProvider";
 
 const Login = ({ closeModal }) => {
+    const { setUser, setToken } = useStateContext();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -19,6 +21,9 @@ const Login = ({ closeModal }) => {
                 email: email,
                 password: password,
             });
+
+            setUser();
+            setToken(response.data.token);
 
             console.log(response.data);
         } catch (error) {

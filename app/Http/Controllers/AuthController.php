@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\Doctor;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -29,8 +30,9 @@ class AuthController extends Controller
         }
 
         if ($user) {
-            if ($password == $user->password) {
-                return response()->json(['message' => 'Login berhasil', 'user' => $user, 'role' => $role]);
+            if (Hash::check($password, $user->password)) {
+                $token = $user->createToken('main')->plainTextToken;
+                return response()->json(['message' => 'Login berhasil', 'token' => $token, 'user' => $user, 'role' => $role]);
             } else {
                 return response()->json(['message' => 'Password salah'], 401);
             }
@@ -72,6 +74,8 @@ class AuthController extends Controller
             return response()->json(['message' => 'Email telah digunakan']);
         }
 
+        $cryptedPassword = bcrypt($data['password']);
+
         if (strpos($data['email'], '@dokter.myskin.ac.id') !== false) {
             $user = Doctor::create([
                 'firstName' => $data['firstName'],
@@ -79,7 +83,7 @@ class AuthController extends Controller
                 'number' => $data['number'],
                 'email' => $data['email'],
                 'verified' => false,
-                'password' => $data['password'],
+                'password' => $cryptedPassword,
             ]);
         } elseif (strpos($data['email'], '@pasien.myskin.ac.id') !== false) {
             $user = User::create([
@@ -88,7 +92,7 @@ class AuthController extends Controller
                 'number' => $data['number'],
                 'email' => $data['email'],
                 'verified' => false,
-                'password' => $data['password'],
+                'password' => $cryptedPassword,
             ]);
         } elseif (strpos($data['email'], '@admin.myskin.ac.id') !== false) {
             $user = Admin::create([
@@ -96,13 +100,15 @@ class AuthController extends Controller
                 'lastName' => $data['lastName'],
                 'number' => $data['number'],
                 'email' => $data['email'],
-                'password' => $data['password'],
+                'password' => $cryptedPassword,
             ]);
         } else {
             return response()->json(['message' => 'Email tidak valid'], 400);
         }
 
-        return response()->json(['message' => 'Registrasi berhasil', 'user' => $user]);
+        $token = $user->createToken('main')->plainTextToken;
+
+        return response()->json(['message' => 'Registrasi berhasil', 'user' => $user, 'token' => $token]);
     }
 
     public function checkEmail(Request $request)

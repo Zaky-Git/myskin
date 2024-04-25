@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import deteksiKanker from "./Pages/DeteksiKanker.vue";
 import homePage from "./Pages/HomePage.vue";
+import loginForm from "./Pages/LoginForm.vue";
 
 const routes = [
     {
@@ -13,6 +14,11 @@ const routes = [
         path: "/dashboard",
         component: homePage,
         meta: { layout: "dashboard" },
+    },
+    {
+        path: "/login",
+        component: loginForm,
+        meta: { layout: "login" },
     },
 ];
 

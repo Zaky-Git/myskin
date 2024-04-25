@@ -1,0 +1,25 @@
+@font-face {
+    font-family: 'PoppinFont';
+    src: url('/public/fonts/Poppins-Medium.otf') format('opentype');
+}
+
+.poppin-font {
+    font-family: 'PoppinFont', sans-serif;
+}
+body {
+    background-color: #EBF7FF !important;
+}
+
+.nav-link.focused {
+    color: #2AA8FF !important;
+}
+
+button.btn-ms{
+    background-color: #2AA8FF;
+    color: white;
+}
+
+button.btn-ms:hover {
+    background-color: #0077cc;
+    color: white;
+}

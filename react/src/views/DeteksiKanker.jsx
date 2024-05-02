@@ -1,11 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import Cropper from "react-easy-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import getCroppedImg from "../functions/cropImage";
 import { useState } from "react";
+import getCroppedImg from "../functions/CropImage";
 
 const DeteksiKanker = () => {
-    const [image, setImage] = useState(null);
+    const [imageSrc, setImageSrc] = useState(null);
+    const [imageName, setImageName] = useState(null);
     const [state, setState] = useState("upload");
     const [loading, setLoading] = useState(false);
     const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -21,12 +22,13 @@ const DeteksiKanker = () => {
     const showCroppedImage = async () => {
         try {
             const croppedImage = await getCroppedImg(
-                image,
+                imageSrc,
                 croppedAreaPixels,
                 rotation
             );
             console.log("donee", { croppedImage });
             setCroppedImage(croppedImage);
+            setState("analisa");
         } catch (e) {
             console.error(e);
         }
@@ -34,6 +36,40 @@ const DeteksiKanker = () => {
 
     const onClose = () => {
         setCroppedImage(null);
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+
+        if (
+            !file.type.includes("image/jpeg") &&
+            !file.type.includes("image/png")
+        ) {
+            alert("Format file harus JPEG atau PNG.");
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            alert("Ukuran file maksimum adalah 5 MB.");
+            return;
+        }
+
+        const image = new Image();
+        image.src = URL.createObjectURL(file);
+
+        image.onload = () => {
+            const width = image.width;
+            const height = image.height;
+
+            if (width < 800 || height < 600) {
+                alert("Resolusi gambar minimal harus 800 x 600 piksel.");
+                return;
+            }
+            setImageSrc(image.src);
+            setImageName(file.name);
+            setState("crop");
+            console.log("Nama file:", file.name);
+        };
     };
     return (
         <div className="flex flex-col justify-between w-screen">
@@ -100,10 +136,12 @@ const DeteksiKanker = () => {
                                 terlihat jelas.
                             </h5>
                         </div>
-                        <div className="mb-4 poppin-font text-white bg-white container flex items-center justify-center p-8 flex-col">
-                            <div className="">
+                        <div
+                            className={`mb-4 poppin-font text-white bg-white container flex items-center justify-center p-8 flex-col `}
+                        >
+                            <div className="w-80 h-80 relative">
                                 <Cropper
-                                    image={image}
+                                    image={imageSrc}
                                     crop={crop}
                                     rotation={rotation}
                                     zoom={zoom}
@@ -115,8 +153,18 @@ const DeteksiKanker = () => {
                                 />
                             </div>
                             <div className="pt-4">
+                                <h5 className="font-light text-black text-xs">
+                                    {imageName}
+                                </h5>
+                            </div>
+                            <div className="pt-2">
                                 <div className=" bg-primaryTW  rounded-md px-12 py-2 ">
-                                    <button type="button">Crop Photo</button>
+                                    <button
+                                        onClick={showCroppedImage}
+                                        type="button"
+                                    >
+                                        Crop Photo
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -135,13 +183,35 @@ const DeteksiKanker = () => {
                                     kanker pada gambar.
                                 </h5>
                             </div>
-                            <div className="mb-4 poppin-font text-white bg-white container flex items-center justify-center p-8 flex-col">
-                                <div className="">
+                            <div
+                                className={`mb-4 poppin-font text-white bg-white container flex items-center justify-center p-8 flex-col `}
+                            >
+                                <div className="w-80  relative">
                                     <img src={croppedImage} alt="" />
                                 </div>
                                 <div className="pt-4">
+                                    <h5 className="font-light text-black text-xs">
+                                        {imageName}
+                                    </h5>
+                                </div>
+                                <div className="pt-2 flex gap-4">
                                     <div className=" bg-primaryTW  rounded-md px-12 py-2 ">
-                                        <button type="button">Analisa</button>
+                                        <button
+                                            onClick={() => {
+                                                setState("upload");
+                                            }}
+                                            type="button"
+                                        >
+                                            Ganti Gambar
+                                        </button>
+                                    </div>
+                                    <div className=" bg-primaryTW  rounded-md px-12 py-2 ">
+                                        <button
+                                            onClick={showCroppedImage}
+                                            type="button"
+                                        >
+                                            Analisa
+                                        </button>
                                     </div>
                                 </div>
                             </div>

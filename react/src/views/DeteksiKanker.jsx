@@ -34,10 +34,6 @@ const DeteksiKanker = () => {
         }
     };
 
-    const onClose = () => {
-        setCroppedImage(null);
-    };
-
     const handleFileChange = (e) => {
         const file = e.target.files[0];
 

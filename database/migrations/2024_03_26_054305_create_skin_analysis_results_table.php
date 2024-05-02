@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('verified')->default(false);
             $table->unsignedBigInteger('verified_by')->nullable();
             $table->timestamp('verification_date')->nullable();
+            $table->unsignedInteger('percentage')->nullable();
             $table->timestamps();
 
             // Foreign key constraints

@@ -1,41 +1,154 @@
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+import Cropper from "react-easy-crop";
+import "react-image-crop/dist/ReactCrop.css";
+import getCroppedImg from "../functions/cropImage";
+import { useState } from "react";
 
 const DeteksiKanker = () => {
+    const [image, setImage] = useState(null);
+    const [state, setState] = useState("upload");
+    const [loading, setLoading] = useState(false);
+    const [crop, setCrop] = useState({ x: 0, y: 0 });
+    const [rotation, setRotation] = useState(0);
+    const [zoom, setZoom] = useState(1);
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+    const [croppedImage, setCroppedImage] = useState(null);
+
+    const onCropComplete = (croppedArea, croppedAreaPixels) => {
+        setCroppedAreaPixels(croppedAreaPixels);
+    };
+
+    const showCroppedImage = async () => {
+        try {
+            const croppedImage = await getCroppedImg(
+                image,
+                croppedAreaPixels,
+                rotation
+            );
+            console.log("donee", { croppedImage });
+            setCroppedImage(croppedImage);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const onClose = () => {
+        setCroppedImage(null);
+    };
     return (
-        <div className="flex flex-col justify-between  w-screen">
-            <div className="">
-                <div className="text-center flex flex-col items-center w-screen">
-                    <h1 className="poppin-font fw-bolder mt-4 mb-4">
-                        Deteksi Kanker
-                    </h1>
-                    <div className="poppin-font container-sm mb-4">
-                        <h5 className="text-muted">
-                            Masukkan gambar untuk mendeteksi kanker dari gambar
-                            yang diberikan.
-                        </h5>
+        <div className="flex flex-col justify-between w-screen">
+            {loading && <p>Loading...</p>}
+            {state == "upload" ? (
+                <div className="">
+                    <div className="text-center flex flex-col items-center w-screen">
+                        <h1 className="poppin-font fw-bolder mt-4 mb-4">
+                            Deteksi Kanker
+                        </h1>
+                        <div className="poppin-font container-sm mb-4">
+                            <h5 className="text-muted">
+                                Masukkan gambar untuk mendeteksi kanker dari
+                                gambar yang diberikan.
+                            </h5>
+                        </div>
+                        <div className="mb-4 poppin-font text-white ">
+                            <div className=" bg-primaryTW w-40 rounded-md px-4 py-2 ">
+                                <input
+                                    type="file"
+                                    accept=".jpg,.jpeg,.png"
+                                    onChange={handleFileChange}
+                                    style={{ display: "none" }}
+                                    id="upload-image"
+                                />
+                                <label
+                                    htmlFor="upload-image"
+                                    className="cursor-pointer"
+                                >
+                                    <div className="font-bold">
+                                        Pilih Gambar
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                    <div className="mb-4 poppin-font text-white ">
-                        <div className=" bg-primaryTW w-40 rounded-md px-4 py-2 ">
-                            <button type="button">
-                                <div className="font-bold">Pilih Gambar</div>
-                            </button>
+                    <div
+                        className="poppin-font align-items-center text-muted"
+                        style={{ width: "500px", margin: "auto" }}
+                    >
+                        <h3 className="text-center">Aturan Gambar</h3>
+                        <div
+                            className="container-sm"
+                            style={{ width: "400px" }}
+                        >
+                            <ol type="1">
+                                <li>1. Format: JPEG, PNG.</li>
+                                <li>2. Ukuran: Maksimum 5 MB.</li>
+                                <li>3. Resolusi: Minimal 800 x 600 piksel.</li>
+                            </ol>
                         </div>
                     </div>
                 </div>
-                <div
-                    className="poppin-font align-items-center text-muted"
-                    style={{ width: "500px", margin: "auto" }}
-                >
-                    <h3 className="text-center">Aturan Gambar</h3>
-                    <div className="container-sm" style={{ width: "400px" }}>
-                        <ol type="1">
-                            <li>1. Format: JPEG, PNG.</li>
-                            <li>2. Ukuran: Maksimum 5 MB.</li>
-                            <li>3. Resolusi: Minimal 800 x 600 piksel.</li>
-                        </ol>
+            ) : state == "crop" ? (
+                <div className="">
+                    <div className="text-center flex flex-col items-center w-screen">
+                        <h1 className="poppin-font fw-bolder mt-4 mb-4">
+                            Crop Gambar
+                        </h1>
+                        <div className="poppin-font container-sm mb-4">
+                            <h5 className="text-muted">
+                                Sesuaikan gambar dengan area yang ingin
+                                diperiksa dan pastikan tanda nya benar-benar
+                                terlihat jelas.
+                            </h5>
+                        </div>
+                        <div className="mb-4 poppin-font text-white bg-white container flex items-center justify-center p-8 flex-col">
+                            <div className="">
+                                <Cropper
+                                    image={image}
+                                    crop={crop}
+                                    rotation={rotation}
+                                    zoom={zoom}
+                                    aspect={4 / 3}
+                                    onCropChange={setCrop}
+                                    onRotationChange={setRotation}
+                                    onCropComplete={onCropComplete}
+                                    onZoomChange={setZoom}
+                                />
+                            </div>
+                            <div className="pt-4">
+                                <div className=" bg-primaryTW  rounded-md px-12 py-2 ">
+                                    <button type="button">Crop Photo</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            ) : (
+                state == "analisa" && (
+                    <div className="">
+                        <div className="text-center flex flex-col items-center w-screen">
+                            <h1 className="poppin-font fw-bolder mt-4 mb-4">
+                                Analisa Gambar
+                            </h1>
+                            <div className="poppin-font container-sm mb-4">
+                                <h5 className="text-muted">
+                                    Klik tombol analisa untuk mendeteksi ulang
+                                    kanker pada gambar.
+                                </h5>
+                            </div>
+                            <div className="mb-4 poppin-font text-white bg-white container flex items-center justify-center p-8 flex-col">
+                                <div className="">
+                                    <img src={croppedImage} alt="" />
+                                </div>
+                                <div className="pt-4">
+                                    <div className=" bg-primaryTW  rounded-md px-12 py-2 ">
+                                        <button type="button">Analisa</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            )}
         </div>
     );
 };

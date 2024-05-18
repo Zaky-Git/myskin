@@ -13,7 +13,7 @@ const router = createBrowserRouter([
         element: <GuestLayout />,
         children: [
             {
-                path: "/deteksiKanker",
+                path: "/",
                 element: <DeteksiKanker />,
             },
             {
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
         element: <PasienLayout />,
         children: [
             {
-                path: "/deteksiKanker",
+                path: "/",
                 element: <DeteksiKanker />,
             },
         ],

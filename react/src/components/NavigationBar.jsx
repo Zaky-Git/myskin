@@ -6,12 +6,10 @@ export const NavigationBar = ({ openLoginModal }) => {
     const [activeItem, setActiveItem] = useState(null);
 
     useEffect(() => {
-        // Extract the path from the URL
         const path = location.pathname;
 
-        // Define your logic to set the active item based on the path
         let activeItem = null;
-        if (path === "/deteksiKanker") {
+        if (path === "/") {
             activeItem = "deteksi";
         } else if (path === "/faq") {
             activeItem = "faq";
@@ -23,7 +21,6 @@ export const NavigationBar = ({ openLoginModal }) => {
             activeItem = "contact";
         }
 
-        // Set the active item state
         setActiveItem(activeItem);
     }, [location.pathname]);
 

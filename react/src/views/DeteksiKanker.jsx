@@ -54,13 +54,13 @@ const DeteksiKanker = () => {
         image.src = URL.createObjectURL(file);
 
         image.onload = () => {
-            const width = image.width;
-            const height = image.height;
+            // const width = image.width;
+            // const height = image.height;
 
-            if (width < 800 || height < 600) {
-                alert("Resolusi gambar minimal harus 800 x 600 piksel.");
-                return;
-            }
+            // if (width < 800 || height < 600) {
+            //     alert("Resolusi gambar minimal harus lebih 800 x 600 piksel.");
+            //     return;
+            // }
             setImageSrc(image.src);
             setImageName(file.name);
             setState("crop");
@@ -72,7 +72,7 @@ const DeteksiKanker = () => {
             {loading && <p>Loading...</p>}
             {state == "upload" ? (
                 <div className="">
-                    <div className="text-center flex flex-col items-center w-screen">
+                    <div className="text-center flex flex-col items-center w-screen  ">
                         <h1 className="poppin-font fw-bolder mt-4 mb-4">
                             Deteksi Kanker
                         </h1>
@@ -182,8 +182,12 @@ const DeteksiKanker = () => {
                             <div
                                 className={`mb-4 poppin-font text-white bg-white container flex items-center justify-center p-8 flex-col `}
                             >
-                                <div className="w-80  relative">
-                                    <img src={croppedImage} alt="" />
+                                <div className="w-80 flex items-center justify-center h-80 relative">
+                                    <img
+                                        className="object-cover w-80 h-80"
+                                        src={croppedImage}
+                                        alt=""
+                                    />
                                 </div>
                                 <div className="pt-4">
                                     <h5 className="font-light text-black text-xs">

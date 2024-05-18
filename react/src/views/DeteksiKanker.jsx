@@ -14,6 +14,10 @@ const DeteksiKanker = () => {
     const [zoom, setZoom] = useState(1);
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
     const [croppedImage, setCroppedImage] = useState(null);
+    const [selectDocterIsChecked, setSelectDocterIsChecked] = useState(false);
+    const handleSelectDocterIsCheckedChange = (event) => {
+        setSelectDocterIsChecked(event.target.checked);
+    };
 
     const onCropComplete = (croppedArea, croppedAreaPixels) => {
         setCroppedAreaPixels(croppedAreaPixels);
@@ -45,10 +49,10 @@ const DeteksiKanker = () => {
             return;
         }
 
-        if (file.size > 5 * 1024 * 1024) {
-            alert("Ukuran file maksimum adalah 5 MB.");
-            return;
-        }
+        // if (file.size > 5 * 1024 * 1024) {
+        //     alert("Ukuran file maksimum adalah 5 MB.");
+        //     return;
+        // }
 
         const image = new Image();
         image.src = URL.createObjectURL(file);
@@ -212,6 +216,97 @@ const DeteksiKanker = () => {
                                         >
                                             Analisa
                                         </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mb-4 poppin-font  bg-white container">
+                            <div className=" text-black ">
+                                <div className="bg-white flex flex-col p-12">
+                                    <div>
+                                        <h1 className="text-lg">
+                                            Hasil Deteksi
+                                        </h1>
+                                    </div>
+                                    <div className="">
+                                        <div className="flex gap-3 ">
+                                            <div className="w-28">
+                                                Penyakit Kulit
+                                            </div>
+                                            <div>: Melanoma</div>
+                                        </div>
+                                        <div className="flex gap-3 w-30">
+                                            <div className="w-28">
+                                                Keakuratan
+                                            </div>
+                                            <div>
+                                                <div className="text-start">
+                                                    : 90%
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-3 ">
+                                            <div className="w-28">Status</div>
+                                            <div>: Unverified</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mb-4 poppin-font  bg-white container">
+                            <div className="text-black">
+                                <div className="bg-white flex flex-col p-12">
+                                    <div>
+                                        <h1 className="text-lg">
+                                            Pengajuan Verifikasi
+                                        </h1>
+                                    </div>
+                                    <div className="">
+                                        <div className="">
+                                            <div className="text-sm text-gray-500">
+                                                *Checklis ini jika ingin memilih
+                                                dokter anda sendiri
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-2 ">
+                                            <div className="">
+                                                <input
+                                                    className=""
+                                                    type="checkbox"
+                                                    name=""
+                                                    id=""
+                                                    checked={
+                                                        selectDocterIsChecked
+                                                    }
+                                                    onChange={
+                                                        handleSelectDocterIsCheckedChange
+                                                    }
+                                                />
+                                            </div>
+                                            <div>Menentukan Dokter Sendiri</div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        className="w-full flex items-center justify-center flex-col gap-2 pt-3
+                                    "
+                                    >
+                                        <div
+                                            className={` ${
+                                                selectDocterIsChecked
+                                                    ? "bg-gray-500"
+                                                    : "bg-primaryTW"
+                                            }  text-whiteTW rounded-md px-12 py-2`}
+                                        >
+                                            <button type="button">
+                                                Ajukan Verifikasi
+                                            </button>
+                                        </div>
+                                        <div className="text-sm text-gray-500">
+                                            *Dokter akan ditentukan secara
+                                            otomatis
+                                        </div>
                                     </div>
                                 </div>
                             </div>

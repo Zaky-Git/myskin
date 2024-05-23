@@ -3,6 +3,11 @@ import Cropper from "react-easy-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { useState } from "react";
 import getCroppedImg from "../functions/CropImage";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import "../customStyle/confirm.css";
+
+const ITEMS_PER_PAGE = 8;
 
 const DeteksiKanker = () => {
     const [imageSrc, setImageSrc] = useState(null);
@@ -15,6 +20,18 @@ const DeteksiKanker = () => {
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
     const [croppedImage, setCroppedImage] = useState(null);
     const [selectDocterIsChecked, setSelectDocterIsChecked] = useState(false);
+    const [selectedDocter, setSelectedDocter] = useState(null);
+
+    const reset = () => {
+        setSelectedDocter(null);
+        setSelectDocterIsChecked(false);
+        setSearchQuery("");
+        setCurrentPage(1);
+    };
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [searchQuery, setSearchQuery] = useState("");
+
     const handleSelectDocterIsCheckedChange = (event) => {
         setSelectDocterIsChecked(event.target.checked);
     };
@@ -22,6 +39,40 @@ const DeteksiKanker = () => {
     const onCropComplete = (croppedArea, croppedAreaPixels) => {
         setCroppedAreaPixels(croppedAreaPixels);
     };
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+        setCurrentPage(1);
+    };
+
+    let listDokter = [
+        { id: 1, nama: "Dr. A" },
+        { id: 2, nama: "Dr. B" },
+        { id: 3, nama: "Dr. B" },
+        { id: 4, nama: "Dr. B" },
+        { id: 5, nama: "Dr. B" },
+        { id: 6, nama: "Dr. B" },
+        { id: 7, nama: "Dr. B" },
+        { id: 8, nama: "Dr. B" },
+        { id: 9, nama: "Dr. B" },
+        { id: 10, nama: "Dr. B" },
+    ];
+
+    const filteredDoctors = listDokter.filter((dokter) =>
+        dokter.nama.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
+    const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
+    const currentItems = filteredDoctors.slice(
+        indexOfFirstItem,
+        indexOfLastItem
+    );
+    const totalPages = Math.ceil(filteredDoctors.length / ITEMS_PER_PAGE);
 
     const showCroppedImage = async () => {
         try {
@@ -71,8 +122,33 @@ const DeteksiKanker = () => {
             console.log("Nama file:", file.name);
         };
     };
+
+    const submitVerification = () => {
+        const message =
+            selectDocterIsChecked && selectedDocter
+                ? `Hasil scan akan diajukan ke Dokter ${selectedDocter.nama} untuk di verifikasi`
+                : "Hasil scan akan diajukan ke Dokter untuk di verifikasi";
+
+        confirmAlert({
+            title: "Ajukan Verifikasi",
+            message: message,
+            buttons: [
+                {
+                    label: "Batalkan",
+                    onClick: () => console.log("Batalkan clicked"),
+                },
+                {
+                    label: "Ajukan Verifikasi",
+                    onClick: () => console.log("Ajukan Verifikasi clicked"),
+                },
+            ],
+            closeOnClickOutside: true,
+            closeOnEscape: true,
+        });
+    };
+
     return (
-        <div className="flex flex-col justify-between w-screen">
+        <div className="flex flex-col justify-between w-screen mt-8">
             {loading && <p>Loading...</p>}
             {state == "upload" ? (
                 <div className="">
@@ -203,6 +279,7 @@ const DeteksiKanker = () => {
                                         <button
                                             onClick={() => {
                                                 setState("upload");
+                                                reset();
                                             }}
                                             type="button"
                                         >
@@ -248,7 +325,12 @@ const DeteksiKanker = () => {
                                         </div>
                                         <div className="flex gap-3 ">
                                             <div className="w-28">Status</div>
-                                            <div>: Unverified</div>
+                                            <div>
+                                                :{" "}
+                                                <span className="text-red-500">
+                                                    Unverified
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -270,10 +352,10 @@ const DeteksiKanker = () => {
                                                 dokter anda sendiri
                                             </div>
                                         </div>
-                                        <div className="flex gap-2 ">
+                                        <div className="flex gap-2 mt-2">
                                             <div className="">
                                                 <input
-                                                    className=""
+                                                    className="w-6 h-6 bg-primaryTW"
                                                     type="checkbox"
                                                     name=""
                                                     id=""
@@ -287,6 +369,124 @@ const DeteksiKanker = () => {
                                             </div>
                                             <div>Menentukan Dokter Sendiri</div>
                                         </div>
+
+                                        {selectedDocter &&
+                                            selectDocterIsChecked && (
+                                                <div className="bg-primaryTW p-2 rounded-lg mt-4 mb-3">
+                                                    <div className="w-full flex justify-between py-2 px-6 bg-white">
+                                                        <div className="flex gap-4 items-center">
+                                                            <div className="rounded-circle w-16 h-16 bg-black "></div>
+                                                            <div>
+                                                                {
+                                                                    selectedDocter[
+                                                                        "nama"
+                                                                    ]
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex items-center">
+                                                            <div
+                                                                className={`bg-yellow-400 text-whiteTW rounded-md px-12 py-2 flex-none h-10`}
+                                                            >
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => {
+                                                                        setSelectedDocter(
+                                                                            null
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    Ganti Dokter
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                        {selectDocterIsChecked &&
+                                            selectedDocter == null && (
+                                                <div
+                                                    className={
+                                                        "w-full flex flex-col bg-primaryAlternativeTW mt-4 mb-3"
+                                                    }
+                                                >
+                                                    <div className="bg-primaryTW p-2 rounded-lg">
+                                                        <input
+                                                            className="input-group placeholder:text-lg placeholder:text-black p-2 rounded-lg"
+                                                            type="text"
+                                                            placeholder="Search"
+                                                            value={searchQuery}
+                                                            onChange={
+                                                                handleSearchChange
+                                                            }
+                                                        />
+                                                    </div>
+                                                    <div className="p-12 grid grid-cols-4 gap-2 min-h-[500px]">
+                                                        {currentItems.map(
+                                                            (dokter) => (
+                                                                <div
+                                                                    key={
+                                                                        dokter.id
+                                                                    }
+                                                                    className="p-4 flex flex-col gap-2 items-center justify-center shadow-md rounded-md bg-white"
+                                                                >
+                                                                    <div className="rounded-circle w-20 h-20 bg-black "></div>
+                                                                    <div className="text-center">
+                                                                        {
+                                                                            dokter[
+                                                                                "nama"
+                                                                            ]
+                                                                        }
+                                                                    </div>
+                                                                    <div
+                                                                        className={` ${"bg-primaryTW"}  text-whiteTW rounded-md px-6 py-1`}
+                                                                    >
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => {
+                                                                                setSelectedDocter(
+                                                                                    dokter
+                                                                                );
+                                                                            }}
+                                                                        >
+                                                                            Pilih
+                                                                            Dokter
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        )}
+                                                    </div>
+                                                    <div className="flex justify-center mb-4">
+                                                        {Array.from(
+                                                            {
+                                                                length: totalPages,
+                                                            },
+                                                            (_, index) => (
+                                                                <button
+                                                                    key={index}
+                                                                    onClick={() =>
+                                                                        handlePageChange(
+                                                                            index +
+                                                                                1
+                                                                        )
+                                                                    }
+                                                                    className={`px-4 py-2 mx-1 ${
+                                                                        currentPage ===
+                                                                        index +
+                                                                            1
+                                                                            ? "bg-primaryTW text-white"
+                                                                            : "bg-white text-black"
+                                                                    }`}
+                                                                >
+                                                                    {index + 1}
+                                                                </button>
+                                                            )
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            )}
                                     </div>
                                     <div
                                         className="w-full flex items-center justify-center flex-col gap-2 pt-3
@@ -294,19 +494,56 @@ const DeteksiKanker = () => {
                                     >
                                         <div
                                             className={` ${
-                                                selectDocterIsChecked
-                                                    ? "bg-gray-500"
+                                                selectDocterIsChecked &&
+                                                !selectedDocter
+                                                    ? "bg-gray-500 "
                                                     : "bg-primaryTW"
                                             }  text-whiteTW rounded-md px-12 py-2`}
                                         >
-                                            <button type="button">
+                                            <button
+                                                type="button"
+                                                disabled={
+                                                    selectDocterIsChecked &&
+                                                    !selectedDocter
+                                                }
+                                                className={`${
+                                                    selectDocterIsChecked &&
+                                                    !selectedDocter
+                                                        ? "cursor-not-allowed"
+                                                        : "cursor-pointer"
+                                                }`}
+                                                onClick={() => {
+                                                    if (
+                                                        selectDocterIsChecked &&
+                                                        !selectedDocter
+                                                    ) {
+                                                        return;
+                                                    } else {
+                                                        submitVerification();
+                                                    }
+                                                }}
+                                            >
                                                 Ajukan Verifikasi
                                             </button>
                                         </div>
-                                        <div className="text-sm text-gray-500">
-                                            *Dokter akan ditentukan secara
-                                            otomatis
-                                        </div>
+                                        {!selectedDocter &&
+                                        selectDocterIsChecked ? (
+                                            <div className="text-sm text-gray-500">
+                                                *Pilih Dokter atau matikan
+                                                ceklis Menentukan Dokter Sendiri
+                                            </div>
+                                        ) : selectedDocter &&
+                                          selectDocterIsChecked ? (
+                                            <div className="text-sm text-gray-500">
+                                                *{selectedDocter["nama"]} akan
+                                                dipilih sebagai dokter anda
+                                            </div>
+                                        ) : (
+                                            <div className="text-sm text-gray-500">
+                                                *Dokter akan ditentukan secara
+                                                otomatis
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>

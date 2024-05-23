@@ -6,6 +6,7 @@ import GuestLayout from "./components/GuestLayout";
 import PasienLayout from "./components/PasienLayout";
 import DoctorLayout from "./components/DoctorLayout";
 import DeteksiKanker from "./views/DeteksiKanker";
+import FAQ from "./views/FAQ";
 
 const router = createBrowserRouter([
     {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
             {
                 path: "/signup",
                 element: <Signup />,
+            },
+            {
+                path: "/faq",
+                element: <FAQ />,
             },
         ],
     },

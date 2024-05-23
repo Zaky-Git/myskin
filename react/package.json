@@ -12,6 +12,8 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "react": "^18.2.0",
+    "react-confirm": "^0.3.0-7",
+    "react-confirm-alert": "^3.0.6",
     "react-dom": "^18.2.0",
     "react-easy-crop": "^3.3.0",
     "react-image-crop": "^11.0.5",

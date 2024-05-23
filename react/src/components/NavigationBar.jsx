@@ -10,7 +10,7 @@ export const NavigationBar = ({ openLoginModal }) => {
 
         let activeItem = null;
         if (path === "/") {
-            activeItem = "deteksi";
+            activeItem = "deteksiKanker";
         } else if (path === "/faq") {
             activeItem = "faq";
         } else if (path === "/products") {
@@ -52,10 +52,10 @@ export const NavigationBar = ({ openLoginModal }) => {
                         <ul className="navbar-nav">
                             <li className="nav-item">
                                 <Link
-                                    to="/deteksiKanker"
+                                    to="/"
                                     className={
                                         "nav-link" +
-                                        (activeItem === "deteksi"
+                                        (activeItem === "deteksiKanker"
                                             ? " focused text-primary"
                                             : " text-secondary")
                                     }
@@ -72,7 +72,9 @@ export const NavigationBar = ({ openLoginModal }) => {
                                     to="/faq"
                                     className={
                                         "nav-link" +
-                                        (activeItem === "faq" ? " focused" : "")
+                                        (activeItem === "faq"
+                                            ? " focused text-primary"
+                                            : " text-secondary")
                                     }
                                     onFocus={() => setActiveItem("faq")}
                                     onBlur={() => setActiveItem(null)}

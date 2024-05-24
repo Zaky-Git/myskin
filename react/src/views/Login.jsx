@@ -2,7 +2,7 @@ import { useState } from "react";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
 
-const Login = ({ closeModal }) => {
+const Login = ({ openDaftar, closeModal, openResetKataSandi }) => {
     const { setUser, setToken } = useStateContext();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -52,25 +52,25 @@ const Login = ({ closeModal }) => {
                                     Masuk untuk tetap terhubung
                                 </div>
                             </div>
-                            <div className="input-group mb-3">
-                                <input
-                                    type="text"
-                                    className="form-control form-control-lg bg-light fs-6"
-                                    placeholder="Email"
-                                    value={email}
-                                    onChange={handleEmailChange}
-                                />
+                            <div className="flex flex-col w-full mb-3">
+                                <h7>Email</h7>
+                                <div className="input-group pt-1">
+                                    <input
+                                        className="p-2 border-2 w-full rounded-md border-primaryTW"
+                                        type="text"
+                                    />
+                                </div>
                             </div>
-                            <div className="input-group mb-1">
-                                <input
-                                    type="password"
-                                    className="form-control form-control-lg bg-light fs-6"
-                                    placeholder="Kata Sandi"
-                                    value={password}
-                                    onChange={handlePasswordChange}
-                                />
+                            <div className="flex flex-col w-full mb-3">
+                                <h7>Kata Sandi</h7>
+                                <div className="input-group pt-1">
+                                    <input
+                                        className="p-2 border-2 w-full rounded-md border-primaryTW"
+                                        type="text"
+                                    />
+                                </div>
                             </div>
-                            <div className="input-group mb-5 d-flex justify-content-between">
+                            <div className="input-group mb-5 d-flex justify-content-between mt-2">
                                 <div className="form-check">
                                     <input
                                         type="checkbox"
@@ -86,7 +86,13 @@ const Login = ({ closeModal }) => {
                                 </div>
                                 <div className="forgot">
                                     <small>
-                                        <a href="#">Lupa Kata Sandi?</a>
+                                        <a
+                                            className="no-underline"
+                                            onClick={openResetKataSandi}
+                                            href="#"
+                                        >
+                                            Lupa Kata Sandi?
+                                        </a>
                                     </small>
                                 </div>
                             </div>
@@ -105,7 +111,13 @@ const Login = ({ closeModal }) => {
                             <div>
                                 <small>
                                     Belum memiliki akun?{" "}
-                                    <a href="#">Klik disini untuk daftar</a>
+                                    <a
+                                        href="#"
+                                        className="no-underline"
+                                        onClick={openDaftar}
+                                    >
+                                        Klik disini untuk daftar
+                                    </a>
                                 </small>
                             </div>
                         </div>

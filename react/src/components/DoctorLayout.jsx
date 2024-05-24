@@ -1,5 +1,11 @@
+import { NavigationBar } from "./NavigationBar";
+
 const DoctorLayout = () => {
-    return <div>DoctorLayout</div>;
+    return (
+        <div>
+            <NavigationBar />
+        </div>
+    );
 };
 
 export default DoctorLayout;

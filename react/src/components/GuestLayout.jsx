@@ -5,19 +5,27 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { NavigationBar } from "./NavigationBar";
 import Modal from "react-modal";
 import Login from "../views/Login";
+import Daftar from "../views/Daftar";
+import ResetKataSandi from "../views/ResetKataSandi";
+import Berhasil from "../views/Berhasil";
+
 Modal.setAppElement("#root");
 
 const GuestLayout = () => {
     const { user, token } = useStateContext();
-    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-    const openLoginModal = () => {
-        console.log("tes open");
-        setIsLoginModalOpen(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modal, setModal] = useState("");
+
+    const openModal = (modalType) => {
+        console.log(modalType);
+        setModal(modalType);
+        setIsModalOpen(true);
     };
 
-    const closeLoginModal = () => {
-        setIsLoginModalOpen(false);
+    const closeModal = () => {
+        setIsModalOpen(false);
     };
+
     if (token) {
         if (user.role === "admin") {
             return <Navigate to="/admin/dashboard" />;
@@ -30,32 +38,57 @@ const GuestLayout = () => {
 
     return (
         <div className="flex flex-col min-h-screen bg-primaryAlternativeTW font-poppins">
-            <NavigationBar openLoginModal={openLoginModal} />
+            <NavigationBar openModal={openModal} />
             <div className="flex-grow">
                 <Outlet />
             </div>
-            <div className="text-muted poppin-font text-center mb-4 ">
+            <div className="text-muted poppin-font text-center mb-4">
                 <p>
                     *Hasil deteksi belum dipastikan benar karena web hanya
                     memberikan indikasi awal, silahkan{" "}
                     <button
                         type="button"
-                        className="btn btn-link"
-                        onClick={openLoginModal}
+                        className="btn btn-link "
+                        onClick={() => openModal("login")}
                     >
-                        login
+                        <span className="text-decoration-none"> login</span>
                     </button>{" "}
                     untuk verifikasi hasil deteksi oleh Dokter.
                 </p>
             </div>
             <Modal
-                isOpen={isLoginModalOpen}
-                onRequestClose={closeLoginModal}
-                contentLabel="Login Modal"
+                isOpen={isModalOpen}
+                onRequestClose={closeModal}
+                contentLabel="Modal"
                 className="modal-content"
             >
                 <div className="w-screen flex justify-center">
-                    <Login closeModal={closeLoginModal} />
+                    {modal === "login" ? (
+                        <Login
+                            openDaftar={() => openModal("daftar")}
+                            closeModal={closeModal}
+                            openResetKataSandi={() =>
+                                openModal("resetKataSandi")
+                            }
+                            openBerhasil={() => openModal("berhasil")}
+                        />
+                    ) : modal == "daftar" ? (
+                        <Daftar
+                            openLogin={() => openModal("login")}
+                            closeModal={closeModal}
+                            openBerhasil={() => openModal("berhasil")}
+                        />
+                    ) : modal == "resetKataSandi" ? (
+                        <ResetKataSandi
+                            closeModal={closeModal}
+                            openLogin={() => openModal("login")}
+                            openBerhasil={() => openModal("berhasil")}
+                        />
+                    ) : (
+                        modal == "berhasil" && (
+                            <Berhasil closeModal={closeModal} />
+                        )
+                    )}
                 </div>
             </Modal>
         </div>

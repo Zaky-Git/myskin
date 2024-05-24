@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-export const NavigationBar = ({ openLoginModal }) => {
+export const NavigationBar = ({ openModal }) => {
     const location = useLocation();
     const [activeItem, setActiveItem] = useState(null);
 
@@ -17,8 +17,8 @@ export const NavigationBar = ({ openLoginModal }) => {
             activeItem = "products";
         } else if (path === "/about") {
             activeItem = "about";
-        } else if (path === "/contact") {
-            activeItem = "contact";
+        } else if (path === "/pengajuan") {
+            activeItem = "daftarPengajuan";
         }
 
         setActiveItem(activeItem);
@@ -32,7 +32,7 @@ export const NavigationBar = ({ openLoginModal }) => {
                     <Link className="navbar-brand" to="/">
                         Logo
                     </Link>
-                    {/* Navbar Toggler kalo kecil */}
+                    {/* Navbar Toggler for small screens */}
                     <button
                         className="navbar-toggler"
                         type="button"
@@ -48,7 +48,7 @@ export const NavigationBar = ({ openLoginModal }) => {
 
                 {/* Navbar Items */}
                 <div>
-                    <div className=" poppin-font" id="navbarNav">
+                    <div className="poppin-font" id="navbarNav">
                         <ul className="navbar-nav">
                             <li className="nav-item">
                                 <Link
@@ -56,8 +56,8 @@ export const NavigationBar = ({ openLoginModal }) => {
                                     className={
                                         "nav-link" +
                                         (activeItem === "deteksiKanker"
-                                            ? " focused text-primary"
-                                            : " text-secondary")
+                                            ? " focused text-primaryTW"
+                                            : " text-secondaryTW")
                                     }
                                     onFocus={() =>
                                         setActiveItem("deteksiKanker")
@@ -73,8 +73,8 @@ export const NavigationBar = ({ openLoginModal }) => {
                                     className={
                                         "nav-link" +
                                         (activeItem === "faq"
-                                            ? " focused text-primary"
-                                            : " text-secondary")
+                                            ? " focused text-primaryTW"
+                                            : " text-secondaryTW")
                                     }
                                     onFocus={() => setActiveItem("faq")}
                                     onBlur={() => setActiveItem(null)}
@@ -88,8 +88,8 @@ export const NavigationBar = ({ openLoginModal }) => {
                                     className={
                                         "nav-link" +
                                         (activeItem === "products"
-                                            ? " focused"
-                                            : "")
+                                            ? " focused text-primaryTW"
+                                            : " text-secondaryTW")
                                     }
                                     onFocus={() => setActiveItem("products")}
                                     onBlur={() => setActiveItem(null)}
@@ -99,32 +99,18 @@ export const NavigationBar = ({ openLoginModal }) => {
                             </li>
                             <li className="nav-item">
                                 <Link
-                                    to="/about"
+                                    to="/pengajuan"
                                     className={
                                         "nav-link" +
-                                        (activeItem === "about"
-                                            ? " focused"
-                                            : "")
+                                        (activeItem === "daftarPengajuan"
+                                            ? " text-primaryTW"
+                                            : " text-secondaryTW")
                                     }
-                                    onFocus={() => setActiveItem("about")}
-                                    onBlur={() => setActiveItem(null)}
-                                >
-                                    About
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link
-                                    to="/contact"
-                                    className={
-                                        "nav-link" +
-                                        (activeItem === "contact"
-                                            ? " focused"
-                                            : "")
+                                    onClick={() =>
+                                        setActiveItem("daftarPengajuan")
                                     }
-                                    onFocus={() => setActiveItem("contact")}
-                                    onBlur={() => setActiveItem(null)}
                                 >
-                                    Contact
+                                    Daftar Pengajuan
                                 </Link>
                             </li>
                         </ul>
@@ -135,10 +121,7 @@ export const NavigationBar = ({ openLoginModal }) => {
                 <div>
                     <button
                         className="btn btn-ms poppin-font"
-                        onClick={() => {
-                            openLoginModal();
-                            console.log("tess");
-                        }}
+                        onClick={() => openModal("login")}
                     >
                         Masuk
                     </button>

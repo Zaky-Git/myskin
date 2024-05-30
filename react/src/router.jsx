@@ -9,6 +9,8 @@ import DeteksiKanker from "./views/DeteksiKanker";
 import FAQ from "./views/FAQ";
 import DaftarPengajuanUmum from "./views/DaftarPengajuanUmum";
 import Verifikasi from "./views/Verifikasi";
+import DokterDashboard from "./components/DokterDashboard.jsx";
+import RiwayatVerifikasi from "./components/RiwayatVerifikasi.jsx";
 
 const router = createBrowserRouter([
     {
@@ -56,8 +58,16 @@ const router = createBrowserRouter([
         element: <DoctorLayout />,
         children: [
             {
-                path: "/pengajuan",
+                path: "/dokter/pengajuan",
                 element: <DaftarPengajuanUmum />,
+            },
+            {
+                path: "/dokter/dashboard",
+                element: <DokterDashboard />,
+            },
+            {
+                path: "/dokter/riwayat",
+                element: <RiwayatVerifikasi />,
             },
         ],
     },

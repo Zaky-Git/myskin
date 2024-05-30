@@ -9,13 +9,13 @@ import DeteksiKanker from "./views/DeteksiKanker";
 import FAQ from "./views/FAQ";
 import DaftarPengajuanUmum from "./views/DaftarPengajuanUmum";
 import Verifikasi from "./views/Verifikasi";
-import DokterDashboard from "./components/DokterDashboard.jsx";
-import RiwayatVerifikasi from "./components/RiwayatVerifikasi.jsx";
+import DokterDashboard from "./views/DokterDashboard.jsx";
+import RiwayatVerifikasi from "./views/RiwayatVerifikasi.jsx";
 import AdminLayout from "./components/AdminLayout.jsx";
-import AdminDashboard from "./components/AdminDashboard.jsx";
-import DaftarDokter from "./components/DaftarDokter.jsx";
-import DaftarPasien from "./components/DaftarPasien.jsx";
-import DetailDokter from "./components/DetailDokter.jsx";
+import AdminDashboard from "./views/AdminDashboard.jsx";
+import DaftarDokter from "./views/DaftarDokter.jsx";
+import DaftarPasien from "./views/DaftarPasien.jsx";
+import DetailDokter from "./views/DetailDokter.jsx";
 
 const router = createBrowserRouter([
     {

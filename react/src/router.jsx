@@ -11,6 +11,11 @@ import DaftarPengajuanUmum from "./views/DaftarPengajuanUmum";
 import Verifikasi from "./views/Verifikasi";
 import DokterDashboard from "./components/DokterDashboard.jsx";
 import RiwayatVerifikasi from "./components/RiwayatVerifikasi.jsx";
+import AdminLayout from "./components/AdminLayout.jsx";
+import AdminDashboard from "./components/AdminDashboard.jsx";
+import DaftarDokter from "./components/DaftarDokter.jsx";
+import DaftarPasien from "./components/DaftarPasien.jsx";
+import DetailDokter from "./components/DetailDokter.jsx";
 
 const router = createBrowserRouter([
     {
@@ -69,6 +74,28 @@ const router = createBrowserRouter([
                 path: "/dokter/riwayat",
                 element: <RiwayatVerifikasi />,
             },
+        ],
+    },
+    {
+        path: "/",
+        element: <AdminLayout />,
+        children: [
+            {
+                path: "/admin/dashboard",
+                element: <AdminDashboard />
+            },
+            {
+                path: "/admin/daftarDokter",
+                element: <DaftarDokter/>
+            },
+            {
+                path: "/admin/daftarPasien",
+                element: <DaftarPasien/>
+            },
+            {
+                path: "/admin/detailDokter",
+                element: <DetailDokter/>
+            }
         ],
     },
     {

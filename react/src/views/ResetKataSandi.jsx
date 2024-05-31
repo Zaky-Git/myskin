@@ -12,30 +12,44 @@ const ResetKataSandi = ({ openLogin, closeModal, openBerhasil }) => {
     const [password, setPassword] = useState("");
     const [confirmationPassword, setConfirmationPassword] = useState("");
     const [isAgree, setIsAgree] = useState(false);
+    const [message, setMessage] = useState("");
 
     const listState = ["inputEmail", "inputPassword"];
 
     const [state, setState] = useState(listState[0]);
 
-    const handleEmailChange = (event) => {
-        setEmail(event.target.value);
-    };
-
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-    };
-
-    const handleSubmit = async () => {
+    const handleCheckMail = async () => {
         try {
-            const response = await axiosClient.post("/login", {
+            const response = await axiosClient.post("/checkEmail", {
                 email: email,
-                password: password,
             });
 
-            setUser();
-            setToken(response.data.token);
+            if (response.status == 200) {
+                setMessage("");
+                setState(listState[1]);
+            }
+        } catch (error) {
+            setMessage(error.response.data.message);
+            console.error(error.response.data);
+        }
+    };
 
-            console.log(response.data);
+    const handleResetKataSandi = async () => {
+        try {
+            if (
+                password == confirmationPassword &&
+                password != "" &&
+                confirmationPassword != ""
+            ) {
+                const response = await axiosClient.post("/changePassword", {
+                    email: email,
+                    password: password,
+                });
+
+                if (response.status == 200) {
+                    openBerhasil();
+                }
+            }
         } catch (error) {
             console.error(error.response.data);
         }
@@ -89,8 +103,16 @@ const ResetKataSandi = ({ openLogin, closeModal, openBerhasil }) => {
                                         <input
                                             className="p-2 border-2 w-full rounded-md border-primaryTW"
                                             type="text"
+                                            onChange={(e) => {
+                                                setEmail(e.target.value);
+                                            }}
                                         />
                                     </div>
+                                    {message != "" && (
+                                        <div className="text-red-500">
+                                            {message}
+                                        </div>
+                                    )}
                                 </div>
                             ) : (
                                 <div className="w-full">
@@ -134,7 +156,7 @@ const ResetKataSandi = ({ openLogin, closeModal, openBerhasil }) => {
                                             <div
                                                 className="font-bold text-center"
                                                 onClick={() => {
-                                                    setState(listState[1]);
+                                                    handleCheckMail();
                                                 }}
                                             >
                                                 Lanjut
@@ -148,7 +170,7 @@ const ResetKataSandi = ({ openLogin, closeModal, openBerhasil }) => {
                                         <button type="button">
                                             <div
                                                 className="font-bold text-center"
-                                                onClick={openBerhasil}
+                                                onClick={handleResetKataSandi}
                                             >
                                                 Reset
                                             </div>

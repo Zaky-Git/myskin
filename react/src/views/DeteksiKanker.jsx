@@ -1,11 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import Cropper from "react-easy-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import getCroppedImg from "../functions/CropImage";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import "../customStyle/confirm.css";
+import { useStateContext } from "../contexts/ContextProvider";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -21,6 +22,13 @@ const DeteksiKanker = () => {
     const [croppedImage, setCroppedImage] = useState(null);
     const [selectDocterIsChecked, setSelectDocterIsChecked] = useState(false);
     const [selectedDocter, setSelectedDocter] = useState(null);
+
+    const { user, token, role } = useStateContext();
+
+    useEffect(() => {
+        console.log("User:", user);
+        console.log("Token:", token);
+    }, [user, token]);
 
     const reset = () => {
         setSelectedDocter(null);
@@ -336,218 +344,229 @@ const DeteksiKanker = () => {
                                 </div>
                             </div>
                         </div>
-
-                        <div className="mb-4 poppin-font  bg-white container">
-                            <div className="text-black">
-                                <div className="bg-white flex flex-col p-12">
-                                    <div>
-                                        <h1 className="text-lg">
-                                            Pengajuan Verifikasi
-                                        </h1>
-                                    </div>
-                                    <div className="">
+                        {role && (
+                            <div className="mb-4 poppin-font  bg-white container">
+                                <div className="text-black">
+                                    <div className="bg-white flex flex-col p-12">
+                                        <div>
+                                            <h1 className="text-lg">
+                                                Pengajuan Verifikasi
+                                            </h1>
+                                        </div>
                                         <div className="">
-                                            <div className="text-sm text-gray-500">
-                                                *Checklis ini jika ingin memilih
-                                                dokter anda sendiri
-                                            </div>
-                                        </div>
-                                        <div className="flex gap-2 mt-2">
                                             <div className="">
-                                                <input
-                                                    className="w-6 h-6 bg-primaryTW"
-                                                    type="checkbox"
-                                                    name=""
-                                                    id=""
-                                                    checked={
-                                                        selectDocterIsChecked
-                                                    }
-                                                    onChange={
-                                                        handleSelectDocterIsCheckedChange
-                                                    }
-                                                />
-                                            </div>
-                                            <div>Menentukan Dokter Sendiri</div>
-                                        </div>
-
-                                        {selectedDocter &&
-                                            selectDocterIsChecked && (
-                                                <div className="bg-primaryTW p-2 rounded-lg mt-4 mb-3">
-                                                    <div className="w-full flex justify-between py-2 px-6 bg-white">
-                                                        <div className="flex gap-4 items-center">
-                                                            <div className="rounded-circle w-16 h-16 bg-black "></div>
-                                                            <div>
-                                                                {
-                                                                    selectedDocter[
-                                                                        "nama"
-                                                                    ]
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                        <div className="flex items-center">
-                                                            <div
-                                                                className={`bg-yellow-400 text-whiteTW rounded-md px-12 py-2 flex-none h-10`}
-                                                            >
-                                                                <button
-                                                                    type="button"
-                                                                    onClick={() => {
-                                                                        setSelectedDocter(
-                                                                            null
-                                                                        );
-                                                                    }}
-                                                                >
-                                                                    Ganti Dokter
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                <div className="text-sm text-gray-500">
+                                                    *Checklis ini jika ingin
+                                                    memilih dokter anda sendiri
                                                 </div>
-                                            )}
+                                            </div>
+                                            <div className="flex gap-2 mt-2">
+                                                <div className="">
+                                                    <input
+                                                        className="w-6 h-6 bg-primaryTW"
+                                                        type="checkbox"
+                                                        name=""
+                                                        id=""
+                                                        checked={
+                                                            selectDocterIsChecked
+                                                        }
+                                                        onChange={
+                                                            handleSelectDocterIsCheckedChange
+                                                        }
+                                                    />
+                                                </div>
+                                                <div>
+                                                    Menentukan Dokter Sendiri
+                                                </div>
+                                            </div>
 
-                                        {selectDocterIsChecked &&
-                                            selectedDocter == null && (
-                                                <div
-                                                    className={
-                                                        "w-full flex flex-col bg-primaryAlternativeTW mt-4 mb-3"
-                                                    }
-                                                >
-                                                    <div className="bg-primaryTW p-2 rounded-lg">
-                                                        <input
-                                                            className="input-group placeholder:text-lg placeholder:text-black p-2 rounded-lg"
-                                                            type="text"
-                                                            placeholder="Search"
-                                                            value={searchQuery}
-                                                            onChange={
-                                                                handleSearchChange
-                                                            }
-                                                        />
-                                                    </div>
-                                                    <div className="p-12 grid grid-cols-4 gap-2 min-h-[500px]">
-                                                        {currentItems.map(
-                                                            (dokter) => (
-                                                                <div
-                                                                    key={
-                                                                        dokter.id
+                                            {selectedDocter &&
+                                                selectDocterIsChecked && (
+                                                    <div className="bg-primaryTW p-2 rounded-lg mt-4 mb-3">
+                                                        <div className="w-full flex justify-between py-2 px-6 bg-white">
+                                                            <div className="flex gap-4 items-center">
+                                                                <div className="rounded-circle w-16 h-16 bg-black "></div>
+                                                                <div>
+                                                                    {
+                                                                        selectedDocter[
+                                                                            "nama"
+                                                                        ]
                                                                     }
-                                                                    className="p-4 flex flex-col gap-2 items-center justify-center shadow-md rounded-md bg-white"
-                                                                >
-                                                                    <div className="rounded-circle w-20 h-20 bg-black "></div>
-                                                                    <div className="text-center">
-                                                                        {
-                                                                            dokter[
-                                                                                "nama"
-                                                                            ]
-                                                                        }
-                                                                    </div>
-                                                                    <div
-                                                                        className={` ${"bg-primaryTW"}  text-whiteTW rounded-md px-6 py-1`}
-                                                                    >
-                                                                        <button
-                                                                            type="button"
-                                                                            onClick={() => {
-                                                                                setSelectedDocter(
-                                                                                    dokter
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            Pilih
-                                                                            Dokter
-                                                                        </button>
-                                                                    </div>
                                                                 </div>
-                                                            )
-                                                        )}
+                                                            </div>
+                                                            <div className="flex items-center">
+                                                                <div
+                                                                    className={`bg-yellow-400 text-whiteTW rounded-md px-12 py-2 flex-none h-10`}
+                                                                >
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => {
+                                                                            setSelectedDocter(
+                                                                                null
+                                                                            );
+                                                                        }}
+                                                                    >
+                                                                        Ganti
+                                                                        Dokter
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div className="flex justify-center mb-4">
-                                                        {Array.from(
-                                                            {
-                                                                length: totalPages,
-                                                            },
-                                                            (_, index) => (
-                                                                <button
-                                                                    key={index}
-                                                                    onClick={() =>
-                                                                        handlePageChange(
+                                                )}
+
+                                            {selectDocterIsChecked &&
+                                                selectedDocter == null && (
+                                                    <div
+                                                        className={
+                                                            "w-full flex flex-col bg-primaryAlternativeTW mt-4 mb-3"
+                                                        }
+                                                    >
+                                                        <div className="bg-primaryTW p-2 rounded-lg">
+                                                            <input
+                                                                className="input-group placeholder:text-lg placeholder:text-black p-2 rounded-lg"
+                                                                type="text"
+                                                                placeholder="Search"
+                                                                value={
+                                                                    searchQuery
+                                                                }
+                                                                onChange={
+                                                                    handleSearchChange
+                                                                }
+                                                            />
+                                                        </div>
+                                                        <div className="p-12 grid grid-cols-4 gap-2 min-h-[500px]">
+                                                            {currentItems.map(
+                                                                (dokter) => (
+                                                                    <div
+                                                                        key={
+                                                                            dokter.id
+                                                                        }
+                                                                        className="p-4 flex flex-col gap-2 items-center justify-center shadow-md rounded-md bg-white"
+                                                                    >
+                                                                        <div className="rounded-circle w-20 h-20 bg-black "></div>
+                                                                        <div className="text-center">
+                                                                            {
+                                                                                dokter[
+                                                                                    "nama"
+                                                                                ]
+                                                                            }
+                                                                        </div>
+                                                                        <div
+                                                                            className={` ${"bg-primaryTW"}  text-whiteTW rounded-md px-6 py-1`}
+                                                                        >
+                                                                            <button
+                                                                                type="button"
+                                                                                onClick={() => {
+                                                                                    setSelectedDocter(
+                                                                                        dokter
+                                                                                    );
+                                                                                }}
+                                                                            >
+                                                                                Pilih
+                                                                                Dokter
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                        <div className="flex justify-center mb-4">
+                                                            {Array.from(
+                                                                {
+                                                                    length: totalPages,
+                                                                },
+                                                                (_, index) => (
+                                                                    <button
+                                                                        key={
+                                                                            index
+                                                                        }
+                                                                        onClick={() =>
+                                                                            handlePageChange(
+                                                                                index +
+                                                                                    1
+                                                                            )
+                                                                        }
+                                                                        className={`px-4 py-2 mx-1 ${
+                                                                            currentPage ===
                                                                             index +
                                                                                 1
-                                                                        )
-                                                                    }
-                                                                    className={`px-4 py-2 mx-1 ${
-                                                                        currentPage ===
-                                                                        index +
-                                                                            1
-                                                                            ? "bg-primaryTW text-white"
-                                                                            : "bg-white text-black"
-                                                                    }`}
-                                                                >
-                                                                    {index + 1}
-                                                                </button>
-                                                            )
-                                                        )}
+                                                                                ? "bg-primaryTW text-white"
+                                                                                : "bg-white text-black"
+                                                                        }`}
+                                                                    >
+                                                                        {index +
+                                                                            1}
+                                                                    </button>
+                                                                )
+                                                            )}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            )}
-                                    </div>
-                                    <div
-                                        className="w-full flex items-center justify-center flex-col gap-2 pt-3
-                                    "
-                                    >
+                                                )}
+                                        </div>
                                         <div
-                                            className={` ${
-                                                selectDocterIsChecked &&
-                                                !selectedDocter
-                                                    ? "bg-gray-500 "
-                                                    : "bg-primaryTW"
-                                            }  text-whiteTW rounded-md px-12 py-2`}
+                                            className="w-full flex items-center justify-center flex-col gap-2 pt-3
+                                    "
                                         >
-                                            <button
-                                                type="button"
-                                                disabled={
+                                            <div
+                                                className={` ${
                                                     selectDocterIsChecked &&
                                                     !selectedDocter
-                                                }
-                                                className={`${
-                                                    selectDocterIsChecked &&
-                                                    !selectedDocter
-                                                        ? "cursor-not-allowed"
-                                                        : "cursor-pointer"
-                                                }`}
-                                                onClick={() => {
-                                                    if (
+                                                        ? "bg-gray-500 "
+                                                        : "bg-primaryTW"
+                                                }  text-whiteTW rounded-md px-12 py-2`}
+                                            >
+                                                <button
+                                                    type="button"
+                                                    disabled={
                                                         selectDocterIsChecked &&
                                                         !selectedDocter
-                                                    ) {
-                                                        return;
-                                                    } else {
-                                                        submitVerification();
                                                     }
-                                                }}
-                                            >
-                                                Ajukan Verifikasi
-                                            </button>
+                                                    className={`${
+                                                        selectDocterIsChecked &&
+                                                        !selectedDocter
+                                                            ? "cursor-not-allowed"
+                                                            : "cursor-pointer"
+                                                    }`}
+                                                    onClick={() => {
+                                                        if (
+                                                            selectDocterIsChecked &&
+                                                            !selectedDocter
+                                                        ) {
+                                                            return;
+                                                        } else {
+                                                            submitVerification();
+                                                        }
+                                                    }}
+                                                >
+                                                    Ajukan Verifikasi
+                                                </button>
+                                            </div>
+                                            {!selectedDocter &&
+                                            selectDocterIsChecked ? (
+                                                <div className="text-sm text-gray-500">
+                                                    *Pilih Dokter atau matikan
+                                                    ceklis Menentukan Dokter
+                                                    Sendiri
+                                                </div>
+                                            ) : selectedDocter &&
+                                              selectDocterIsChecked ? (
+                                                <div className="text-sm text-gray-500">
+                                                    *{selectedDocter["nama"]}{" "}
+                                                    akan dipilih sebagai dokter
+                                                    anda
+                                                </div>
+                                            ) : (
+                                                <div className="text-sm text-gray-500">
+                                                    *Dokter akan ditentukan
+                                                    secara otomatis
+                                                </div>
+                                            )}
                                         </div>
-                                        {!selectedDocter &&
-                                        selectDocterIsChecked ? (
-                                            <div className="text-sm text-gray-500">
-                                                *Pilih Dokter atau matikan
-                                                ceklis Menentukan Dokter Sendiri
-                                            </div>
-                                        ) : selectedDocter &&
-                                          selectDocterIsChecked ? (
-                                            <div className="text-sm text-gray-500">
-                                                *{selectedDocter["nama"]} akan
-                                                dipilih sebagai dokter anda
-                                            </div>
-                                        ) : (
-                                            <div className="text-sm text-gray-500">
-                                                *Dokter akan ditentukan secara
-                                                otomatis
-                                            </div>
-                                        )}
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 )
             )}

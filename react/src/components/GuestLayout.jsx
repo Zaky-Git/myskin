@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavigationBar } from "./NavigationBar";
@@ -12,9 +12,10 @@ import Berhasil from "../views/Berhasil";
 Modal.setAppElement("#root");
 
 const GuestLayout = () => {
-    const { user, token } = useStateContext();
+    const { user, token, role } = useStateContext();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modal, setModal] = useState("");
+    const navigate = useNavigate();
 
     const openModal = (modalType) => {
         console.log(modalType);
@@ -26,15 +27,15 @@ const GuestLayout = () => {
         setIsModalOpen(false);
     };
 
-    if (token) {
-        if (user.role === "admin") {
-            return <Navigate to="/admin/dashboard" />;
-        } else if (user.role === "pasien") {
-            return <Navigate to="/deteksiKanker" />;
-        } else if (user.role === "dokter") {
-            return <Navigate to="/dokter/dashboard" />;
+    useEffect(() => {
+        if (role === "admin") {
+            <navigate to="/admin/dashboard" />;
+        } else if (role === "pasien") {
+            <navigate to="/" />;
+        } else if (role === "dokter") {
+            <navigate to="/dokter/pengajuan" />;
         }
-    }
+    }, [user, role, navigate]);
 
     return (
         <div className="flex flex-col min-h-screen bg-primaryAlternativeTW font-poppins">
@@ -43,18 +44,26 @@ const GuestLayout = () => {
                 <Outlet />
             </div>
             <div className="text-muted poppin-font text-center mb-4">
-                <p>
-                    *Hasil deteksi belum dipastikan benar karena web hanya
-                    memberikan indikasi awal, silahkan{" "}
-                    <button
-                        type="button"
-                        className="btn btn-link "
-                        onClick={() => openModal("login")}
-                    >
-                        <span className="text-decoration-none"> login</span>
-                    </button>{" "}
-                    untuk verifikasi hasil deteksi oleh Dokter.
-                </p>
+                {role == "dokter" ? null : role == "pasien" ? (
+                    <div>
+                        *Hasil deteksi belum dipastikan benar karena web hanya
+                        memberikan indikasi awal, silahkan ajukan verifikasi
+                        dokter.
+                    </div>
+                ) : (
+                    <p>
+                        *Hasil deteksi belum dipastikan benar karena web hanya
+                        memberikan indikasi awal, silahkan
+                        <button
+                            type="button"
+                            className="btn btn-link "
+                            onClick={() => openModal("login")}
+                        >
+                            <span className="text-decoration-none"> login</span>
+                        </button>
+                        untuk verifikasi hasil deteksi oleh Dokter.
+                    </p>
+                )}
             </div>
             <Modal
                 isOpen={isModalOpen}

@@ -1,9 +1,7 @@
 import { useState } from "react";
 import axiosClient from "../../axios-client";
-import { useStateContext } from "../contexts/ContextProvider";
 
-const Daftar = ({ openLogin, closeModal }) => {
-    const { setUser, setToken } = useStateContext();
+const Daftar = ({ openLogin, closeModal, openBerhasil }) => {
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [namaDepan, setNamaDepan] = useState("");
@@ -11,26 +9,49 @@ const Daftar = ({ openLogin, closeModal }) => {
     const [password, setPassword] = useState("");
     const [confirmationPassword, setConfirmationPassword] = useState("");
     const [isAgree, setIsAgree] = useState(false);
-
-    const handleEmailChange = (event) => {
-        setEmail(event.target.value);
-    };
-
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-    };
+    const [errorMessage, setErrorMessage] = useState("");
+    const isFormValid =
+        !isAgree ||
+        password === "" ||
+        phoneNumber === "" ||
+        namaDepan === "" ||
+        namaBelakang === "" ||
+        password === "" ||
+        confirmationPassword === "" ||
+        (password !== confirmationPassword &&
+            password != "" &&
+            confirmationPassword != "");
 
     const handleSubmit = async () => {
         try {
-            const response = await axiosClient.post("/login", {
+            if (
+                email === "" ||
+                password === "" ||
+                phoneNumber === "" ||
+                namaDepan === "" ||
+                namaBelakang === "" ||
+                password === "" ||
+                confirmationPassword === ""
+            ) {
+                return;
+            }
+
+            if (password !== confirmationPassword) {
+                setErrorMessage("Kata sandi berbeda");
+                return;
+            }
+
+            const response = await axiosClient.post("/register", {
+                firstName: namaDepan,
+                lastName: namaBelakang,
+                number: phoneNumber,
                 email: email,
                 password: password,
             });
 
-            setUser();
-            setToken(response.data.token);
-
             console.log(response.data);
+
+            openBerhasil();
         } catch (error) {
             console.error(error.response.data);
         }
@@ -57,7 +78,6 @@ const Daftar = ({ openLogin, closeModal }) => {
                                     Buat akun Anda
                                 </div>
                             </div>
-
                             <div className="grid grid-cols-2 mb-3 gap-3 w-full">
                                 <div className="flex flex-col w-full">
                                     <h7>Nama Depan</h7>
@@ -65,6 +85,11 @@ const Daftar = ({ openLogin, closeModal }) => {
                                         <input
                                             className="p-1 border-2 rounded-md w-full border-primaryTW"
                                             type="text"
+                                            onChange={(event) => {
+                                                setNamaDepan(
+                                                    event.target.value
+                                                );
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -74,6 +99,11 @@ const Daftar = ({ openLogin, closeModal }) => {
                                         <input
                                             className="p-1 border-[2px] rounded-md w-full border-primaryTW"
                                             type="text"
+                                            onChange={(event) => {
+                                                setNamaBelakang(
+                                                    event.target.value
+                                                );
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -82,7 +112,10 @@ const Daftar = ({ openLogin, closeModal }) => {
                                     <div className="input-group">
                                         <input
                                             className="p-1 border-2 rounded-md w-full border-primaryTW"
-                                            type="text"
+                                            type="email"
+                                            onChange={(event) => {
+                                                setEmail(event.target.value);
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -91,16 +124,31 @@ const Daftar = ({ openLogin, closeModal }) => {
                                     <div className="input-group">
                                         <input
                                             className="p-1 border-2 rounded-md w-full border-primaryTW"
-                                            type="text"
+                                            type="number"
+                                            onChange={(event) => {
+                                                setPhoneNumber(
+                                                    event.target.value
+                                                );
+                                            }}
                                         />
                                     </div>
                                 </div>
                                 <div className="flex flex-col">
-                                    <h7>Kata Sandi</h7>
+                                    <h7>Kata Sandi </h7>
                                     <div className="input-group">
                                         <input
-                                            className="p-1 border-2 rounded-md w-full border-primaryTW"
+                                            className={`p-1 border-2 rounded-md w-full focus:outline-none  ${
+                                                password !==
+                                                    confirmationPassword &&
+                                                password != "" &&
+                                                confirmationPassword != ""
+                                                    ? "border-red-500"
+                                                    : "border-primaryTW"
+                                            } `}
                                             type="password"
+                                            onChange={(event) => {
+                                                setPassword(event.target.value);
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -108,17 +156,40 @@ const Daftar = ({ openLogin, closeModal }) => {
                                     <h7>Konfirmasi Kata Sandi</h7>
                                     <div className="input-group">
                                         <input
-                                            className="p-1 border-2 rounded-md w-full border-primaryTW"
+                                            className={`p-1 border-2 rounded-md w-full focus:outline-none ${
+                                                password !==
+                                                    confirmationPassword &&
+                                                password != "" &&
+                                                confirmationPassword != ""
+                                                    ? "border-red-500"
+                                                    : "border-primaryTW"
+                                            } `}
                                             type="password"
+                                            onChange={(event) => {
+                                                setConfirmationPassword(
+                                                    event.target.value
+                                                );
+                                            }}
                                         />
                                     </div>
                                 </div>
                             </div>
+                            {password !== confirmationPassword &&
+                                password != "" &&
+                                confirmationPassword != "" && (
+                                    <div className="pb-2 text-red-500">
+                                        (Kata Sandi tidak sama)
+                                    </div>
+                                )}
                             <div className="form-check mb-3">
                                 <input
                                     type="checkbox"
                                     className="form-check-input"
                                     id="formCheck"
+                                    checked={isAgree}
+                                    onChange={(event) => {
+                                        setIsAgree(event.target.checked);
+                                    }}
                                 />
                                 <label
                                     htmlFor="formCheck"
@@ -131,13 +202,20 @@ const Daftar = ({ openLogin, closeModal }) => {
                                 </label>
                             </div>
                             <div className="mb-4 poppin-font text-white ">
-                                <div className=" bg-primaryTW  rounded-md px-12 py-2 ">
-                                    <button type="button">
-                                        <div
-                                            className="font-bold text-center"
-                                            onClick={handleSubmit}
-                                        >
-                                            Masuk
+                                <div
+                                    className={` ${
+                                        isFormValid
+                                            ? "bg-gray-500"
+                                            : "bg-primaryTW"
+                                    }  rounded-md px-12 py-2 `}
+                                >
+                                    <button
+                                        disabled={isFormValid}
+                                        type="button"
+                                        onClick={handleSubmit}
+                                    >
+                                        <div className="font-bold text-center">
+                                            Daftar
                                         </div>
                                     </button>
                                 </div>

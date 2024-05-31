@@ -2,8 +2,13 @@ import { useState } from "react";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
 
-const Login = ({ openDaftar, closeModal, openResetKataSandi }) => {
-    const { setUser, setToken } = useStateContext();
+const Login = ({
+    openDaftar,
+    closeModal,
+    openResetKataSandi,
+    openBerhasil,
+}) => {
+    const { loginUser } = useStateContext();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -22,10 +27,15 @@ const Login = ({ openDaftar, closeModal, openResetKataSandi }) => {
                 password: password,
             });
 
-            setUser();
-            setToken(response.data.token);
+            console.log(response.data);
+            loginUser(
+                response.data.user,
+                response.data.token,
+                response.data.role
+            );
 
             console.log(response.data);
+            openBerhasil();
         } catch (error) {
             console.error(error.response.data);
         }
@@ -58,6 +68,7 @@ const Login = ({ openDaftar, closeModal, openResetKataSandi }) => {
                                     <input
                                         className="p-2 border-2 w-full rounded-md border-primaryTW"
                                         type="text"
+                                        onChange={handleEmailChange}
                                     />
                                 </div>
                             </div>
@@ -66,7 +77,8 @@ const Login = ({ openDaftar, closeModal, openResetKataSandi }) => {
                                 <div className="input-group pt-1">
                                     <input
                                         className="p-2 border-2 w-full rounded-md border-primaryTW"
-                                        type="text"
+                                        type="password"
+                                        onChange={handlePasswordChange}
                                     />
                                 </div>
                             </div>

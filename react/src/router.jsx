@@ -1,14 +1,18 @@
 import { createBrowserRouter } from "react-router-dom";
 import GuestLayout from "./components/GuestLayout";
 import PasienLayout from "./components/PasienLayout";
-import DoctorLayout from "./components/DoctorLayout";
-import AdminLayout from "./components/AdminLayout";
 import DeteksiKanker from "./views/DeteksiKanker";
 import FAQ from "./views/FAQ";
 import DaftarPengajuanUmum from "./views/DaftarPengajuanUmum";
 import Verifikasi from "./views/Verifikasi";
 import NotFound from "./views/NotFound";
 import ProtectedRoute from "./security/ProtectedRoute";
+import DokterDashboard from "./views/DokterDashboard.jsx";
+import RiwayatVerifikasi from "./views/RiwayatVerifikasi.jsx";
+import AdminDashboard from "./views/AdminDashboard.jsx";
+import DaftarDokter from "./views/DaftarDokter.jsx";
+import DaftarPasien from "./views/DaftarPasien.jsx";
+import DetailDokter from "./views/DetailDokter.jsx";
 
 const router = createBrowserRouter([
     {
@@ -29,14 +33,39 @@ const router = createBrowserRouter([
         path: "/dokter",
         element: <ProtectedRoute allowedRoles={["dokter"]} />,
         children: [
-            { path: "dashboard", element: <DoctorLayout /> },
+            {
+                path: "dashboard",
+                element: <DokterDashboard />,
+            },
             { path: "pengajuan", element: <DaftarPengajuanUmum /> },
+
+            {
+                path: "riwayat",
+                element: <RiwayatVerifikasi />,
+            },
         ],
     },
     {
         path: "/admin",
         element: <ProtectedRoute allowedRoles={["admin"]} />,
-        children: [{ path: "dashboard", element: <AdminLayout /> }],
+        children: [
+            {
+                path: "/admin/dashboard",
+                element: <AdminDashboard />,
+            },
+            {
+                path: "/admin/daftarDokter",
+                element: <DaftarDokter />,
+            },
+            {
+                path: "/admin/daftarPasien",
+                element: <DaftarPasien />,
+            },
+            {
+                path: "/admin/detailDokter",
+                element: <DetailDokter />,
+            },
+        ],
     },
     { path: "*", element: <NotFound /> },
 ]);

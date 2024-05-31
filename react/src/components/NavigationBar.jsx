@@ -405,3 +405,37 @@ export const NavigationBar = ({ openModal }) => {
         </>
     );
 };
+export const NavigationBarAdminDoctor = () => {
+    // Creating a new object with updated properties
+    const updatedProfile = {
+        name: "SUI",
+        picture: "./assets/react.svg"
+    };
+
+    return (
+        <nav className="navbar navbar-expand-lg navbar-light bg-white">
+            <div className="container">
+                {/* Logo / Brand */}
+                <div>
+                    <Link className="navbar-brand" to="/">
+                        Logo
+                    </Link>
+                </div>
+
+                {/* User Profile */}
+                <div className="d-flex align-items-center">
+                    <div>
+                        <span>{updatedProfile.name}</span>
+                    </div>
+                    <div className="ms-3">
+                        <img
+                            src={updatedProfile.picture}
+                            alt="User Profile"
+                            style={{width: "50px", borderRadius: "50%"}}
+                        />
+                    </div>
+                </div>
+            </div>
+        </nav>
+    );
+};

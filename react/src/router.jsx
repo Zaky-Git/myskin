@@ -27,7 +27,13 @@ const router = createBrowserRouter([
     {
         path: "/pasien",
         element: <ProtectedRoute allowedRoles={["pasien"]} />,
-        children: [{ path: "dashboard", element: <PasienLayout /> }],
+        children: [
+            { path: "dashboard", element: <PasienLayout /> },
+            {
+                path: "riwayatVerifikasi",
+                element: <RiwayatVerifikasi />,
+            },
+        ],
     },
     {
         path: "/dokter",
@@ -38,9 +44,8 @@ const router = createBrowserRouter([
                 element: <DokterDashboard />,
             },
             { path: "pengajuan", element: <DaftarPengajuanUmum /> },
-
             {
-                path: "riwayat",
+                path: "riwayatVerifikasi",
                 element: <RiwayatVerifikasi />,
             },
         ],
@@ -50,19 +55,19 @@ const router = createBrowserRouter([
         element: <ProtectedRoute allowedRoles={["admin"]} />,
         children: [
             {
-                path: "/admin/dashboard",
+                path: "dashboard",
                 element: <AdminDashboard />,
             },
             {
-                path: "/admin/daftarDokter",
+                path: "daftarDokter",
                 element: <DaftarDokter />,
             },
             {
-                path: "/admin/daftarPasien",
+                path: "daftarPasien",
                 element: <DaftarPasien />,
             },
             {
-                path: "/admin/detailDokter",
+                path: "detailDokter",
                 element: <DetailDokter />,
             },
         ],

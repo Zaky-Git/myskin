@@ -103,6 +103,23 @@ export const NavigationBar = ({ openModal }) => {
                                             Daftar Pengajuan
                                         </Link>
                                     </li>
+                                    <li className="nav-item">
+                                        <Link
+                                            to="/dokter/riwayatVerifikasi"
+                                            className={
+                                                "nav-link" +
+                                                (activeItem === "deteksiKanker"
+                                                    ? " focused text-primaryTW"
+                                                    : " text-secondaryTW")
+                                            }
+                                            onFocus={() =>
+                                                setActiveItem("deteksiKanker")
+                                            }
+                                            onBlur={() => setActiveItem(null)}
+                                        >
+                                            Riwayat
+                                        </Link>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -251,7 +268,7 @@ export const NavigationBar = ({ openModal }) => {
                                 <ul className="navbar-nav ">
                                     <li className="nav-item">
                                         <Link
-                                            to="/"
+                                            to="/admin/dashboard"
                                             className={
                                                 "nav-link" +
                                                 (activeItem === "deteksiKanker"
@@ -263,12 +280,12 @@ export const NavigationBar = ({ openModal }) => {
                                             }
                                             onBlur={() => setActiveItem(null)}
                                         >
-                                            Deteksi Kanker
+                                            Dashboard
                                         </Link>
                                     </li>
                                     <li className="nav-item">
                                         <Link
-                                            to="/faq"
+                                            to="/admin/daftarPasien"
                                             className={
                                                 "nav-link" +
                                                 (activeItem === "faq"
@@ -278,7 +295,23 @@ export const NavigationBar = ({ openModal }) => {
                                             onFocus={() => setActiveItem("faq")}
                                             onBlur={() => setActiveItem(null)}
                                         >
-                                            FAQ
+                                            Daftar Pasien
+                                        </Link>
+                                    </li>
+
+                                    <li className="nav-item">
+                                        <Link
+                                            to="/admin/daftarDokter"
+                                            className={
+                                                "nav-link" +
+                                                (activeItem === "faq"
+                                                    ? " focused text-primaryTW"
+                                                    : " text-secondaryTW")
+                                            }
+                                            onFocus={() => setActiveItem("faq")}
+                                            onBlur={() => setActiveItem(null)}
+                                        >
+                                            Daftar Dokter
                                         </Link>
                                     </li>
                                 </ul>
@@ -405,37 +438,37 @@ export const NavigationBar = ({ openModal }) => {
         </>
     );
 };
-export const NavigationBarAdminDoctor = () => {
-    // Creating a new object with updated properties
-    const updatedProfile = {
-        name: "SUI",
-        picture: "./assets/react.svg"
-    };
+// export const NavigationBarAdminDoctor = () => {
+//     // Creating a new object with updated properties
+//     const updatedProfile = {
+//         name: "SUI",
+//         picture: "./assets/react.svg",
+//     };
 
-    return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-white">
-            <div className="container">
-                {/* Logo / Brand */}
-                <div>
-                    <Link className="navbar-brand" to="/">
-                        Logo
-                    </Link>
-                </div>
+//     return (
+//         <nav className="navbar navbar-expand-lg navbar-light bg-white">
+//             <div className="container">
+//                 {/* Logo / Brand */}
+//                 <div>
+//                     <Link className="navbar-brand" to="/">
+//                         Logo
+//                     </Link>
+//                 </div>
 
-                {/* User Profile */}
-                <div className="d-flex align-items-center">
-                    <div>
-                        <span>{updatedProfile.name}</span>
-                    </div>
-                    <div className="ms-3">
-                        <img
-                            src={updatedProfile.picture}
-                            alt="User Profile"
-                            style={{width: "50px", borderRadius: "50%"}}
-                        />
-                    </div>
-                </div>
-            </div>
-        </nav>
-    );
-};
+//                 {/* User Profile */}
+//                 <div className="d-flex align-items-center">
+//                     <div>
+//                         <span>{updatedProfile.name}</span>
+//                     </div>
+//                     <div className="ms-3">
+//                         <img
+//                             src={updatedProfile.picture}
+//                             alt="User Profile"
+//                             style={{ width: "50px", borderRadius: "50%" }}
+//                         />
+//                     </div>
+//                 </div>
+//             </div>
+//         </nav>
+//     );
+// };

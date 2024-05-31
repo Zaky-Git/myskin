@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import '.././index.css';
-import Card from '../components/Card.jsx';
+import ".././index.css";
+import Card from "../components/Card.jsx";
 import {
     faClock,
     faFileCircleCheck,
@@ -44,65 +44,73 @@ const DokterDashboard = () => {
         <div className="dashboard poppin-font">
             <div className="dashboard-content">
                 <div className="content">
-                    <Card icon1={faHospitalUser} icon2={faClock} icon3={faFileCircleCheck} title1={"Menunggu Verifikasi"} title2={"Terverifikasi"}/>
+                    <Card
+                        icon1={faHospitalUser}
+                        icon2={faClock}
+                        icon3={faFileCircleCheck}
+                        title1={"Menunggu Verifikasi"}
+                        title2={"Terverifikasi"}
+                    />
                     <div className="unverif-list">
-                        <div className="list-header">
-                        </div>
+                        <div className="list-header"></div>
                         <div className="card-custom shadow-xl p-3">
                             <h3 className="font-bold">
                                 Ajuan Verifikasi
-                                <hr/>
+                                <hr />
                             </h3>
                             <table className="table table-hover">
                                 <thead>
-                                <tr>
-                                    <th className="col-4">Tanggal</th>
-                                    <th className="col-4">Pasien</th>
-                                    <th className="col-4">Diagnosis AI</th>
-                                    <th className="col-4"></th>
-                                </tr>
+                                    <tr>
+                                        <th className="col-4">Tanggal</th>
+                                        <th className="col-4">Pasien</th>
+                                        <th className="col-4">Diagnosis AI</th>
+                                        <th className="col-4"></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                {data.map((item, index) => (
-                                    <tr key={index}>
-                                        <td>{item.Tanggal}</td>
-                                        <td>{item.Nama}</td>
-                                        <td>{item.Penyakit}</td>
-                                        <td>
-                                            <button
-                                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Verifikasi
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
+                                    {data.map((item, index) => (
+                                        <tr key={index}>
+                                            <td>{item.Tanggal}</td>
+                                            <td>{item.Nama}</td>
+                                            <td>{item.Penyakit}</td>
+                                            <td>
+                                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                    Verifikasi
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
                 <div className="pasien">
-                    <div className="card-custom shadow-xl p-3" style={{ height: '100%' }}>
+                    <div
+                        className="card-custom shadow-xl p-3"
+                        style={{ height: "100%" }}
+                    >
                         <h3 className="font-bold">
                             Pasien
-                            <hr/>
+                            <hr />
                         </h3>
                         <table className="table table-hover">
                             <thead>
-                            <tr>
-                                <th className="col-4">Tanggal</th>
-                                <th className="col-4">Pasien</th>
-                                <th className="col-4">Diagnosis AI</th>
-                                <th className="col-4"></th>
-                            </tr>
+                                <tr>
+                                    <th className="col-4">Tanggal</th>
+                                    <th className="col-4">Pasien</th>
+                                    <th className="col-4">Diagnosis AI</th>
+                                    <th className="col-4"></th>
+                                </tr>
                             </thead>
                             <tbody>
-                            {data.map((item, index) => (
-                                <tr key={index}>
-                                    <td>{item.Nama}</td>
-                                    <td>{item.NomorTelepon}</td>
-                                    <td>{item.Penyakit}</td>
-                                </tr>
-                            ))}
+                                {data.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{item.Nama}</td>
+                                        <td>{item.NomorTelepon}</td>
+                                        <td>{item.Penyakit}</td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     </div>

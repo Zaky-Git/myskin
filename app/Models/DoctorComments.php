@@ -15,7 +15,7 @@ class DoctorComments extends Model
      * @var array
      */
     protected $fillable = [
-        'skin_analysis_result_id',
+        'skin_analysis_id',
         'doctor_id',
         'comment',
     ];
@@ -25,7 +25,7 @@ class DoctorComments extends Model
      */
     public function skinAnalysisResult()
     {
-        return $this->belongsTo(SkinAnalysis::class, 'skin_analysis_result_id');
+        return $this->belongsTo(SkinAnalysis::class, 'skin_analysis_id');
     }
 
     /**

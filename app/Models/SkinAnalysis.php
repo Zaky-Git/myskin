@@ -10,6 +10,13 @@ class SkinAnalysis extends Model
     use HasFactory;
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'skin_analysis';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -18,10 +25,11 @@ class SkinAnalysis extends Model
         'user_id',
         'image_path',
         'melanoma_detected',
-        'analysis_result_description',
+        'keluhan',
+        'catatanDokter',
         'verified',
         'verified_by',
-        'percentage',
+        'analysis_percentage',
         'verification_date',
     ];
 

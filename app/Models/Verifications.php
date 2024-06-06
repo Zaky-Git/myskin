@@ -17,7 +17,7 @@ class Verifications extends Model
     protected $fillable = [
         'user_id',
         'doctor_id',
-        'skin_analysis_result_id',
+        'skin_analysis_id',
         'verified',
         'verification_date',
     ];

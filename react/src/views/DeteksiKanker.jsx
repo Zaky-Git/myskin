@@ -8,6 +8,10 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 import "../customStyle/confirm.css";
 import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
+import axiosClient from "../../axios-client";
+import RingLoader from "react-spinners/RingLoader";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -16,6 +20,7 @@ const DeteksiKanker = () => {
     const [imageName, setImageName] = useState(null);
     const [state, setState] = useState("upload");
     const [loading, setLoading] = useState(false);
+    const [doctorLoading, setDoctorLoading] = useState(false);
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [rotation, setRotation] = useState(0);
     const [zoom, setZoom] = useState(1);
@@ -23,7 +28,13 @@ const DeteksiKanker = () => {
     const [croppedImage, setCroppedImage] = useState(null);
     const [selectDocterIsChecked, setSelectDocterIsChecked] = useState(false);
     const [selectedDocter, setSelectedDocter] = useState(null);
+    const [keakuratan, setKeakuratan] = useState(null);
+    const [verified, setVerified] = useState(null);
+    const [keluhan, setKeluhan] = useState(null);
     const navigate = useNavigate();
+    const [listDokter, setListDokter] = useState(null);
+
+    const [skinAnalysisId, setSkinAnalysisId] = useState(null);
 
     const { user, token, role } = useStateContext();
 
@@ -38,6 +49,24 @@ const DeteksiKanker = () => {
         }
     }, [user, token]);
 
+    useEffect(() => {
+        if (selectDocterIsChecked) {
+            getAllDoctors();
+        }
+    }, [selectDocterIsChecked]);
+
+    const getAllDoctors = async () => {
+        setDoctorLoading(true);
+        try {
+            const response = await axiosClient.get("/doctors");
+            setListDokter(response.data);
+        } catch (error) {
+            console.error("Error fetching doctors:", error);
+        } finally {
+            setDoctorLoading(false);
+        }
+    };
+
     const reset = () => {
         setSelectedDocter(null);
         setSelectDocterIsChecked(false);
@@ -47,6 +76,7 @@ const DeteksiKanker = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState("");
+    const [filteredDoctors, setFilteredDoctors] = useState([]);
 
     const handleSelectDocterIsCheckedChange = (event) => {
         setSelectDocterIsChecked(event.target.checked);
@@ -65,42 +95,79 @@ const DeteksiKanker = () => {
         setCurrentPage(1);
     };
 
-    let listDokter = [
-        { id: 1, nama: "Dr. A" },
-        { id: 2, nama: "Dr. B" },
-        { id: 3, nama: "Dr. B" },
-        { id: 4, nama: "Dr. B" },
-        { id: 5, nama: "Dr. B" },
-        { id: 6, nama: "Dr. B" },
-        { id: 7, nama: "Dr. B" },
-        { id: 8, nama: "Dr. B" },
-        { id: 9, nama: "Dr. B" },
-        { id: 10, nama: "Dr. B" },
-    ];
+    useEffect(() => {
+        if (listDokter && searchQuery) {
+            setFilteredDoctors(
+                listDokter.filter(
+                    (dokter) =>
+                        dokter.firstName
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase()) ||
+                        dokter.lastName
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase())
+                )
+            );
+        } else {
+            // Jika salah satu dari listDokter atau searchQuery kosong, tidak perlu filter
+            setFilteredDoctors(listDokter);
+        }
+    }, [listDokter, searchQuery]);
 
-    const filteredDoctors = listDokter.filter((dokter) =>
-        dokter.nama.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const [currentItems, setCurrentItems] = useState([]);
+    const [totalPages, setTotalPages] = useState(0);
 
-    const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
-    const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-    const currentItems = filteredDoctors.slice(
-        indexOfFirstItem,
-        indexOfLastItem
-    );
-    const totalPages = Math.ceil(filteredDoctors.length / ITEMS_PER_PAGE);
+    useEffect(() => {
+        if (selectDocterIsChecked && filteredDoctors) {
+            const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
+            const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
+            const slicedItems = filteredDoctors.slice(
+                indexOfFirstItem,
+                indexOfLastItem
+            );
+            setCurrentItems(slicedItems);
+            setTotalPages(Math.ceil(filteredDoctors.length / ITEMS_PER_PAGE));
+        }
+    }, [filteredDoctors, currentPage, selectDocterIsChecked]);
 
-    const showCroppedImage = async () => {
+    const handleAnalysisGambar = async () => {
+        setLoading(true);
+
         try {
-            const croppedImage = await getCroppedImg(
+            const cropImage = await getCroppedImg(
                 imageSrc,
                 croppedAreaPixels,
                 rotation
             );
-            console.log("donee", { croppedImage });
-            setCroppedImage(croppedImage);
+            console.log("donee", { cropImage });
+            setCroppedImage(cropImage);
+
+            const responseBlob = await fetch(cropImage);
+            const blob = await responseBlob.blob();
+            const file = new File([blob], "image.jpg", { type: blob.type });
+
+            const formData = new FormData();
+            formData.append("image", file);
+            formData.append("skinAnalysisId", skinAnalysisId);
+            formData.append("userId", user.id);
+
+            const response = await axiosClient.post("skinAnalysis", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+            const data = await response.data;
+            console.log("Data:", data);
+
+            setSkinAnalysisId(data.data.skinAnalysisId);
+            console.log(skinAnalysisId);
+            setKeakuratan(data.data.skinAnalysis.analysis_percentage);
+
+            setLoading(false);
             setState("analisa");
         } catch (e) {
+            setLoading(false);
             console.error(e);
         }
     };
@@ -139,7 +206,7 @@ const DeteksiKanker = () => {
         };
     };
 
-    const submitVerification = () => {
+    const submitVerification = async () => {
         const message =
             selectDocterIsChecked && selectedDocter
                 ? `Hasil scan akan diajukan ke Dokter ${selectedDocter.nama} untuk di verifikasi`
@@ -151,21 +218,53 @@ const DeteksiKanker = () => {
             buttons: [
                 {
                     label: "Batalkan",
-                    onClick: () => console.log("Batalkan clicked"),
+                    onClick: () => {
+                        console.log("Batalkan clicked");
+                    },
                 },
                 {
                     label: "Ajukan Verifikasi",
-                    onClick: () => console.log("Ajukan Verifikasi clicked"),
+                    onClick: async () => {
+                        console.log("Ajukan Verifikasi clicked");
+                        var response = await axiosClient.post(
+                            `mengajukanVerifikasi/${skinAnalysisId}`,
+                            {
+                                keluhan: keluhan,
+                                doctorId: selectedDocter
+                                    ? selectedDocter.id
+                                    : null,
+                                userId: user.id,
+                                skinAnalysisId: skinAnalysisId,
+                            }
+                        );
+
+                        toast.success("Berhasil mengajukan verifikasi");
+                        navigate("/pasien/riwayatVerifikasi");
+                    },
                 },
             ],
             closeOnClickOutside: true,
             closeOnEscape: true,
         });
     };
+    let [color, setColor] = useState("#2AA8FF");
 
     return (
         <div className="flex flex-col justify-between w-screen mt-8">
-            {loading && <p>Loading...</p>}
+            {loading && (
+                <div className="fixed top-0 left-0 w-full h-screen">
+                    <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-10"></div>
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+                        <RingLoader
+                            color={color}
+                            loading={loading}
+                            size={150}
+                            aria-label="Loading Spinner"
+                            data-testid="loader"
+                        />
+                    </div>
+                </div>
+            )}
             {state == "upload" ? (
                 <div className="">
                     <div className="text-center flex flex-col items-center w-screen  ">
@@ -252,7 +351,7 @@ const DeteksiKanker = () => {
                             <div className="pt-2">
                                 <div className=" bg-primaryTW  rounded-md px-12 py-2 ">
                                     <button
-                                        onClick={showCroppedImage}
+                                        onClick={handleAnalysisGambar}
                                         type="button"
                                     >
                                         Crop Photo
@@ -278,7 +377,13 @@ const DeteksiKanker = () => {
                             <div
                                 className={`mb-4 poppin-font text-white bg-white container flex items-center justify-center p-8 flex-col `}
                             >
-                                <div className="w-80 flex items-center justify-center h-80 relative">
+                                <div className="mb-4 text-black font-semibold flex justify-start container">
+                                    <div className="px-12">
+                                        ID Analisa : {skinAnalysisId}
+                                    </div>
+                                </div>
+
+                                <div className="w-80 flex items-center justify-center h-80 relative -z-0">
                                     <img
                                         className="object-cover w-80 h-80"
                                         src={croppedImage}
@@ -304,7 +409,7 @@ const DeteksiKanker = () => {
                                     </div>
                                     <div className=" bg-primaryTW  rounded-md px-12 py-2 ">
                                         <button
-                                            onClick={showCroppedImage}
+                                            onClick={handleAnalysisGambar}
                                             type="button"
                                         >
                                             Analisa
@@ -335,7 +440,7 @@ const DeteksiKanker = () => {
                                             </div>
                                             <div>
                                                 <div className="text-start">
-                                                    : 90%
+                                                    : {keakuratan}%
                                                 </div>
                                             </div>
                                         </div>
@@ -361,6 +466,19 @@ const DeteksiKanker = () => {
                                                 Pengajuan Verifikasi
                                             </h1>
                                         </div>
+                                        <div className="flex flex-col mt-2 mb-2">
+                                            <div className="m-0 pb-2">
+                                                Keluhan :
+                                            </div>
+                                            <textarea
+                                                placeholder="Berikan catatan disini"
+                                                className="p-3 border border-black h-52 w-full overflow-y-auto"
+                                                onChange={(e) => {
+                                                    setKeluhan(e.target.value);
+                                                }}
+                                            />
+                                        </div>
+
                                         <div className="">
                                             <div className="">
                                                 <div className="text-sm text-gray-500">
@@ -393,13 +511,21 @@ const DeteksiKanker = () => {
                                                     <div className="bg-primaryTW p-2 rounded-lg mt-4 mb-3">
                                                         <div className="w-full flex justify-between py-2 px-6 bg-white">
                                                             <div className="flex gap-4 items-center">
-                                                                <div className="rounded-circle w-16 h-16 bg-black "></div>
+                                                                <div className="rounded-full w-20 h-20 overflow-hidden">
+                                                                    <img
+                                                                        src={`http://localhost:8000/${selectedDocter.profile_picture_path}`}
+                                                                        alt={`Foto Profil ${selectedDocter.firstName} ${selectedDocter.lastName}`}
+                                                                        className="object-cover w-full h-full"
+                                                                    />
+                                                                </div>
                                                                 <div>
-                                                                    {
+                                                                    {selectedDocter[
+                                                                        "firstName"
+                                                                    ] +
+                                                                        " " +
                                                                         selectedDocter[
-                                                                            "nama"
-                                                                        ]
-                                                                    }
+                                                                            "lastName"
+                                                                        ]}
                                                                 </div>
                                                             </div>
                                                             <div className="flex items-center">
@@ -452,13 +578,22 @@ const DeteksiKanker = () => {
                                                                         }
                                                                         className="p-4 flex flex-col gap-2 items-center justify-center shadow-md rounded-md bg-white"
                                                                     >
-                                                                        <div className="rounded-circle w-20 h-20 bg-black "></div>
+                                                                        <div className="rounded-full w-20 h-20 overflow-hidden">
+                                                                            <img
+                                                                                src={`http://localhost:8000/${dokter.profile_picture_path}`}
+                                                                                alt={`Foto Profil ${dokter.firstName} ${dokter.lastName}`}
+                                                                                className="object-cover w-full h-full"
+                                                                            />
+                                                                        </div>
+
                                                                         <div className="text-center">
-                                                                            {
+                                                                            {dokter[
+                                                                                "firstName"
+                                                                            ] +
+                                                                                " " +
                                                                                 dokter[
-                                                                                    "nama"
-                                                                                ]
-                                                                            }
+                                                                                    "lastName"
+                                                                                ]}
                                                                         </div>
                                                                         <div
                                                                             className={` ${"bg-primaryTW"}  text-whiteTW rounded-md px-6 py-1`}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const DetailDokter = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,7 +54,9 @@ const DetailDokter = () => {
                     </h2>
                     <div className="mt-2">
                         <small>Tanggal Daftar</small>
-                        <h4 className="font-bold">Jumat 22/03/2023, 13:21:30</h4>
+                        <h4 className="font-bold">
+                            Jumat 22/03/2023, 13:21:30
+                        </h4>
                     </div>
                     <div className="mt-2">
                         <small>Nama</small>
@@ -71,7 +73,8 @@ const DetailDokter = () => {
                     <div className="mt-20">
                         <button
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                            onClick={handlePerbaharuiClick}>
+                            onClick={handlePerbaharuiClick}
+                        >
                             Perbaharui
                         </button>
                     </div>
@@ -84,27 +87,26 @@ const DetailDokter = () => {
                 </h2>
                 <table className="table table-hover">
                     <thead>
-                    <tr>
-                        <th className="col-4">Tanggal</th>
-                        <th className="col-4">Pasien</th>
-                        <th className="col-4">Diagnosis AI</th>
-                        <th className="col-4"></th>
-                    </tr>
+                        <tr>
+                            <th className="col-4">Tanggal</th>
+                            <th className="col-4">Pasien</th>
+                            <th className="col-4">Diagnosis AI</th>
+                            <th className="col-4"></th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {data.map((item, index) => (
-                        <tr key={index}>
-                            <td>{item.Tanggal}</td>
-                            <td>{item.Nama}</td>
-                            <td>{item.Penyakit}</td>
-                            <td>
-                                <button
-                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Verifikasi
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
+                        {data.map((item, index) => (
+                            <tr key={index}>
+                                <td>{item.Tanggal}</td>
+                                <td>{item.Nama}</td>
+                                <td>{item.Penyakit}</td>
+                                <td>
+                                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        Verifikasi
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
@@ -113,7 +115,9 @@ const DetailDokter = () => {
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-6 rounded shadow-lg w-3/4 max-w-3xl">
                         <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-bold">Perbaharui Detail</h2>
+                            <h2 className="text-xl font-bold">
+                                Perbaharui Detail
+                            </h2>
                             <button
                                 className="text-gray-500 hover:text-gray-700"
                                 onClick={handleCloseModal}
@@ -124,18 +128,39 @@ const DetailDokter = () => {
                         <form>
                             <div className="mb-3">
                                 <label className="form-label">Nama</label>
-                                <input type="text" className="form-control" required />
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    required
+                                />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">Alamat Email</label>
-                                <input type="email" className="form-control" required />
+                                <label className="form-label">
+                                    Alamat Email
+                                </label>
+                                <input
+                                    type="email"
+                                    className="form-control"
+                                    required
+                                />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">Nomor Telepon</label>
-                                <input type="tel" className="form-control" required />
+                                <label className="form-label">
+                                    Nomor Telepon
+                                </label>
+                                <input
+                                    type="tel"
+                                    className="form-control"
+                                    required
+                                />
                             </div>
                             <div className="mt-10">
-                                <button type="submit" className="btn btn-primary">Simpan</button>
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                >
+                                    Simpan
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -143,6 +168,6 @@ const DetailDokter = () => {
             )}
         </div>
     );
-}
+};
 
 export default DetailDokter;

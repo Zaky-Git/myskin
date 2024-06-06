@@ -26,6 +26,7 @@ class Doctor extends Model
         'verified',
         'password',
         'birthdate',
+        'profile_picture_path',
     ];
 
     /**

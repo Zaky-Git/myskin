@@ -181,6 +181,21 @@ export const NavigationBar = ({ openModal }) => {
                                     </li>
                                     <li className="nav-item">
                                         <Link
+                                            to="/pasien/riwayatVerifikasi"
+                                            className={
+                                                "nav-link" +
+                                                (activeItem === "faq"
+                                                    ? " focused text-primaryTW"
+                                                    : " text-secondaryTW")
+                                            }
+                                            onFocus={() => setActiveItem("faq")}
+                                            onBlur={() => setActiveItem(null)}
+                                        >
+                                            Riwayat Verifikasi
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link
                                             to="/faq"
                                             className={
                                                 "nav-link" +

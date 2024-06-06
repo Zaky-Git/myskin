@@ -17,7 +17,7 @@ const GuestLayout = () => {
     const [modal, setModal] = useState("");
     const navigate = useNavigate();
 
-    const wopenModal = (modalType) => {
+    const openModal = (modalType) => {
         console.log(modalType);
         setModal(modalType);
         setIsModalOpen(true);

@@ -1,41 +1,19 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import axiosClient from "../../axios-client.js";
+
 const DaftarPasien = () => {
-    const data = [
-        {
-            TanggalDaftar: "22/03/2024",
-            Nama: "Hasnan Surya",
-            Email: "junaidijwr@gmail.com",
-            noTelp: "08128765257",
-            umur: 67
-        },
-        {
-            TanggalDaftar: "22/03/2024",
-            Nama: "Zaky Husaini",
-            Email: "junaidijwr@gmail.com",
-            noTelp: "08128765257",
-            umur: 60
-        },
-        {
-            TanggalDaftar: "22/03/2024",
-            Nama: "Ahsia Sabila",
-            Email: "junaidijwr@gmail.com",
-            noTelp: "08128765257",
-            umur: 58
-        },
-        {
-            TanggalDaftar: "22/03/2024",
-            Nama: "Novita",
-            Email: "junaidijwr@gmail.com",
-            noTelp: "08128765257",
-            umur: 77
-        },
-        {
-            TanggalDaftar: "22/03/2024",
-            Nama: "Novita",
-            Email: "junaidijwr@gmail.com",
-            noTelp: "08128765257",
-            umur: 52
-        },
-    ];
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        axiosClient.get('/users')
+            .then(response => {
+                setData(response.data);
+            })
+            .catch(error => {
+                console.error('There was an error fetching the patients data!', error);
+            });
+    }, []);
 
     return (
         <div className="dashboard-content">
@@ -57,11 +35,11 @@ const DaftarPasien = () => {
                     <tbody>
                     {data.map((item, index) => (
                         <tr key={index}>
-                            <td>{item.TanggalDaftar}</td>
-                            <td>{item.Nama}</td>
-                            <td>{item.Email}</td>
-                            <td>{item.noTelp}</td>
-                            <td>{item.umur}</td>
+                            <td>{new Date(item.created_at).toLocaleDateString()}</td>
+                            <td>{item.firstName} {item.lastName}</td>
+                            <td>{item.email}</td>
+                            <td>{item.number}</td>
+                            <td>{new Date().getFullYear() - new Date(item.birthdate).getFullYear()}</td>
                         </tr>
                     ))}
                     </tbody>

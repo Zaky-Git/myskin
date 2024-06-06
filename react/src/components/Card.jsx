@@ -1,21 +1,21 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Card = ({icon1 , icon2, icon3, title1, title2}) => {
+const Card = ({icon1 , icon2, icon3, title1, title2, sum1, sum2, sum3}) => {
     const cardItems = [
         {
             title: 'Pasien',
             icon: icon1,
-            jumlah: 70
+            jumlah: sum1
         },
         {
             title: title1,
             icon: icon2,
-            jumlah: 13
+            jumlah: sum2
         },
         {
             title: title2,
             icon: icon3,
-            jumlah: 57
+            jumlah: sum3
         }
     ];
 

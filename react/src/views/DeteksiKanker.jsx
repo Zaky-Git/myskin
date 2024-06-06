@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import Cropper from "react-easy-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { useEffect, useState } from "react";
-import getCroppedImg from "../functions/CropImage";
+import getCroppedImg from "../functions/cropImage.jsx";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import "../customStyle/confirm.css";

@@ -1,12 +1,29 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\SkinAnalysisController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
 
+#verifikasi
+Route::get('/countPengajuan', [SkinAnalysisController::class, 'countPengajuanVerifikasi']);
+
+# doctor
+Route::get('/doctors', [DoctorController::class, 'getAllDoctor']);
+Route::get('/doctor/{id}', [DoctorController::class, 'getDoctor']);
+Route::get('/doctor/{doctor_id}/patients-count', [DoctorController::class, 'getJumlahPasien']);
+Route::get('/doctor/{doctor_id}/patients', [DoctorController::class, 'getPatients']);
+Route::put('/doctor/{id}', [DoctorController::class, 'updateDoctor']);
+Route::put('/countUserUnv', [DoctorController::class, 'countUnverified']);
+Route::put('/countUserVer', [DoctorController::class, 'countVerified']);
+Route::put('/countDoctor', [DoctorController::class, 'countDoctor']);
+
+# user
 Route::get('/users', [UserController::class, 'getAllUser']);
+Route::get('/countUser', [UserController::class, 'countUser']);
 
 # auth
 Route::post('/login', [AuthController::class, 'login']);

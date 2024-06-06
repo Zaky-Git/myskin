@@ -247,7 +247,7 @@ const DeteksiKanker = () => {
                         );
 
                         toast.success("Berhasil mengajukan verifikasi");
-                        navigate("/pasien/riwayatVerifikasi");
+                        navigate("/pasien/riwayatPengajuan");
                     },
                 },
             ],

@@ -7,6 +7,7 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import "../customStyle/confirm.css";
 import { useStateContext } from "../contexts/ContextProvider";
+import { useNavigate } from "react-router-dom";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -22,12 +23,19 @@ const DeteksiKanker = () => {
     const [croppedImage, setCroppedImage] = useState(null);
     const [selectDocterIsChecked, setSelectDocterIsChecked] = useState(false);
     const [selectedDocter, setSelectedDocter] = useState(null);
+    const navigate = useNavigate();
 
     const { user, token, role } = useStateContext();
 
     useEffect(() => {
         console.log("User:", user);
         console.log("Token:", token);
+
+        if (role == "dokter") {
+            navigate("/dokter/dashboard");
+        } else if (role == "admin") {
+            navigate("/admin/dashboard");
+        }
     }, [user, token]);
 
     const reset = () => {

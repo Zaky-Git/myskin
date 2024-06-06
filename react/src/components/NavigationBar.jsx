@@ -56,7 +56,7 @@ export const NavigationBar = ({ openModal }) => {
                                 <ul className="navbar-nav ">
                                     <li className="nav-item">
                                         <Link
-                                            to="/"
+                                            to="/dokter/dashboard"
                                             className={
                                                 "nav-link" +
                                                 (activeItem === "deteksiKanker"
@@ -68,22 +68,7 @@ export const NavigationBar = ({ openModal }) => {
                                             }
                                             onBlur={() => setActiveItem(null)}
                                         >
-                                            Deteksi Kanker
-                                        </Link>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Link
-                                            to="/faq"
-                                            className={
-                                                "nav-link" +
-                                                (activeItem === "faq"
-                                                    ? " focused text-primaryTW"
-                                                    : " text-secondaryTW")
-                                            }
-                                            onFocus={() => setActiveItem("faq")}
-                                            onBlur={() => setActiveItem(null)}
-                                        >
-                                            FAQ
+                                            Dashboard
                                         </Link>
                                     </li>
                                     <li className="nav-item">

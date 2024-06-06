@@ -38,6 +38,51 @@ const DeteksiKanker = () => {
 
     const { user, token, role } = useStateContext();
 
+    const handleAnalysisGambar = async () => {
+        setLoading(true);
+
+        try {
+            const cropImage = await getCroppedImg(
+                imageSrc,
+                croppedAreaPixels,
+                rotation
+            );
+            console.log("donee", { cropImage });
+            setCroppedImage(cropImage);
+
+            const responseBlob = await fetch(cropImage);
+            const blob = await responseBlob.blob();
+            const file = new File([blob], "image.jpg", { type: blob.type });
+
+            const formData = new FormData();
+            formData.append("image", file);
+            formData.append("skinAnalysisId", skinAnalysisId);
+
+            if (user) {
+                formData.append("userId", user.id);
+            }
+
+            const response = await axiosClient.post("skinAnalysis", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+            const data = await response.data;
+            console.log("Data:", data);
+
+            setSkinAnalysisId(data.data.skinAnalysisId);
+            console.log(skinAnalysisId);
+            setKeakuratan(data.data.skinAnalysis.analysis_percentage);
+
+            setLoading(false);
+            setState("analisa");
+        } catch (e) {
+            setLoading(false);
+            console.error(e);
+        }
+    };
+
     useEffect(() => {
         console.log("User:", user);
         console.log("Token:", token);
@@ -47,7 +92,12 @@ const DeteksiKanker = () => {
         } else if (role == "admin") {
             navigate("/admin/dashboard");
         }
-    }, [user, token]);
+
+        if (user && state == "analisa" && role == "pasien") {
+            console.log("analisa ulang");
+            handleAnalysisGambar();
+        }
+    }, [user, token, role, navigate]);
 
     useEffect(() => {
         if (selectDocterIsChecked) {
@@ -129,48 +179,6 @@ const DeteksiKanker = () => {
             setTotalPages(Math.ceil(filteredDoctors.length / ITEMS_PER_PAGE));
         }
     }, [filteredDoctors, currentPage, selectDocterIsChecked]);
-
-    const handleAnalysisGambar = async () => {
-        setLoading(true);
-
-        try {
-            const cropImage = await getCroppedImg(
-                imageSrc,
-                croppedAreaPixels,
-                rotation
-            );
-            console.log("donee", { cropImage });
-            setCroppedImage(cropImage);
-
-            const responseBlob = await fetch(cropImage);
-            const blob = await responseBlob.blob();
-            const file = new File([blob], "image.jpg", { type: blob.type });
-
-            const formData = new FormData();
-            formData.append("image", file);
-            formData.append("skinAnalysisId", skinAnalysisId);
-            formData.append("userId", user.id);
-
-            const response = await axiosClient.post("skinAnalysis", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
-
-            const data = await response.data;
-            console.log("Data:", data);
-
-            setSkinAnalysisId(data.data.skinAnalysisId);
-            console.log(skinAnalysisId);
-            setKeakuratan(data.data.skinAnalysis.analysis_percentage);
-
-            setLoading(false);
-            setState("analisa");
-        } catch (e) {
-            setLoading(false);
-            console.error(e);
-        }
-    };
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -377,11 +385,13 @@ const DeteksiKanker = () => {
                             <div
                                 className={`mb-4 poppin-font text-white bg-white container flex items-center justify-center p-8 flex-col `}
                             >
-                                <div className="mb-4 text-black font-semibold flex justify-start container">
-                                    <div className="px-12">
-                                        ID Analisa : {skinAnalysisId}
+                                {skinAnalysisId && (
+                                    <div className="mb-4 text-black font-semibold flex justify-start container">
+                                        <div className="px-12">
+                                            ID Analisa : {skinAnalysisId}
+                                        </div>
                                     </div>
-                                </div>
+                                )}
 
                                 <div className="w-80 flex items-center justify-center h-80 relative -z-0">
                                     <img

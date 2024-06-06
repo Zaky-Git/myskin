@@ -19,7 +19,6 @@ export const ContextProvider = ({ children }) => {
     const [role, setRole] = useState(localStorage.getItem("USER_ROLE") || null);
     const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
     const [notification, _setNotification] = useState("");
-
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("USER"));
         if (storedUser) {

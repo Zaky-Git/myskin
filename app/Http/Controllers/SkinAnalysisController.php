@@ -22,11 +22,7 @@ class SkinAnalysisController extends Controller
                     unlink(public_path($skinAnalysis->image_path));
                 }
             }
-
             $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/skinAnalysis'), $imageName);
-            $imagePath = 'images/skinAnalysis/' . $imageName;
 
             //ai disini nanti
             $percentage = 75.5;
@@ -39,16 +35,27 @@ class SkinAnalysisController extends Controller
 
             if (!$skinAnalysis) {
                 $skinAnalysis = new SkinAnalysis();
-                $skinAnalysis->user_id = $request->input('userId');
             }
 
-            $skinAnalysis->image_path = $imagePath;
             $skinAnalysis->melanoma_detected = $melanoma_detected;
             $skinAnalysis->verified = false;
             $skinAnalysis->analysis_percentage = $percentage;
-            $skinAnalysis->save();
 
-            $skinAnalysisId = $skinAnalysis->id;
+            if ($request->has('userId')) {
+
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('images/skinAnalysis'), $imageName);
+                $imagePath = 'images/skinAnalysis/' . $imageName;
+
+                $skinAnalysis->image_path = $imagePath;
+                $skinAnalysis->user_id = $request->input('userId');
+
+                $skinAnalysis->save();
+
+                $skinAnalysisId = $skinAnalysis->id;
+            } else {
+                $skinAnalysisId = null;
+            }
 
             $response = [
                 'message' => 'Success',

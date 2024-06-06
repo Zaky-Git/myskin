@@ -119,7 +119,10 @@ export const NavigationBar = ({ openModal }) => {
                                     <div>
                                         <button
                                             className="btn"
-                                            onClick={logoutUser}
+                                            onClick={() => {
+                                                logoutUser();
+                                                window.location.reload();
+                                            }}
                                         >
                                             Logout
                                         </button>
@@ -223,7 +226,10 @@ export const NavigationBar = ({ openModal }) => {
                                     <div>
                                         <button
                                             className="btn"
-                                            onClick={logoutUser}
+                                            onClick={() => {
+                                                logoutUser();
+                                                window.location.reload();
+                                            }}
                                         >
                                             Logout
                                         </button>
@@ -328,7 +334,10 @@ export const NavigationBar = ({ openModal }) => {
                                     <div>
                                         <button
                                             className="btn"
-                                            onClick={logoutUser}
+                                            onClick={() => {
+                                                logoutUser();
+                                                window.location.reload();
+                                            }}
                                         >
                                             Logout
                                         </button>
@@ -417,7 +426,10 @@ export const NavigationBar = ({ openModal }) => {
                                     <div>
                                         <button
                                             className="btn"
-                                            onClick={logoutUser}
+                                            onClick={() => {
+                                                logoutUser();
+                                                window.location.reload();
+                                            }}
                                         >
                                             Logout
                                         </button>

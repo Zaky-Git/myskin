@@ -1,40 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axiosClient from "../../axios-client.js";
 
 const DetailDokter = () => {
+    const { id } = useParams();
+    const [doctor, setDoctor] = useState({});
+    const [patients, setPatients] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        number: "",
+        email: "",
+    });
 
-    const data = [
-        {
-            Tanggal: "22/03/2024",
-            Nama: "Hasnan Surya",
-            NomorTelepon: "081248672398",
-            Penyakit: "Lentigo Maligna",
-        },
-        {
-            Tanggal: "22/03/2024",
-            Nama: "Zaky Husaini",
-            NomorTelepon: "081248672398",
-            Penyakit: "Lentigo Maligna",
-        },
-        {
-            Tanggal: "22/03/2024",
-            Nama: "Ahsia Sabila",
-            NomorTelepon: "081248672398",
-            Penyakit: "Lentigo Maligna",
-        },
-        {
-            Tanggal: "22/03/2024",
-            Nama: "Novita",
-            NomorTelepon: "081248672398",
-            Penyakit: "Lentigo Maligna",
-        },
-        {
-            Tanggal: "22/03/2024",
-            Nama: "Novita",
-            NomorTelepon: "081248672398",
-            Penyakit: "Lentigo Maligna",
-        },
-    ];
+    useEffect(() => {
+        const fetchDoctorDetails = async () => {
+            try {
+                const response = await axiosClient.get(`/doctor/${id}`);
+                setDoctor(response.data);
+                setFormData({
+                    firstName: response.data.firstName,
+                    lastName: response.data.lastName,
+                    number: response.data.number,
+                    email: response.data.email,
+                });
+
+                const patientsResponse = await axiosClient.get(
+                    `/doctor/${id}/patients`
+                );
+                setPatients(patientsResponse.data);
+            } catch (error) {
+                console.error(
+                    "There was an error fetching the doctor details!",
+                    error
+                );
+            }
+        };
+
+        fetchDoctorDetails();
+    }, [id]);
 
     const handlePerbaharuiClick = () => {
         setIsModalOpen(true);
@@ -42,6 +47,27 @@ const DetailDokter = () => {
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
+    };
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axiosClient.put(`/doctor/${id}`, formData);
+            setDoctor(response.data);
+            setIsModalOpen(false);
+        } catch (error) {
+            console.error(
+                "There was an error updating the doctor details!",
+                error
+            );
+        }
     };
 
     return (
@@ -55,20 +81,22 @@ const DetailDokter = () => {
                     <div className="mt-2">
                         <small>Tanggal Daftar</small>
                         <h4 className="font-bold">
-                            Jumat 22/03/2023, 13:21:30
+                            {new Date(doctor.created_at).toLocaleString()}
                         </h4>
                     </div>
                     <div className="mt-2">
                         <small>Nama</small>
-                        <h4 className="font-bold">Hasnan Hunaini</h4>
+                        <h4 className="font-bold">
+                            {doctor.firstName} {doctor.lastName}
+                        </h4>
                     </div>
                     <div className="mt-2">
                         <small>Nomor Telepon</small>
-                        <h4 className="font-bold">08125987163</h4>
+                        <h4 className="font-bold">{doctor.number}</h4>
                     </div>
                     <div className="mt-2">
                         <small>Email</small>
-                        <h4 className="font-bold">MZF@gmail.com</h4>
+                        <h4 className="font-bold">{doctor.email}</h4>
                     </div>
                     <div className="mt-20">
                         <button
@@ -95,9 +123,13 @@ const DetailDokter = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((item, index) => (
+                        {patients.map((item, index) => (
                             <tr key={index}>
-                                <td>{item.Tanggal}</td>
+                                <td>
+                                    {new Date(
+                                        item.Tanggal
+                                    ).toLocaleDateString()}
+                                </td>
                                 <td>{item.Nama}</td>
                                 <td>{item.Penyakit}</td>
                                 <td>
@@ -125,22 +157,30 @@ const DetailDokter = () => {
                                 X
                             </button>
                         </div>
-                        <form>
+                        <form onSubmit={handleFormSubmit}>
                             <div className="mb-3">
-                                <label className="form-label">Nama</label>
+                                <label className="form-label">Nama Depan</label>
                                 <input
                                     type="text"
                                     className="form-control"
+                                    name="firstName"
+                                    value={formData.firstName}
+                                    onChange={handleInputChange}
+                                    placeholder={doctor.firstName}
                                     required
                                 />
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">
-                                    Alamat Email
+                                    Nama Belakang
                                 </label>
                                 <input
-                                    type="email"
+                                    type="text"
                                     className="form-control"
+                                    name="lastName"
+                                    value={formData.lastName}
+                                    onChange={handleInputChange}
+                                    placeholder={doctor.lastName}
                                     required
                                 />
                             </div>
@@ -151,6 +191,24 @@ const DetailDokter = () => {
                                 <input
                                     type="tel"
                                     className="form-control"
+                                    name="number"
+                                    value={formData.number}
+                                    onChange={handleInputChange}
+                                    placeholder={doctor.number}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">
+                                    Alamat Email
+                                </label>
+                                <input
+                                    type="email"
+                                    className="form-control"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    placeholder={doctor.email}
                                     required
                                 />
                             </div>

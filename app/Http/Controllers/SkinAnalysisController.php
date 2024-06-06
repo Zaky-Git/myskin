@@ -152,4 +152,15 @@ class SkinAnalysisController extends Controller
         $skinAnalysis = SkinAnalysis::find($id);
         return response()->json($skinAnalysis);
     }
+
+    public function countSkinAnalysis(){
+        $skinAnalysisCount = SkinAnalysis::all()->count();
+        return response()->json($skinAnalysisCount);
+    }
+
+    public function countPengajuanVerifikasi()
+    {
+        $pengajuanVerifikasiCount = Verifications::all()->count();
+        return response()->json($pengajuanVerifikasiCount);
+    }
 }

@@ -21,6 +21,8 @@ export const NavigationBar = ({ openModal }) => {
             activeItem = "about";
         } else if (path === "/pengajuan") {
             activeItem = "daftarPengajuan";
+        }else if (path === "/pasien/riwayatPengajuan"){
+            activeItem = "riwayatPengajuan"
         }
 
         setActiveItem(activeItem);
@@ -210,6 +212,23 @@ export const NavigationBar = ({ openModal }) => {
                                             onBlur={() => setActiveItem(null)}
                                         >
                                             FAQ
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link
+                                            to="/pasien/riwayatPengajuan"
+                                            className={
+                                                "nav-link" +
+                                                (activeItem === "riwayatPengajuan"
+                                                    ? " focused text-primaryTW"
+                                                    : " text-secondaryTW")
+                                            }
+                                            onFocus={() =>
+                                                setActiveItem("riwayatPengajuan")
+                                            }
+                                            onBlur={() => setActiveItem(null)}
+                                        >
+                                            Riwayat Pengajuan
                                         </Link>
                                     </li>
                                 </ul>

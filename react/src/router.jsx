@@ -13,6 +13,7 @@ import AdminDashboard from "./views/AdminDashboard.jsx";
 import DaftarDokter from "./views/DaftarDokter.jsx";
 import DaftarPasien from "./views/DaftarPasien.jsx";
 import DetailDokter from "./views/DetailDokter.jsx";
+import RiwayatPengajuan from "./views/RiwayatPengajuan.jsx";
 
 const router = createBrowserRouter([
     {
@@ -28,10 +29,13 @@ const router = createBrowserRouter([
         path: "/pasien",
         element: <ProtectedRoute allowedRoles={["pasien"]} />,
         children: [
-            { path: "dashboard", element: <PasienLayout /> },
             {
-                path: "riwayatVerifikasi",
-                element: <RiwayatVerifikasi />,
+                path: "dashboard",
+                element: <PasienLayout />
+            },
+            {
+                path: "riwayatPengajuan",
+                element: <RiwayatPengajuan />,
             },
         ],
     },
@@ -67,7 +71,7 @@ const router = createBrowserRouter([
                 element: <DaftarPasien />,
             },
             {
-                path: "detailDokter",
+                path: "detailDokter/:id",
                 element: <DetailDokter />,
             },
         ],

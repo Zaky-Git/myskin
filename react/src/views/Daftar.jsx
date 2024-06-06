@@ -1,243 +1,194 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../index.css";
+import Card from "../components/Card.jsx";
+import {
+    faUserDoctor,
+    faHospitalUser,
+    faClipboardList,
+} from "@fortawesome/free-solid-svg-icons";
+import axiosClient from "../../axios-client.js";
 import { useState } from "react";
-import axiosClient from "../../axios-client";
+import Berhasil from "./Berhasil";
 
-const Daftar = ({ openLogin, closeModal, openBerhasil }) => {
+const AdminDashboard = () => {
+    const data = [];
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [namaDepan, setNamaDepan] = useState("");
     const [namaBelakang, setNamaBelakang] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmationPassword, setConfirmationPassword] = useState("");
-    const [isAgree, setIsAgree] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
-    const isFormValid =
-        !isAgree ||
-        password === "" ||
-        phoneNumber === "" ||
-        namaDepan === "" ||
-        namaBelakang === "" ||
-        password === "" ||
-        confirmationPassword === "" ||
-        (password !== confirmationPassword &&
-            password != "" &&
-            confirmationPassword != "");
+    const [birthday, setBirthday] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        if (
+            email === "" ||
+            password === "" ||
+            phoneNumber === "" ||
+            namaDepan === "" ||
+            namaBelakang === "" ||
+            birthday === ""
+        ) {
+            return;
+        }
+
         try {
-            if (
-                email === "" ||
-                password === "" ||
-                phoneNumber === "" ||
-                namaDepan === "" ||
-                namaBelakang === "" ||
-                password === "" ||
-                confirmationPassword === ""
-            ) {
-                return;
-            }
-
-            if (password !== confirmationPassword) {
-                setErrorMessage("Kata sandi berbeda");
-                return;
-            }
-
             const response = await axiosClient.post("/register", {
                 firstName: namaDepan,
                 lastName: namaBelakang,
                 number: phoneNumber,
                 email: email,
                 password: password,
+                birthdate: birthday,
             });
 
             console.log(response.data);
-
-            openBerhasil();
+            setIsModalOpen(true); // Open the success modal
         } catch (error) {
             console.error(error.response.data);
         }
     };
 
+    const closeModal = () => {
+        setIsModalOpen(false);
+        // Optionally, clear the form fields or perform other actions
+    };
+
     return (
-        <div className="flex flex-col w-screen">
-            <div className="container d-flex justify-content-center align-items-center min-vh-100 font-poppins">
-                <div className="border rounded-5 p-5 bg-white shadow w-50">
-                    <div className="right-box">
-                        <div className="align-items-center flex flex-col items-center">
-                            <div className="mb-4 flex w-full justify-between">
-                                <h5>My Skin</h5>
-                                <p
-                                    className="text-muted cursor-pointer"
-                                    onClick={closeModal}
-                                >
-                                    X
-                                </p>
-                            </div>
-                            <div className="flex flex-col items-center mb-8">
-                                <div className="font-bold text-3xl">Daftar</div>
-                                <div className="font-light mt-2">
-                                    Buat akun Anda
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-2 mb-3 gap-3 w-full">
-                                <div className="flex flex-col w-full">
-                                    <h7>Nama Depan</h7>
-                                    <div className="input-group w-full">
-                                        <input
-                                            className="p-1 border-2 rounded-md w-full border-primaryTW"
-                                            type="text"
-                                            onChange={(event) => {
-                                                setNamaDepan(
-                                                    event.target.value
-                                                );
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="flex flex-col">
-                                    <h7>Nama Belakang</h7>
-                                    <div className="input-group">
-                                        <input
-                                            className="p-1 border-[2px] rounded-md w-full border-primaryTW"
-                                            type="text"
-                                            onChange={(event) => {
-                                                setNamaBelakang(
-                                                    event.target.value
-                                                );
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="flex flex-col">
-                                    <h7>Email</h7>
-                                    <div className="input-group">
-                                        <input
-                                            className="p-1 border-2 rounded-md w-full border-primaryTW"
-                                            type="email"
-                                            onChange={(event) => {
-                                                setEmail(event.target.value);
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="flex flex-col">
-                                    <h7>No. Telepon</h7>
-                                    <div className="input-group">
-                                        <input
-                                            className="p-1 border-2 rounded-md w-full border-primaryTW"
-                                            type="number"
-                                            onChange={(event) => {
-                                                setPhoneNumber(
-                                                    event.target.value
-                                                );
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="flex flex-col">
-                                    <h7>Kata Sandi </h7>
-                                    <div className="input-group">
-                                        <input
-                                            className={`p-1 border-2 rounded-md w-full focus:outline-none  ${
-                                                password !==
-                                                    confirmationPassword &&
-                                                password != "" &&
-                                                confirmationPassword != ""
-                                                    ? "border-red-500"
-                                                    : "border-primaryTW"
-                                            } `}
-                                            type="password"
-                                            onChange={(event) => {
-                                                setPassword(event.target.value);
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="flex flex-col">
-                                    <h7>Konfirmasi Kata Sandi</h7>
-                                    <div className="input-group">
-                                        <input
-                                            className={`p-1 border-2 rounded-md w-full focus:outline-none ${
-                                                password !==
-                                                    confirmationPassword &&
-                                                password != "" &&
-                                                confirmationPassword != ""
-                                                    ? "border-red-500"
-                                                    : "border-primaryTW"
-                                            } `}
-                                            type="password"
-                                            onChange={(event) => {
-                                                setConfirmationPassword(
-                                                    event.target.value
-                                                );
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            {password !== confirmationPassword &&
-                                password != "" &&
-                                confirmationPassword != "" && (
-                                    <div className="pb-2 text-red-500">
-                                        (Kata Sandi tidak sama)
-                                    </div>
-                                )}
-                            <div className="form-check mb-3">
-                                <input
-                                    type="checkbox"
-                                    className="form-check-input"
-                                    id="formCheck"
-                                    checked={isAgree}
-                                    onChange={(event) => {
-                                        setIsAgree(event.target.checked);
-                                    }}
-                                />
-                                <label
-                                    htmlFor="formCheck"
-                                    className="form-check-label text-secondary"
-                                >
-                                    <small>
-                                        Saya setuju dengan persyaratan
-                                        penggunaan
-                                    </small>
-                                </label>
-                            </div>
-                            <div className="mb-4 poppin-font text-white ">
-                                <div
-                                    className={` ${
-                                        isFormValid
-                                            ? "bg-gray-500"
-                                            : "bg-primaryTW"
-                                    }  rounded-md px-12 py-2 `}
-                                >
-                                    <button
-                                        disabled={isFormValid}
-                                        type="button"
-                                        onClick={handleSubmit}
-                                    >
-                                        <div className="font-bold text-center">
-                                            Daftar
-                                        </div>
-                                    </button>
-                                </div>
-                            </div>
-                            <div>
-                                <small>
-                                    Sudah memiliki akun?{" "}
-                                    <a
-                                        href="#"
-                                        className="no-underline"
-                                        onClick={openLogin}
-                                    >
-                                        Masuk
-                                    </a>
-                                </small>
-                            </div>
+        <div className="dashboard poppin-font">
+            <div className="dashboard-content">
+                <div className="content">
+                    <Card
+                        icon1={faHospitalUser}
+                        icon2={faUserDoctor}
+                        icon3={faClipboardList}
+                        title1={"Dokter"}
+                        title2={"Pengajuan"}
+                    />
+                    <div className="unverif-list">
+                        <div className="list-header"></div>
+                        <div className="card-custom shadow-xl p-3">
+                            <h3 className="font-bold">
+                                Ajuan Verifikasi
+                                <hr />
+                            </h3>
+                            <table className="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th className="col-3">Tanggal</th>
+                                    <th className="col-3">Pasien</th>
+                                    <th className="col-3">Diagnosis AI</th>
+                                    <th className="col-3">Dokter</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {data.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{item.Tanggal}</td>
+                                        <td>{item.Nama}</td>
+                                        <td>{item.Penyakit}</td>
+                                        <td>{item.Dokter}</td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
+                <div className="pasien">
+                    <div
+                        className="card-custom shadow-xl p-3"
+                        style={{ height: "100%" }}
+                    >
+                        <h3 className="font-bold text-center">
+                            Input Pasien Baru
+                            <hr />
+                        </h3>
+                        <form onSubmit={handleSubmit}>
+                            <div className="mb-3">
+                                <label className="form-label">Nama Depan</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={namaDepan}
+                                    onChange={(event) => {
+                                        setNamaDepan(event.target.value);
+                                    }}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Nama Belakang</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={namaBelakang}
+                                    onChange={(event) => {
+                                        setNamaBelakang(event.target.value);
+                                    }}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Alamat Email</label>
+                                <input
+                                    type="email"
+                                    className="form-control"
+                                    value={email}
+                                    onChange={(event) => {
+                                        setEmail(event.target.value);
+                                    }}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Nomor Telepon</label>
+                                <input
+                                    type="tel"
+                                    className="form-control"
+                                    value={phoneNumber}
+                                    onChange={(event) => {
+                                        setPhoneNumber(event.target.value);
+                                    }}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Password</label>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    value={password}
+                                    onChange={(event) => {
+                                        setPassword(event.target.value);
+                                    }}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Tanggal Lahir</label>
+                                <input
+                                    className="form-control"
+                                    type="date"
+                                    value={birthday}
+                                    onChange={(event) => {
+                                        setBirthday(event.target.value);
+                                    }}
+                                    required
+                                />
+                            </div>
+                            <button type="submit" className="btn btn-primary">
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
+            {isModalOpen && <Berhasil closeModal={closeModal} />}
         </div>
     );
 };
 
-export default Daftar;
+export default AdminDashboard;

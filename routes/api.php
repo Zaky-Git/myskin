@@ -17,9 +17,9 @@ Route::get('/doctor/{id}', [DoctorController::class, 'getDoctor']);
 Route::get('/doctor/{doctor_id}/patients-count', [DoctorController::class, 'getJumlahPasien']);
 Route::get('/doctor/{doctor_id}/patients', [DoctorController::class, 'getPatients']);
 Route::put('/doctor/{id}', [DoctorController::class, 'updateDoctor']);
-Route::put('/countUserUnv', [DoctorController::class, 'countUnverified']);
-Route::put('/countUserVer', [DoctorController::class, 'countVerified']);
-Route::put('/countDoctor', [DoctorController::class, 'countDoctor']);
+Route::get('/countUserUnv', [DoctorController::class, 'countUnverified']);
+Route::get('/countUserVer', [DoctorController::class, 'countVerified']);
+Route::get('/countDoctor', [DoctorController::class, 'countDoctor']);
 
 # user
 Route::get('/users', [UserController::class, 'getAllUser']);

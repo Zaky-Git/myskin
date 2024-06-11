@@ -6,40 +6,32 @@ import {
     faFileCircleCheck,
     faHospitalUser,
 } from "@fortawesome/free-solid-svg-icons";
+import {useEffect, useState} from "react";
+import axiosClient from "../../axios-client.js";
 const DokterDashboard = () => {
     const data = [
-        {
-            Tanggal: "22/03/2024",
-            Nama: "Hasnan Surya",
-            NomorTelepon: "081248672398",
-            Penyakit: "Lentigo Maligna",
-        },
-        {
-            Tanggal: "22/03/2024",
-            Nama: "Zaky Husaini",
-            NomorTelepon: "081248672398",
-            Penyakit: "Lentigo Maligna",
-        },
-        {
-            Tanggal: "22/03/2024",
-            Nama: "Ahsia Sabila",
-            NomorTelepon: "081248672398",
-            Penyakit: "Lentigo Maligna",
-        },
-        {
-            Tanggal: "22/03/2024",
-            Nama: "Novita",
-            NomorTelepon: "081248672398",
-            Penyakit: "Lentigo Maligna",
-        },
-        {
-            Tanggal: "22/03/2024",
-            Nama: "Novita",
-            NomorTelepon: "081248672398",
-            Penyakit: "Lentigo Maligna",
-        },
     ];
+    const [sumPasien, setSumPasien] = useState(0);
+    const [sumUnver, setSumUnver] = useState(0);
+    const [sumVer, setSumVer] = useState(0);
 
+    useEffect(() => {
+        const fetchCounts = async () => {
+            try {
+                const userResponse = await axiosClient.get("/doctor/{doctor_id}/patients-count");
+                const unverResponse = await axiosClient.get("/countUserVer");
+                const verResponse = await axiosClient.get("/countVer");
+
+                setSumPasien(userResponse.data);
+                setSumUnver(unverResponse.data);
+                setSumVer(verResponse.data);
+            } catch (error) {
+                console.error("Error fetching counts:", error);
+            }
+        };
+
+        fetchCounts();
+    }, []);
     return (
         <div className="dashboard poppin-font">
             <div className="dashboard-content">
@@ -50,6 +42,9 @@ const DokterDashboard = () => {
                         icon3={faFileCircleCheck}
                         title1={"Menunggu Verifikasi"}
                         title2={"Terverifikasi"}
+                        sum1={sumPasien}
+                        sum2={sumUnver}
+                        sum3={sumVer}
                     />
                     <div className="unverif-list">
                         <div className="list-header"></div>

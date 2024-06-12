@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Client;
 use App\Models\Doctor;
 use App\Models\SkinAnalysis;
 use App\Models\Verifications;
@@ -24,10 +25,25 @@ class SkinAnalysisController extends Controller
             }
             $image = $request->file('image');
 
-            //ai disini nanti
-            $percentage = 75.5;
+            $client = new Client();
+            $response = $client->post('http://127.0.0.1:7000/predict', [
+                'multipart' => [
+                    [
+                        'name'     => 'image',
+                        'contents' => fopen($image->getPathname(), 'r'),
+                        'filename' => $image->getClientOriginalName()
+                    ]
+                ]
+            ]);
 
-            if ($percentage > 70) {
+            $responseData = json_decode($response->getBody(), true);
+            if (isset($responseData['prediction'])) {
+                $percentage = $responseData['prediction'];
+            } else {
+                return response()->json(['message' => 'Error in Flask API response'], 500);
+            }
+
+            if ($percentage > 65) {
                 $melanoma_detected = true;
             } else {
                 $melanoma_detected = false;
@@ -153,7 +169,8 @@ class SkinAnalysisController extends Controller
         return response()->json($skinAnalysis);
     }
 
-    public function countSkinAnalysis(){
+    public function countSkinAnalysis()
+    {
         $skinAnalysisCount = SkinAnalysis::all()->count();
         return response()->json($skinAnalysisCount);
     }

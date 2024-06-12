@@ -260,9 +260,9 @@ const DeteksiKanker = () => {
     return (
         <div className="flex flex-col justify-between w-screen mt-8">
             {loading && (
-                <div className="fixed top-0 left-0 w-full h-screen">
-                    <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-10"></div>
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+                <div className="fixed top-0 left-0 w-full h-screen z-50">
+                    <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-40"></div>
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
                         <RingLoader
                             color={color}
                             loading={loading}

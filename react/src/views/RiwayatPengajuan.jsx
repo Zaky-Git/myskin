@@ -69,7 +69,7 @@ const RiwayatPengajuan = () => {
                                         <span
                                             className={`${
                                                 item.skin_analysis
-                                                    .analysis_percentage < 50
+                                                    .analysis_percentage < 60
                                                     ? "text-green-500"
                                                     : "text-red-500"
                                             }`}
@@ -108,13 +108,13 @@ const RiwayatPengajuan = () => {
                                         >
                                             {item.verified
                                                 ? "Verified"
-                                                : "Not Verified"}
+                                                : "Unverified"}
                                         </span>
                                     </td>
                                     <td>
                                         {item.skin_analysis.verification_date ==
                                         null
-                                            ? "Not Verified"
+                                            ? "Unverified"
                                             : new Date(
                                                   item.skin_analysis.verification_date
                                               ).toLocaleDateString()}
@@ -126,7 +126,7 @@ const RiwayatPengajuan = () => {
                                                   " " +
                                                   item.doctor.lastName
                                                 : "Dokter"
-                                            : "Not Verified"}
+                                            : "Unverified"}
                                     </td>
                                     <td>{item.skin_analysis.catatanDokter}</td>
                                     <td>

@@ -67,7 +67,7 @@ const RiwayatDeteksi = () => {
                                     <td>
                                         <span
                                             className={`${
-                                                item.analysis_percentage < 50
+                                                item.analysis_percentage > 60
                                                     ? "text-red-500"
                                                     : "text-green-500"
                                             }`}
@@ -114,7 +114,7 @@ const RiwayatDeteksi = () => {
                                         >
                                             {item.verified
                                                 ? "Verified"
-                                                : "Not Verified"}
+                                                : "Unverified"}
                                         </span>
                                     </td>
 

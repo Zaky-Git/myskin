@@ -139,10 +139,12 @@ class SkinAnalysisController extends Controller
     {
         $skinAnalysis = SkinAnalysis::find($id);
         $isSudahDiajukan = Verifications::where('skin_analysis_id', $id)->exists();
+        $doctor = Doctor::find($skinAnalysis->verified_by);
 
         return response()->json([
             'skin_analysis' => $skinAnalysis,
             'is_sudah_diajukan' => $isSudahDiajukan,
+            'doctor' => $doctor
         ]);
     }
 

@@ -268,12 +268,14 @@ const DetailDeteksi = () => {
 
                             <div className="bg-white flex flex-col text-start w-full pr-8">
                                 <div>
-                                    <h1 className="text-lg">Hasil Deteksi</h1>
+                                    <h1 className="text-lg">
+                                        Hasil Deteksi AI
+                                    </h1>
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <div>
                                         <div className="flex gap-3 ">
-                                            <div className="w-28">Melanoma</div>
+                                            <div className="w-36">Melanoma</div>
                                             <div>
                                                 :{" "}
                                                 {data.skin_analysis
@@ -283,7 +285,7 @@ const DetailDeteksi = () => {
                                             </div>
                                         </div>
                                         <div className="flex gap-3 w-30">
-                                            <div className="w-28">
+                                            <div className="w-36">
                                                 Keakuratan
                                             </div>
                                             <div>
@@ -304,10 +306,17 @@ const DetailDeteksi = () => {
                                             </div>
                                         </div>
                                         <div className="flex gap-3 ">
-                                            <div className="w-28">Status</div>
+                                            <div className="w-36">Status</div>
                                             <div>
                                                 :{" "}
-                                                <span className="text-red-500">
+                                                <span
+                                                    className={`${
+                                                        data.skin_analysis
+                                                            .verified
+                                                            ? " text-green-500"
+                                                            : " text-red-500"
+                                                    }`}
+                                                >
                                                     {data.skin_analysis.verified
                                                         ? "verified"
                                                         : "unverified"}
@@ -356,7 +365,66 @@ const DetailDeteksi = () => {
                                                             0 ? (
                                                                 ""
                                                             ) : (
-                                                                ""
+                                                                <div className="flex flex-col gap-2 pt-2">
+                                                                    <div>
+                                                                        <div className="flex gap-3 w-30">
+                                                                            <div className="w-36">
+                                                                                Nama
+                                                                                Dokter
+                                                                            </div>
+                                                                            <div>
+                                                                                <div>
+                                                                                    :{" "}
+                                                                                    {data
+                                                                                        .doctor
+                                                                                        .firstName +
+                                                                                        " " +
+                                                                                        data
+                                                                                            .doctor
+                                                                                            .lastName}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="flex gap-3 ">
+                                                                            <div className="w-36">
+                                                                                {
+                                                                                    "Catatan Dokter"
+                                                                                }
+                                                                            </div>
+                                                                            <div>
+                                                                                :{" "}
+                                                                                {
+                                                                                    data
+                                                                                        .skin_analysis
+                                                                                        .catatanDokter
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="flex gap-3 ">
+                                                                            <div className="w-36">
+                                                                                Melanoma
+                                                                            </div>
+                                                                            <div>
+                                                                                :{" "}
+                                                                                <span
+                                                                                    className={`${
+                                                                                        data
+                                                                                            .skin_analysis
+                                                                                            .melanoma_detected
+                                                                                            ? " text-red-500"
+                                                                                            : " text-green-500"
+                                                                                    }`}
+                                                                                >
+                                                                                    {data
+                                                                                        .skin_analysis
+                                                                                        .melanoma_detected
+                                                                                        ? "Melanoma"
+                                                                                        : "Bukan Melanoma"}
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             )
                                                         ) : (
                                                             <div>

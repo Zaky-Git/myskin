@@ -7,6 +7,7 @@ use App\Models\Doctor;
 use App\Models\SkinAnalysis;
 use App\Models\Verifications;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SkinAnalysisController extends Controller
 {
@@ -156,5 +157,19 @@ class SkinAnalysisController extends Controller
     {
         $pengajuanVerifikasiCount = Verifications::all()->count();
         return response()->json($pengajuanVerifikasiCount);
+    }
+    public function getVerificationByUserId()
+    {
+        $userId = Auth::id();
+
+        $verifications = Verifications::where('user_id', $userId)->get();
+
+        return response()->json($verifications);
+    }
+    public function getAllVerification()
+    {
+
+        $verifications = Verifications::all();
+        return response()->json($verifications);
     }
 }

@@ -30,8 +30,9 @@ const Login = ({
                 email: email,
                 password: password,
             });
-            setLoading(false);
-
+            const token = response.data.token;
+            console.log("Token received:", token);
+            localStorage.setItem("token", token);
             console.log(response.data);
             loginUser(
                 response.data.user,

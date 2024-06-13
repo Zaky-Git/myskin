@@ -30,6 +30,8 @@ Route::get('/countDoctor', [DoctorController::class, 'countDoctor']);
 # user
 Route::get('/users', [UserController::class, 'getAllUser']);
 Route::get('/countUser', [UserController::class, 'countUser']);
+Route::middleware('auth:sanctum')->get('/verifications', [SkinAnalysisController::class, 'getVerificationByUserId']);
+
 
 # auth
 Route::post('/login', [AuthController::class, 'login']);
@@ -51,3 +53,5 @@ Route::get('/getSkinAnalysis/{id}', [SkinAnalysisController::class, 'getSkinAnal
 Route::get('/doctors', [DoctorController::class, 'getAllDoctor']);
 
 Route::get('/image/{filePath}', [ImageController::class, 'getImage']);
+#admin
+Route::get('/allVerifikasi', [SkinAnalysisController::class, 'getAllVerification']);

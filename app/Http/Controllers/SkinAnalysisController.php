@@ -10,8 +10,6 @@ use Illuminate\Http\Request;
 
 class SkinAnalysisController extends Controller
 {
-
-
     public function skinAnalysis(Request $request)
     {
         if ($request->hasFile('image')) {
@@ -130,32 +128,6 @@ class SkinAnalysisController extends Controller
     }
 
 
-    public function verifikasi(int $id, Request $request)
-    {
-        $verif = Verifications::where('skin_analysis_id', $id)->first();
-        $skinAnalysis = SkinAnalysis::find($request->input('skin_analysis_id'));
-
-        if (!$skinAnalysis) {
-            return response()->json(['message' => 'Skin analysis result not found'], 404);
-        }
-
-        if ($verif) {
-            $verif->verified = $request->input('verified');
-            $verif->verification_date = date('Y-m-d H:i:s');
-            $verif->save();
-
-            $skinAnalysis->verified = $request->input('verified');
-            $skinAnalysis->verified_by = $verif->doctor_id;
-            $skinAnalysis->catatanDokter = $request->input('catatanDokter');
-            $skinAnalysis->verification_date = date('Y-m-d H:i:s');
-            $skinAnalysis->save();
-
-            return response()->json(['message' => 'Berhasil verifikasi'], 200);
-        } else {
-            return response()->json(['message' => 'Verifikasi tidak ditemukan'], 404);
-        }
-    }
-
     public function getMySkinAnalysis(int $id)
     {
         $skinAnalysis = SkinAnalysis::where('user_id', $id)->get();
@@ -165,7 +137,12 @@ class SkinAnalysisController extends Controller
     public function getSkinAnalysisById(int $id)
     {
         $skinAnalysis = SkinAnalysis::find($id);
-        return response()->json($skinAnalysis);
+        $isSudahDiajukan = Verifications::where('skin_analysis_id', $id)->exists();
+
+        return response()->json([
+            'skin_analysis' => $skinAnalysis,
+            'is_sudah_diajukan' => $isSudahDiajukan,
+        ]);
     }
 
     public function countSkinAnalysis()

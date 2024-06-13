@@ -42,6 +42,7 @@ const Login = ({
             console.log(response.data);
             openBerhasil();
         } catch (error) {
+            setLoading(false);
             console.error(error.response.data);
         }
     };

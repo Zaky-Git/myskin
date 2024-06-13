@@ -22,8 +22,8 @@ const ProtectedRoute = ({ allowedRoles }) => {
             <div className="text-muted poppin-font text-center mb-4">
                 <p>
                     *Hasil deteksi belum dipastikan benar karena web hanya
-                    memberikan indikasi awal, silahkan menunggu hasil verifikasi
-                    dokter.
+                    memberikan indikasi awal, silahkan ajukan hasil verifikasi
+                    ke dokter.
                 </p>
             </div>
         </div>

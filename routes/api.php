@@ -15,6 +15,7 @@ Route::get('/countPengajuan', [SkinAnalysisController::class, 'countPengajuanVer
 Route::get('/pasienVerificationList/{id}', [VerificationsController::class, 'getPasienVerificationListByID']);
 Route::get('/pengajuanUmum', [VerificationsController::class, 'getPengajuanUmum']);
 Route::get('/verification/{id}', [VerificationsController::class, 'getVerificationBySkinAnalysisID']);
+Route::post('/verifikasiSkin/{id}', [VerificationsController::class, 'verifikasi']);
 
 # doctor
 Route::get('/doctors', [DoctorController::class, 'getAllDoctor']);
@@ -41,7 +42,7 @@ Route::post('/registerUser', [AuthController::class, 'mendaftarkanUser']);
 #skinAnalysis
 Route::post('/skinAnalysis', [SkinAnalysisController::class, 'skinAnalysis']);
 Route::post('/mengajukanVerifikasi/{id}', [SkinAnalysisController::class, 'mengajukanVerifikasi']);
-Route::post('/verifikasiSkin/{id}', [SkinAnalysisController::class, 'verifikasi']);
+
 Route::get('/mySkinAnalysis/{id}', [SkinAnalysisController::class, 'getMySkinAnalysis']);
 Route::get('/getSkinAnalysis/{id}', [SkinAnalysisController::class, 'getSkinAnalysisById']);
 

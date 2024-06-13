@@ -54,7 +54,10 @@ const ResetKataSandi = ({ openLogin, closeModal, openBerhasil }) => {
                     openBerhasil();
                 }
             }
+            console.log(password, confirmationPassword);
         } catch (error) {
+            setMessage(error.response.data.error);
+
             setLoading(false);
             console.error(error.response.data);
         }
@@ -153,6 +156,11 @@ const ResetKataSandi = ({ openLogin, closeModal, openBerhasil }) => {
                                                 <input
                                                     className="p-2 border-2 w-full rounded-md border-primaryTW"
                                                     type="password"
+                                                    onChange={(e) => {
+                                                        setPassword(
+                                                            e.target.value
+                                                        );
+                                                    }}
                                                 />
                                             </div>
                                         </div>
@@ -162,10 +170,20 @@ const ResetKataSandi = ({ openLogin, closeModal, openBerhasil }) => {
                                                 <input
                                                     className="p-2 border-2 w-full rounded-md border-primaryTW"
                                                     type="password"
+                                                    onChange={(e) => {
+                                                        setConfirmationPassword(
+                                                            e.target.value
+                                                        );
+                                                    }}
                                                 />
                                             </div>
                                         </div>
                                     </div>
+                                    {message != "" && (
+                                        <div className="text-red-500">
+                                            {message}
+                                        </div>
+                                    )}
                                 </div>
                             )}
                             {state == "inputEmail" ? (
@@ -185,7 +203,15 @@ const ResetKataSandi = ({ openLogin, closeModal, openBerhasil }) => {
                                 </div>
                             ) : (
                                 <div className="mt-4 poppin-font text-white ">
-                                    <div className=" bg-primaryTW  rounded-md px-12 py-2 ">
+                                    <div
+                                        className={` ${
+                                            password == confirmationPassword &&
+                                            password != "" &&
+                                            confirmationPassword != ""
+                                                ? "bg-primaryTW"
+                                                : "bg-gray-500"
+                                        }   rounded-md px-12 py-2 `}
+                                    >
                                         <button type="button">
                                             <div
                                                 className="font-bold text-center"

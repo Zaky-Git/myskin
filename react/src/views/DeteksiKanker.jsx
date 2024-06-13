@@ -441,17 +441,26 @@ const DeteksiKanker = () => {
                                     </div>
                                     <div className="">
                                         <div className="flex gap-3 ">
-                                            <div className="w-28">
-                                                Penyakit Kulit
+                                            <div className="w-28">Melanoma</div>
+                                            <div>
+                                                :{" "}
+                                                {keakuratan > 60
+                                                    ? "Iya"
+                                                    : "Tidak"}
                                             </div>
-                                            <div>: Melanoma</div>
                                         </div>
                                         <div className="flex gap-3 w-30">
                                             <div className="w-28">
                                                 Keakuratan
                                             </div>
                                             <div>
-                                                <div className="text-start">
+                                                <div
+                                                    className={`text-start ${
+                                                        keakuratan > 60
+                                                            ? "text-red-500"
+                                                            : "text-green-500"
+                                                    }`}
+                                                >
                                                     : {keakuratan}%
                                                 </div>
                                             </div>

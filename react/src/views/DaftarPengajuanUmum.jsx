@@ -109,7 +109,9 @@ const DaftarPengajuanUmum = () => {
                                 className="w-full h-48 object-cover rounded-md mb-4"
                             />
                             <div className="flex justify-end">
-                                <Link to={`/verifikasi/${request.id}`}>
+                                <Link
+                                    to={`/dokter/verifikasi/${request.skin_analysis.id}`}
+                                >
                                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">
                                         Detail Pengajuan
                                     </button>

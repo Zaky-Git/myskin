@@ -23,13 +23,12 @@ class DoctorController extends Controller
         $patientCount = Verifications::where('doctor_id', $doctor_id)
             ->distinct('user_id')
             ->count('user_id');
-
-        return response()->json(['doctor_id' => $doctor_id, 'patient_count' => $patientCount]);
+        return response()->json($patientCount);
     }
     public function getPatients($doctor_id)
     {
         $patients = Verifications::where('doctor_id', $doctor_id)
-            ->with('user') // assuming you have a User model related to the Verification
+            ->with('user')
             ->get();
 
         return response()->json($patients);
@@ -56,14 +55,59 @@ class DoctorController extends Controller
         $doctorCount = Doctor::all()->count();
         return response()->json($doctorCount);
     }
-    public function countVerified()
+    public function countVerified($doctor_id)
     {
-        $verCount = Doctor::where('verified', 1)->count();
+        $verCount = Verifications::where('doctor_id', $doctor_id)->where('verified', 1)->count();
         return response()->json($verCount);
     }
-    public function countUnverified()
+
+    public function countUnverified($doctor_id)
     {
-        $unverCount = Doctor::where('verified', 0)->count();
+        $unverCount = Verifications::where('doctor_id', $doctor_id)->where('verified', 0)->count();
         return response()->json($unverCount);
     }
+    public function getPasienByDoctor($doctor_id)
+    {
+        $daftarPasien = Verifications::where('verifications.doctor_id', $doctor_id)
+            ->join('skin_analysis', function($join) {
+                $join->on('verifications.skin_analysis_id', '=', 'skin_analysis.id')
+                    ->where('skin_analysis.verified', '=', 0);
+            })
+            ->join('users', 'verifications.user_id', '=', 'users.id')
+            ->with(['doctor', 'skinAnalysis', 'user'])
+            ->get([
+                'verifications.user_id',
+                'verifications.id',
+                'verifications.created_at',
+                'skin_analysis.analysis_percentage',
+                'users.firstName',
+                'users.lastName',
+                'users.number'
+            ]);
+
+        return response()->json($daftarPasien);
+    }
+
+
+
+    public function getVerifiedPengajuan($doctor_id)
+    {
+        $daftarPasien = Verifications::where('verifications.doctor_id', $doctor_id)
+            ->where('verifications.verified', 1)
+            ->join('users', 'verifications.user_id', '=', 'users.id')
+            ->join('skin_analysis', 'verifications.skin_analysis_id', '=', 'skin_analysis.id')
+            ->with(['doctor', 'skinAnalysis', 'user'])
+            ->get([
+                'verifications.created_at',
+                'users.firstName',
+                'users.lastName',
+                'skin_analysis.analysis_percentage',
+                'verifications.verified_melanoma',
+                'skin_analysis.catatanDokter'
+            ]);
+
+        return response()->json($daftarPasien);
+    }
+
+
 }

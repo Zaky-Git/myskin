@@ -16,6 +16,8 @@ import DetailDokter from "./views/DetailDokter.jsx";
 import RiwayatPengajuan from "./views/RiwayatPengajuan.jsx";
 import RiwayatDeteksi from "./views/RiwayatDeteksi.jsx";
 import DetailDeteksi from "./views/DetailDeteksi.jsx";
+import VerifikasiPengguna from "./views/VerifikasiPengguna.jsx";
+import DetailPengajuan from "./views/DetailPengajuan.jsx";
 
 const router = createBrowserRouter([
     {
@@ -41,6 +43,10 @@ const router = createBrowserRouter([
             {
                 path: "riwayatDeteksi",
                 element: <RiwayatDeteksi />,
+            },
+            {
+                path: "detailPengajuan/:id",
+                element: <DetailPengajuan />,
             },
             {
                 path: "detailDeteksi/:id",
@@ -79,6 +85,10 @@ const router = createBrowserRouter([
             {
                 path: "daftarPasien",
                 element: <DaftarPasien />,
+            },
+            {
+                path: "verifikasiPengguna",
+                element: <VerifikasiPengguna />,
             },
             {
                 path: "detailDokter/:id",

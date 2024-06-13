@@ -155,7 +155,7 @@ class SkinAnalysisController extends Controller
 
     public function countPengajuanVerifikasi()
     {
-        $pengajuanVerifikasiCount = Verifications::all()->count();
+        $pengajuanVerifikasiCount = Verifications::where('verified', 0)->count();
         return response()->json($pengajuanVerifikasiCount);
     }
     public function getVerificationByUserId()
@@ -164,12 +164,6 @@ class SkinAnalysisController extends Controller
 
         $verifications = Verifications::where('user_id', $userId)->get();
 
-        return response()->json($verifications);
-    }
-    public function getAllVerification()
-    {
-
-        $verifications = Verifications::all();
         return response()->json($verifications);
     }
 }

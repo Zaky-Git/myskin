@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
-import { confirmAlert } from "react-confirm-alert";
-import axiosClient from "../../axios-client";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import RingLoader from "react-spinners/RingLoader";
+import axiosClient from "../../axios-client";
+import { ClipLoader } from "react-spinners";
 import getImageUrl from "../functions/getImage";
 import downloadImage from "../functions/downloadImage";
 import { toast } from "react-toastify";
 import { useStateContext } from "../contexts/ContextProvider";
 
-const Verifikasi = () => {
+const DetailPengajuan = () => {
     const { id } = useParams();
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [catatan, setCatatan] = useState("");
+    const location = useLocation();
+    const { item } = location.state || {};
+    const [data, setData] = useState(item || null);
+    const [loading, setLoading] = useState(!item);
+    const [catatan, setCatatan] = useState(item?.skin_analysis?.catatanDokter || "");
     const { user } = useStateContext();
     const [verificationMelanomaStatus, setVerificationMelanomaStatus] = useState("melanoma");
 
@@ -23,7 +25,10 @@ const Verifikasi = () => {
     const fetchData = async () => {
         try {
             const response = await axiosClient.get(`verification/${id}`);
-            if (response.status === 200) setData(response.data);
+            if (response.status === 200) {
+                setData(response.data);
+                setCatatan(response.data.skin_analysis.catatanDokter);
+            }
             setLoading(false);
         } catch (error) {
             console.error("Error fetching the data", error);
@@ -32,7 +37,9 @@ const Verifikasi = () => {
     };
 
     useEffect(() => {
-        fetchData();
+        if (!item) {
+            fetchData();
+        }
     }, [id]);
 
     const navigate = useNavigate();
@@ -101,6 +108,13 @@ const Verifikasi = () => {
                     </div>
                 </div>
             )}
+            <div className="flex flex-col gap-4 container">
+                <div className="flex flex-col mb-4">
+                    <div className="bg-white p-8 rounded-md shadow-md font-bold">
+                        Diverifikasi Oleh : {data?.doctor?.firstName + " " + data?.doctor?.lastName}
+                    </div>
+                </div>
+            </div>
             {!loading && data && (
                 <div className="flex flex-col gap-4 container">
                     <div className="flex flex-col md:flex-row gap-12">
@@ -138,11 +152,13 @@ const Verifikasi = () => {
                             <div className="flex flex-col lg:flex-row mt-8">
                                 <div className={`poppin-font text-white bg-white container flex items-center flex-col`}>
                                     <div className="w-80 flex items-center justify-center h-80 relative">
-                                        <img className="object-cover w-80 h-80" src={getImageUrl(data.skin_analysis.image_path)} alt="" />
+                                        <img className="object-cover w-80 h-80"
+                                             src={getImageUrl(data.skin_analysis.image_path)} alt=""/>
                                     </div>
                                     <div className="pt-4 flex gap-4 mb-4 lg:mb-0">
                                         <div className="bg-primaryTW rounded-md px-12 py-2">
-                                            <button onClick={downloadImage(data.skin_analysis.image_path)} type="button">
+                                            <button onClick={downloadImage(data.skin_analysis.image_path)}
+                                                    type="button">
                                                 Unduh
                                             </button>
                                         </div>
@@ -157,14 +173,17 @@ const Verifikasi = () => {
                                         <div className="flex gap-3 w-30">
                                             <div className="w-28">Keakuratan</div>
                                             <div>
-                                                <div className={`text-start ${data.skin_analysis.analysis_percentage > 60 ? "text-red-500" : "text-green-500"}`}>
+                                                <div
+                                                    className={`text-start ${data.skin_analysis.analysis_percentage > 60 ? "text-red-500" : "text-green-500"}`}>
                                                     : {data.skin_analysis.analysis_percentage}%
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="flex gap-3 ">
                                             <div className="w-28">Status</div>
-                                            <div>: <span className="text-red-500">{data.skin_analysis.verified ? "verified" : "unverified"}</span></div>
+                                            <div>: <span
+                                                className="text-red-500">{data.skin_analysis.verified ? "verified" : "unverified"}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -172,44 +191,15 @@ const Verifikasi = () => {
                         </div>
                     </div>
                     <div className="bg-white p-8 rounded-md shadow-md mb-8">
-                        <div className="flex justify-between">
-                            <div>
-                                <div className="mb-3">
-                                    <h4>Verifikasi Hasil Deteksi</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex justify-between">
-                            <div>
-                                <div className="flex flex-col gap-2 mb-2">
-                                    <div className="text-sm text-gray-500">*Verifikasi Melanoma</div>
-                                    <div className="pl-1">
-                                        <select
-                                            value={verificationMelanomaStatus}
-                                            onChange={handleVerificationMelanomaChange}
-                                            className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 sm:text-sm"
-                                        >
-                                            <option value="melanoma">Melanoma</option>
-                                            <option value="bukan melanoma">Bukan Melanoma</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div className="flex flex-col">
                             <div className="mb-1 mt-1">
                                 <h5>Catatan : </h5>
                             </div>
                             <textarea
-                                onChange={(e) => setCatatan(e.target.value)}
-                                placeholder="Berikan catatan disini"
+                                readOnly
                                 className="p-3 border border-black h-52 w-full overflow-y-auto"
+                                value={catatan}
                             />
-                            <button type="button" onClick={submitVerification} className="pt-2 flex gap-4 self-end mt-3">
-                                <div className="bg-primaryTW text-white rounded-md px-12 py-2">
-                                    <text type="button">Verifikasi</text>
-                                </div>
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -218,4 +208,4 @@ const Verifikasi = () => {
     );
 };
 
-export default Verifikasi;
+export default DetailPengajuan;

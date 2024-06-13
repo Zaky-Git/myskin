@@ -344,6 +344,21 @@ export const NavigationBar = ({ openModal }) => {
                                             Daftar Dokter
                                         </Link>
                                     </li>
+                                    <li className="nav-item">
+                                        <Link
+                                            to="/admin/verifikasiPengguna"
+                                            className={
+                                                "nav-link" +
+                                                (activeItem === "faq"
+                                                    ? " focused text-primaryTW"
+                                                    : " text-secondaryTW")
+                                            }
+                                            onFocus={() => setActiveItem("faq")}
+                                            onBlur={() => setActiveItem(null)}
+                                        >
+                                            Verifikasi Pengguna
+                                        </Link>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -363,7 +378,7 @@ export const NavigationBar = ({ openModal }) => {
                                                 window.location.reload();
                                             }}
                                         >
-                                            Logout
+                                        Logout
                                         </button>
                                     </div>
                                 </div>

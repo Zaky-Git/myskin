@@ -4,9 +4,12 @@ import Card from "../components/Card.jsx";
 import { faUserDoctor, faHospitalUser, faClipboardList } from "@fortawesome/free-solid-svg-icons";
 import axiosClient from "../../axios-client.js";
 import { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ClipLoader } from "react-spinners";
 
 const AdminDashboard = ({ openBerhasil }) => {
-    const dasdwa = [];
+    const [dataPatient, setDataPatient] = useState([]);
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [namaDepan, setNamaDepan] = useState("");
@@ -16,6 +19,7 @@ const AdminDashboard = ({ openBerhasil }) => {
     const [sumUser, setSumUser] = useState(0);
     const [sumDoctor, setSumDoctor] = useState(0);
     const [sumPengajuan, setSumPengajuan] = useState(0);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchCounts = async () => {
@@ -32,7 +36,19 @@ const AdminDashboard = ({ openBerhasil }) => {
             }
         };
 
+        const fetchDataPatient = async () => {
+            try {
+                const response = await axiosClient.get("/allVerifikasi");
+                setDataPatient(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching data patient:", error);
+                setLoading(false);
+            }
+        };
+
         fetchCounts();
+        fetchDataPatient();
     }, []);
 
     const handleSubmit = async (event) => {
@@ -60,6 +76,7 @@ const AdminDashboard = ({ openBerhasil }) => {
             });
             console.log(response.data);
 
+            toast.success("Berhasil menambahkan pengguna");
             openBerhasil();
         } catch (error) {
             console.error(error.response.data);
@@ -68,6 +85,7 @@ const AdminDashboard = ({ openBerhasil }) => {
 
     return (
         <div className="dashboard poppin-font">
+            <ToastContainer />
             <div className="dashboard-content">
                 <div className="content">
                     <Card
@@ -87,33 +105,54 @@ const AdminDashboard = ({ openBerhasil }) => {
                                 Ajuan Verifikasi
                                 <hr />
                             </h3>
-                            <table className="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th className="col-3">Tanggal</th>
-                                    <th className="col-3">Pasien</th>
-                                    <th className="col-3">Diagnosis AI</th>
-                                    <th className="col-3">Dokter</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {dasdwa.map((item, index) => (
-                                    <tr key={index}>
-                                        <td>{item.Tanggal}</td>
-                                        <td>{item.Nama}</td>
-                                        <td>{item.Penyakit}</td>
-                                        <td>{item.Dokter}</td>
+                            {loading ? (
+                                <div className="flex items-center justify-center">
+                                    <ClipLoader color="#4A90E2" loading={loading} size={35} />
+                                    <span className="ml-2">Memuat data...</span>
+                                </div>
+                            ) : (
+                                <table className="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th className="col-3">Tanggal</th>
+                                        <th className="col-3">Pasien</th>
+                                        <th className="col-3">Diagnosis AI</th>
+                                        <th className="col-3">Dokter</th>
                                     </tr>
-                                ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                    {dataPatient.map((item, index) => (
+                                        <tr key={index}>
+                                            <td>{new Date(item.created_at).toLocaleDateString()}</td>
+                                            <td>{item.userFirstName + " " + item.userLastName}</td>
+                                            <td>
+                                                    <span
+                                                        className={`${
+                                                            item.analysis_percentage < 50
+                                                                ? "text-green-500"
+                                                                : "text-red-500"
+                                                        }`}
+                                                    >
+                                                        {item.analysis_percentage}%{" Melanoma"}
+                                                    </span>
+                                            </td>
+                                            <td>
+                                                {item.doctorFirstName && item.doctorLastName
+                                                    ? item.doctorFirstName + " " + item.doctorLastName
+                                                    : "Tidak Memilih Dokter"}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            )}
                         </div>
                     </div>
                 </div>
                 <div className="pasien">
                     <div className="card-custom shadow-xl p-3" style={{ height: "100%" }}>
                         <h3 className="font-bold text-center">
-                            Input Pasien Baru
+                            Input Pengguna Baru
                             <hr />
                         </h3>
                         <form onSubmit={handleSubmit}>

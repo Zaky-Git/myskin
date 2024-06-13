@@ -1,42 +1,29 @@
-const RiwatVerifikasi = () => {
-    const data = [
-        {
-            Tanggal: "22/03/2024",
-            Pasien: "Hasnan Surya",
-            DianosisAI: "Lentigo Maligma",
-            DianosisDokter: "Lentigo Maligma",
-            Catatan: "Lorem Ipsum dolor Sit amet",
-        },
-        {
-            Tanggal: "22/03/2024",
-            Pasien: "Hasnan Surya",
-            DianosisAI: "Lentigo Maligma",
-            DianosisDokter: "Lentigo Maligma",
-            Catatan: "Lorem Ipsum dolor Sit amet",
-        },
-        {
-            Tanggal: "22/03/2024",
-            Pasien: "Hasnan Surya",
-            DianosisAI: "Lentigo Maligma",
-            DianosisDokter: "Lentigo Maligma",
-            Catatan: "Lorem Ipsum dolor Sit amet",
-        },
-        {
-            Tanggal: "22/03/2024",
-            Pasien: "Hasnan Surya",
-            DianosisAI: "Lentigo Maligma",
-            DianosisDokter: "Lentigo Maligma",
-            Catatan: "Lorem Ipsum dolor Sit amet",
-        },
-        {
-            Tanggal: "22/03/2024",
-            Pasien: "Hasnan Surya",
-            DianosisAI: "Lentigo Maligma",
-            DianosisDokter: "Lentigo Maligma",
-            Catatan: "Lorem Ipsum dolor Sit amet",
-        },
-    ];
+import {useEffect, useState} from "react";
+import {useStateContext} from "../contexts/ContextProvider.jsx";
+import axiosClient from "../../axios-client.js";
+import { ClipLoader } from "react-spinners";
 
+const RiwatVerifikasi = () => {
+    const { user } = useStateContext();
+    const [riwayatVerifikasi, setriwayatVerifikasi] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (user && user.id) {
+            const fetchData = async () => {
+                try {
+                    const responseRiwayatVerifikasi = await axiosClient.get(`/riwayatVerified/${user.id}`);
+                    setriwayatVerifikasi(responseRiwayatVerifikasi.data)
+                    setLoading(false);
+                } catch (error) {
+                    setLoading(false);
+                    console.error("Error fetching data:", error);
+                }
+            };
+
+            fetchData();
+        }
+    }, [user]);
     return (
         <div className="dashboard-content">
             <div className="card-custom shadow-xl p-3 mt-4 container">
@@ -47,24 +34,34 @@ const RiwatVerifikasi = () => {
                 <table className="table table-hover">
                     <thead>
                         <tr>
-                            <th className="col-2">Tanggal Daftar</th>
-                            <th className="col-2">Nama Lengkap</th>
-                            <th className="col-2">Email</th>
-                            <th className="col-2">Nomor Telepon</th>
-                            <th className="col-2">Umur</th>
+                            <th className="col-2">Tanggal Pengajuan</th>
+                            <th className="col-2">Pasien</th>
+                            <th className="col-2">Diagnosis AI</th>
+                            <th className="col-2">Verifikasi Dokter</th>
+                            <th className="col-2">Catatan</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((item, index) => (
+                        {riwayatVerifikasi.map((item, index) => (
                             <tr key={index}>
-                                <td>{item.Tanggal}</td>
-                                <td>{item.Pasien}</td>
-                                <td>{item.DianosisAI}</td>
-                                <td>{item.DianosisDokter}</td>
-                                <td>{item.Catatan}</td>
+                                <td>{new Date(item.created_at).toLocaleDateString()}</td>
+                                <td>{item.firstName + " " + item.lastName}</td>
+                                <td><span
+                                    className={`${
+                                        item.analysis_percentage < 50
+                                            ? "text-green-500"
+                                            : "text-red-500"
+                                    }`}
+                                >
+                                                    {item.analysis_percentage}%{" Melanoma"}
+                                                </span>
+                                </td>
+                                <td>{item.verified_melanoma === 1 ? "Verified" : "Not Verified"}</td>
+                                <td>{item.catatanDokter}</td>
                                 <td>
-                                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    <button
+                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                         Detail{" "}
                                     </button>
                                 </td>
@@ -72,6 +69,13 @@ const RiwatVerifikasi = () => {
                         ))}
                     </tbody>
                 </table>
+                {riwayatVerifikasi.length == 0 && !loading && (
+                    <div className="flex items-center justify-center h-[50vh]">
+                        <span className="ml-2">
+                            Tidak ada riwayat verifikasi.
+                        </span>
+                    </div>
+                )}
             </div>
         </div>
     );

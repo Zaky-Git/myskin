@@ -68,4 +68,26 @@ class VerificationsController extends Controller
             return response()->json(['message' => 'Verifikasi tidak ditemukan'], 404);
         }
     }
+
+    public function getAllVerification()
+    {
+        $daftarPasien = SkinAnalysis::where('skin_analysis.verified', 0)
+            ->join('verifications', 'skin_analysis.id', '=', 'verifications.skin_analysis_id')
+            ->join('users', 'skin_analysis.user_id', '=', 'users.id')
+            ->leftJoin('doctors', 'skin_analysis.verified_by', '=', 'doctors.id')
+            ->select([
+                'verifications.created_at',
+                'users.firstName as userFirstName',
+                'users.lastName as userLastName',
+                'doctors.firstName as doctorFirstName',
+                'doctors.lastName as doctorLastName',
+                'skin_analysis.analysis_percentage',
+                'verifications.verified_melanoma',
+                'skin_analysis.catatanDokter'
+            ])
+            ->get();
+
+        return response()->json($daftarPasien);
+    }
+
 }

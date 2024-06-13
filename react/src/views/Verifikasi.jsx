@@ -50,6 +50,7 @@ const Verifikasi = () => {
                 {
                     label: "Verifikasi",
                     onClick: async () => {
+                        setLoading(true);
                         const response = await axiosClient.post(
                             `verifikasiSkin/${id}`,
                             {
@@ -61,9 +62,11 @@ const Verifikasi = () => {
                         );
 
                         if (response.status === 200) {
+                            setLoading(false);
                             toast.success("Berhasil verifikasi");
                             navigate("/dokter/riwayatVerifikasi");
                         }
+                        setLoading(false);
                     },
                 },
             ],

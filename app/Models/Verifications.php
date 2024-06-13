@@ -20,6 +20,7 @@ class Verifications extends Model
         'skin_analysis_id',
         'verified',
         'verification_date',
+        'verified_melanoma',
     ];
 
     /**
@@ -41,7 +42,7 @@ class Verifications extends Model
     /**
      * Get the skin analysis result associated with the verification.
      */
-    public function skinAnalysisResult()
+    public function skinAnalysis()
     {
         return $this->belongsTo(SkinAnalysis::class);
     }

@@ -1,9 +1,10 @@
 import { useState } from "react";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
+import RingLoader from "react-spinners/RingLoader";
 
 const Login = ({
-    openDaftar,
+    openSignup,
     closeModal,
     openResetKataSandi,
     openBerhasil,
@@ -11,6 +12,8 @@ const Login = ({
     const { loginUser } = useStateContext();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    let [color, setColor] = useState("#2AA8FF");
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -22,10 +25,12 @@ const Login = ({
 
     const handleSubmit = async () => {
         try {
+            setLoading(true);
             const response = await axiosClient.post("/login", {
                 email: email,
                 password: password,
             });
+            setLoading(false);
 
             console.log(response.data);
             loginUser(
@@ -43,6 +48,20 @@ const Login = ({
 
     return (
         <div className="flex flex-col w-screen">
+            {loading && (
+                <div className="fixed top-0 left-0 w-full h-screen z-50">
+                    <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-40"></div>
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+                        <RingLoader
+                            color={color}
+                            loading={loading}
+                            size={150}
+                            aria-label="Loading Spinner"
+                            data-testid="loader"
+                        />
+                    </div>
+                </div>
+            )}
             <div className="container d-flex justify-content-center align-items-center min-vh-100 font-poppins">
                 <div className="border rounded-5 p-5 bg-white shadow w-50">
                     <div className="right-box">
@@ -126,7 +145,7 @@ const Login = ({
                                     <a
                                         href="#"
                                         className="no-underline"
-                                        onClick={openDaftar}
+                                        onClick={openSignup}
                                     >
                                         Klik disini untuk daftar
                                     </a>

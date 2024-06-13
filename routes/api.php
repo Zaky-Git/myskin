@@ -8,9 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerificationsController;
 
 #verifikasi
 Route::get('/countPengajuan', [SkinAnalysisController::class, 'countPengajuanVerifikasi']);
+Route::get('/pasienVerificationList/{id}', [VerificationsController::class, 'getPasienVerificationListByID']);
+Route::get('/pengajuanUmum', [VerificationsController::class, 'getPengajuanUmum']);
+Route::get('/verification/{id}', [VerificationsController::class, 'getVerificationBySkinAnalysisID']);
 
 # doctor
 Route::get('/doctors', [DoctorController::class, 'getAllDoctor']);

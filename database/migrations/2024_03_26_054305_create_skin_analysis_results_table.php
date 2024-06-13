@@ -21,7 +21,7 @@ return new class extends Migration
             $table->boolean('verified')->default(false);
             $table->unsignedBigInteger('verified_by')->nullable();
             $table->timestamp('verification_date')->nullable();
-            $table->unsignedInteger('analysis_percentage')->nullable();
+            $table->float('analysis_percentage')->nullable();
             $table->timestamps();
 
             // Foreign key constraints

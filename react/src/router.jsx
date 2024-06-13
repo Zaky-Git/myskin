@@ -22,7 +22,7 @@ const router = createBrowserRouter([
         children: [
             { path: "/", element: <DeteksiKanker /> },
             { path: "faq", element: <FAQ /> },
-            { path: "verifikasi", element: <Verifikasi /> },
+            { path: "verifikasi/:id", element: <Verifikasi /> },
         ],
     },
     {
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "dashboard",
-                element: <PasienLayout />
+                element: <PasienLayout />,
             },
             {
                 path: "riwayatPengajuan",

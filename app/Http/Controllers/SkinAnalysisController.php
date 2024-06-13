@@ -120,7 +120,6 @@ class SkinAnalysisController extends Controller
                 $verif->doctor_id = $request->input('doctorId');
             }
             $verif->verified = false;
-            $verif->verification_date = date('Y-m-d H:i:s');
             $verif->save();
 
             $skinAnalysis->keluhan = $request->input('keluhan');

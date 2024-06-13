@@ -21,8 +21,8 @@ export const NavigationBar = ({ openModal }) => {
             activeItem = "about";
         } else if (path === "/pengajuan") {
             activeItem = "daftarPengajuan";
-        }else if (path === "/pasien/riwayatPengajuan"){
-            activeItem = "riwayatPengajuan"
+        } else if (path === "/pasien/riwayatPengajuan") {
+            activeItem = "riwayatPengajuan";
         }
 
         setActiveItem(activeItem);
@@ -36,7 +36,7 @@ export const NavigationBar = ({ openModal }) => {
                         {/* Logo / Brand */}
                         <div>
                             <Link className="navbar-brand" to="/">
-                                Logo
+                                MySkin
                             </Link>
                             {/* Navbar Toggler for small screens */}
                             <button
@@ -147,7 +147,7 @@ export const NavigationBar = ({ openModal }) => {
                         {/* Logo / Brand */}
                         <div>
                             <Link className="navbar-brand" to="/">
-                                Logo
+                                MySkin
                             </Link>
                             {/* Navbar Toggler for small screens */}
                             <button
@@ -219,12 +219,15 @@ export const NavigationBar = ({ openModal }) => {
                                             to="/pasien/riwayatPengajuan"
                                             className={
                                                 "nav-link" +
-                                                (activeItem === "riwayatPengajuan"
+                                                (activeItem ===
+                                                "riwayatPengajuan"
                                                     ? " focused text-primaryTW"
                                                     : " text-secondaryTW")
                                             }
                                             onFocus={() =>
-                                                setActiveItem("riwayatPengajuan")
+                                                setActiveItem(
+                                                    "riwayatPengajuan"
+                                                )
                                             }
                                             onBlur={() => setActiveItem(null)}
                                         >
@@ -271,7 +274,7 @@ export const NavigationBar = ({ openModal }) => {
                         {/* Logo / Brand */}
                         <div>
                             <Link className="navbar-brand" to="/">
-                                Logo
+                                MySkin
                             </Link>
                             {/* Navbar Toggler for small screens */}
                             <button
@@ -379,7 +382,7 @@ export const NavigationBar = ({ openModal }) => {
                         {/* Logo / Brand */}
                         <div>
                             <Link className="navbar-brand" to="/">
-                                Logo
+                                MySkin
                             </Link>
                             {/* Navbar Toggler for small screens */}
                             <button

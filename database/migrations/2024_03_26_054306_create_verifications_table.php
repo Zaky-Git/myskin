@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('doctor_id')->nullable();
             $table->unsignedBigInteger('skin_analysis_id');
             $table->boolean('verified')->default(false);
+            $table->boolean('verified_melanoma')->default(false);
             $table->timestamp('verification_date')->nullable();
             $table->timestamps();
 

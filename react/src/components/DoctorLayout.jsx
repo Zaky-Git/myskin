@@ -1,15 +1,14 @@
-import {NavigationBarAdminDoctor} from "./NavigationBar.jsx";
-import {Outlet} from "react-router-dom";
+import { NavigationBarAdminDoctor } from "./NavigationBar.jsx";
+import { Outlet } from "react-router-dom";
 
 const DoctorLayout = () => {
     return (
         <div className="flex flex-col min-h-screen bg-primaryAlternativeTW font-poppins">
-            <NavigationBarAdminDoctor/>
+            <NavigationBarAdminDoctor />
             <div className="flex-grow">
-                <Outlet/>
+                <Outlet />
             </div>
         </div>
-
     );
 };
 

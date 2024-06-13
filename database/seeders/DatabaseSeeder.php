@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'mzakyf@pasien.myskin.ac.id',
             'password' => bcrypt('123'),
             'verified' => true,
-            'birthdate' => null,
+            'birthdate' => '2003-05-05',
         ]);
 
         Doctor::create([
@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'mzakyf@dokter.myskin.ac.id',
             'password' => bcrypt('123'),
             'verified' => true,
-            'birthdate' => null,
+            'birthdate' => '2003-05-05',
             'profile_picture_path' => 'images/doctor/default.jpg'
         ]);
 

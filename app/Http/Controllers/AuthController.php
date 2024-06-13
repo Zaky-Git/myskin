@@ -29,6 +29,7 @@ class AuthController extends Controller
             $role = "admin";
         }
 
+
         if ($user) {
             if (Hash::check($password, $user->password)) {
                 $token = $user->createToken('main')->plainTextToken;

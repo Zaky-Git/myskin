@@ -1,12 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { confirmAlert } from "react-confirm-alert";
+import axiosClient from "../../axios-client";
+import { useParams } from "react-router-dom";
 
 const Verifikasi = () => {
-    const [selectedDisease, setSelectedDisease] = useState("");
+    const { id } = useParams();
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const handleDiseaseChange = (event) => {
-        setSelectedDisease(event.target.value);
-    };
+    useEffect(() => {
+        try {
+            const response = axiosClient.get(`verification/${id}`);
+            if (response.status === 200) setData(response.data);
+            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching the data", error);
+            setLoading(false);
+        }
+    }, [id, setData]);
+
     const submitVerification = () => {
         confirmAlert({
             title: "Simpan Verifikasi",
@@ -18,7 +30,7 @@ const Verifikasi = () => {
                 },
                 {
                     label: "Verifikasi",
-                    onClick: () => console.log("erifikasi clicked"),
+                    onClick: () => console.log("Verifikasi clicked"),
                 },
             ],
             closeOnClickOutside: true,
@@ -35,7 +47,7 @@ const Verifikasi = () => {
                         </div>
                         <div className="flex flex-col mt-2">
                             <div className="m-0 pb-[1px]">Nama</div>
-                            <h6>Hasnan Surya</h6>
+                            <h6>{data.user.firstName}</h6>
                         </div>
                         <div className="flex flex-col mt-2">
                             <div className="m-0 pb-[1px]">Nomor Telepon</div>
@@ -86,38 +98,6 @@ const Verifikasi = () => {
                                 </div>
                             </div>
                             <div className="flex flex-col justify-between w-full">
-                                <select
-                                    className="p-2 border border-primaryTW bg-white rounded-md"
-                                    value={selectedDisease}
-                                    onChange={handleDiseaseChange}
-                                >
-                                    <option value="">Pilih penyakit</option>
-                                    <option value="Melanoma">Melanoma</option>
-                                    <option value="Melanoma Lentigo Maligna">
-                                        Melanoma Lentigo Maligna
-                                    </option>
-                                    <option value="Melanoma Superfisial Lentiginosa">
-                                        Melanoma Superfisial Lentiginosa
-                                    </option>
-                                    <option value="Melanoma Akral Lentiginosa">
-                                        Melanoma Akral Lentiginosa
-                                    </option>
-                                    <option value="Melanoma Nodular">
-                                        Melanoma Nodular
-                                    </option>
-                                    <option value="Melanoma Desmoplastik">
-                                        Melanoma Desmoplastik
-                                    </option>
-                                    <option value="Melanoma Amelanotik">
-                                        Melanoma Amelanotik
-                                    </option>
-                                    <option value="Melanoma Spitzoid">
-                                        Melanoma Spitzoid
-                                    </option>
-                                    <option value="Melanoma in situ">
-                                        Melanoma in situ
-                                    </option>
-                                </select>
                                 <div className="flex justify-between">
                                     <div>
                                         <div className="text-sm text-gray-500">
@@ -136,27 +116,25 @@ const Verifikasi = () => {
                                         />
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-white container mb-8">
-                    <div className="p-8 flex flex-col">
-                        <div className="mb-3">
-                            <h4>Catatan</h4>
-                        </div>
-                        <textarea
-                            placeholder="Berikan catatan disini"
-                            className="p-3 border border-black h-52 w-full overflow-y-auto"
-                        />
-                        <div className="pt-2 flex gap-4 self-end mt-3">
-                            <div className=" bg-primaryTW  text-white rounded-md px-12 py-2 ">
-                                <button
-                                    onClick={submitVerification}
-                                    type="button"
-                                >
-                                    Verifikasi
-                                </button>
+                                <div className="flex flex-col">
+                                    <div className="mb-3">
+                                        <h4>Catatan</h4>
+                                    </div>
+                                    <textarea
+                                        placeholder="Berikan catatan disini"
+                                        className="p-3 border border-black h-52 w-full overflow-y-auto"
+                                    />
+                                    <div className="pt-2 flex gap-4 self-end mt-3">
+                                        <div className=" bg-primaryTW  text-white rounded-md px-12 py-2 ">
+                                            <button
+                                                onClick={submitVerification}
+                                                type="button"
+                                            >
+                                                Verifikasi
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

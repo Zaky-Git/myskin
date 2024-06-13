@@ -234,6 +234,7 @@ const DeteksiKanker = () => {
                     label: "Ajukan Verifikasi",
                     onClick: async () => {
                         console.log("Ajukan Verifikasi clicked");
+                        setLoading(true);
                         var response = await axiosClient.post(
                             `mengajukanVerifikasi/${skinAnalysisId}`,
                             {
@@ -246,6 +247,7 @@ const DeteksiKanker = () => {
                             }
                         );
 
+                        setLoading(false);
                         toast.success("Berhasil mengajukan verifikasi");
                         navigate("/pasien/riwayatPengajuan");
                     },

@@ -1,34 +1,40 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Card = ({icon1 , icon2, icon3, title1, title2}) => {
+const Card = ({ icon1, icon2, icon3, title1, title2, sum1, sum2, sum3 }) => {
     const cardItems = [
         {
-            title: 'Pasien',
+            title: "Pasien",
             icon: icon1,
-            jumlah: 70
+            jumlah: sum1,
         },
         {
             title: title1,
             icon: icon2,
-            jumlah: 13
+            jumlah: sum2,
         },
         {
             title: title2,
             icon: icon3,
-            jumlah: 57
-        }
+            jumlah: sum3,
+        },
     ];
 
     return (
-        <div className='card-container'>
+        <div className="card-container text-center">
             {cardItems.map((item, index) => (
-                <div className="card-custom shadow-xl" key={index} style={{ alignItems: 'center' }}>
+                <div
+                    className="card-custom lg:h-56 shadow-xl"
+                    key={index}
+                    style={{ alignItems: "center" }}
+                >
                     <div className="card-cover">
-                        <FontAwesomeIcon icon={item.icon}/>
+                        <FontAwesomeIcon icon={item.icon} />
                     </div>
                     <div className="card--title">
                         <h2>{item.title}</h2>
-                        <h2 className='card-subtitle text-muted'>{item.jumlah}</h2>
+                        <h2 className="card-subtitle text-muted">
+                            {item.jumlah}
+                        </h2>
                     </div>
                 </div>
             ))}

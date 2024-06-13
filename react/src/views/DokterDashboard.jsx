@@ -41,8 +41,8 @@ const DokterDashboard = () => {
     ];
 
     return (
-        <div className="dashboard poppin-font">
-            <div className="dashboard-content">
+        <div className="dashboard poppin-font ">
+            <div className="dashboard-content container">
                 <div className="content">
                     <Card
                         icon1={faHospitalUser}

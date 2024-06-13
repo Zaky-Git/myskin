@@ -14,6 +14,7 @@
         "@fortawesome/react-fontawesome": "^0.2.2",
         "@lordicon/react": "^1.6.0",
         "bootstrap": "^5.3.3",
+        "date-fns": "^3.6.0",
         "react": "^18.2.0",
         "react-confirm": "^0.3.0-7",
         "react-confirm-alert": "^3.0.6",

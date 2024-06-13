@@ -8,9 +8,28 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerificationsController;
 
-#pasien
+#verifikasi
+Route::get('/countPengajuan', [SkinAnalysisController::class, 'countPengajuanVerifikasi']);
+Route::get('/pasienVerificationList/{id}', [VerificationsController::class, 'getPasienVerificationListByID']);
+Route::get('/pengajuanUmum', [VerificationsController::class, 'getPengajuanUmum']);
+Route::get('/verification/{id}', [VerificationsController::class, 'getVerificationBySkinAnalysisID']);
+Route::post('/verifikasiSkin/{id}', [VerificationsController::class, 'verifikasi']);
+
+# doctor
+Route::get('/doctors', [DoctorController::class, 'getAllDoctor']);
+Route::get('/doctor/{id}', [DoctorController::class, 'getDoctor']);
+Route::get('/doctor/{doctor_id}/patients-count', [DoctorController::class, 'getJumlahPasien']);
+Route::get('/doctor/{doctor_id}/patients', [DoctorController::class, 'getPatients']);
+Route::put('/doctor/{id}', [DoctorController::class, 'updateDoctor']);
+Route::put('/countUserUnv', [DoctorController::class, 'countUnverified']);
+Route::put('/countUserVer', [DoctorController::class, 'countVerified']);
+Route::put('/countDoctor', [DoctorController::class, 'countDoctor']);
+
+# user
 Route::get('/users', [UserController::class, 'getAllUser']);
+Route::get('/countUser', [UserController::class, 'countUser']);
 
 # auth
 Route::post('/login', [AuthController::class, 'login']);
@@ -23,7 +42,7 @@ Route::post('/registerUser', [AuthController::class, 'mendaftarkanUser']);
 #skinAnalysis
 Route::post('/skinAnalysis', [SkinAnalysisController::class, 'skinAnalysis']);
 Route::post('/mengajukanVerifikasi/{id}', [SkinAnalysisController::class, 'mengajukanVerifikasi']);
-Route::post('/verifikasiSkin/{id}', [SkinAnalysisController::class, 'verifikasi']);
+
 Route::get('/mySkinAnalysis/{id}', [SkinAnalysisController::class, 'getMySkinAnalysis']);
 Route::get('/getSkinAnalysis/{id}', [SkinAnalysisController::class, 'getSkinAnalysisById']);
 

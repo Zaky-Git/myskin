@@ -46,4 +46,9 @@ class Doctor extends Model
     protected $casts = [
         'birthdate' => 'date',
     ];
+
+    public function skinAnalyses()
+    {
+        return $this->hasMany(SkinAnalysis::class, 'verified_by');
+    }
 }

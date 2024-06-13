@@ -234,6 +234,7 @@ const DeteksiKanker = () => {
                     label: "Ajukan Verifikasi",
                     onClick: async () => {
                         console.log("Ajukan Verifikasi clicked");
+                        setLoading(true);
                         var response = await axiosClient.post(
                             `mengajukanVerifikasi/${skinAnalysisId}`,
                             {
@@ -246,8 +247,9 @@ const DeteksiKanker = () => {
                             }
                         );
 
+                        setLoading(false);
                         toast.success("Berhasil mengajukan verifikasi");
-                        navigate("/pasien/riwayatVerifikasi");
+                        navigate("/pasien/riwayatPengajuan");
                     },
                 },
             ],
@@ -260,9 +262,9 @@ const DeteksiKanker = () => {
     return (
         <div className="flex flex-col justify-between w-screen mt-8">
             {loading && (
-                <div className="fixed top-0 left-0 w-full h-screen">
-                    <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-10"></div>
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+                <div className="fixed top-0 left-0 w-full h-screen z-50">
+                    <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-40"></div>
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
                         <RingLoader
                             color={color}
                             loading={loading}
@@ -439,17 +441,26 @@ const DeteksiKanker = () => {
                                     </div>
                                     <div className="">
                                         <div className="flex gap-3 ">
-                                            <div className="w-28">
-                                                Penyakit Kulit
+                                            <div className="w-28">Melanoma</div>
+                                            <div>
+                                                :{" "}
+                                                {keakuratan > 60
+                                                    ? "Iya"
+                                                    : "Tidak"}
                                             </div>
-                                            <div>: Melanoma</div>
                                         </div>
                                         <div className="flex gap-3 w-30">
                                             <div className="w-28">
                                                 Keakuratan
                                             </div>
                                             <div>
-                                                <div className="text-start">
+                                                <div
+                                                    className={`text-start ${
+                                                        keakuratan > 60
+                                                            ? "text-red-500"
+                                                            : "text-green-500"
+                                                    }`}
+                                                >
                                                     : {keakuratan}%
                                                 </div>
                                             </div>

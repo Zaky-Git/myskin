@@ -29,6 +29,7 @@ class AuthController extends Controller
             $role = "admin";
         }
 
+
         if ($user) {
             if (Hash::check($password, $user->password)) {
                 $token = $user->createToken('main')->plainTextToken;
@@ -43,13 +44,13 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-
         $data = $request->only([
             'firstName',
             'lastName',
             'number',
             'email',
             'password',
+            'birthdate'
         ]);
 
         $request->validate([
@@ -58,6 +59,7 @@ class AuthController extends Controller
             'number' => 'required|string',
             'email' => 'required|email',
             'password' => 'required|string',
+            'birthdate' => 'required|date'
         ]);
 
         $email = $data['email'];
@@ -84,6 +86,7 @@ class AuthController extends Controller
                 'email' => $data['email'],
                 'verified' => false,
                 'password' => $cryptedPassword,
+                'birthdate' => $data['birthdate'],
             ]);
         } elseif (strpos($data['email'], '@pasien.myskin.ac.id') !== false) {
             $user = User::create([
@@ -93,6 +96,7 @@ class AuthController extends Controller
                 'email' => $data['email'],
                 'verified' => false,
                 'password' => $cryptedPassword,
+                'birthdate' => $data['birthdate'],
             ]);
         } elseif (strpos($data['email'], '@admin.myskin.ac.id') !== false) {
             $user = Admin::create([
@@ -101,6 +105,7 @@ class AuthController extends Controller
                 'number' => $data['number'],
                 'email' => $data['email'],
                 'password' => $cryptedPassword,
+                'birthdate' => $data['birthdate'],
             ]);
         } else {
             return response()->json(['message' => 'Email tidak valid'], 400);
@@ -130,11 +135,8 @@ class AuthController extends Controller
         }
     }
 
-
-
     public function gantiPassword(Request $request)
     {
-
         $email = $request->input('email');
         $password = $request->input('password');
 
@@ -149,10 +151,10 @@ class AuthController extends Controller
         }
 
         if ($user) {
-            if ($user->password == $password) {
+            if (Hash::check($password, $user->password)) {
                 return response()->json(['error' => 'Password baru tidak boleh sama dengan password lama'], 400);
             }
-            $user->password = $password;
+            $user->password = Hash::make($password);
             $user->save();
             return response()->json(['message' => 'Password berhasil diubah']);
         } else {
@@ -162,7 +164,6 @@ class AuthController extends Controller
 
     public function verifikasiIdentitas(Request $request, int $id)
     {
-
         if ($request->input('role') == "dokter") {
             $user = Doctor::find($id);
         } else {
@@ -198,6 +199,7 @@ class AuthController extends Controller
             'number',
             'email',
             'password',
+            'birthdate'
         ]);
 
         $request->validate([
@@ -206,6 +208,7 @@ class AuthController extends Controller
             'number' => 'required|string',
             'email' => 'required|email',
             'password' => 'required|string',
+            'birthdate' => 'required|date'
         ]);
 
         $email = $data['email'];
@@ -229,7 +232,8 @@ class AuthController extends Controller
                 'number' => $data['number'],
                 'email' => $data['email'],
                 'verified' => true,
-                'password' => $data['password'],
+                'password' => Hash::make($data['password']),
+                'birthdate' => $data['birthdate'],
             ]);
         } elseif (strpos($data['email'], '@pasien.myskin.ac.id') !== false) {
             $user = User::create([
@@ -238,7 +242,8 @@ class AuthController extends Controller
                 'number' => $data['number'],
                 'email' => $data['email'],
                 'verified' => true,
-                'password' => $data['password'],
+                'password' => Hash::make($data['password']),
+                'birthdate' => $data['birthdate'],
             ]);
         } elseif (strpos($data['email'], '@admin.myskin.ac.id') !== false) {
             $user = Admin::create([
@@ -246,7 +251,8 @@ class AuthController extends Controller
                 'lastName' => $data['lastName'],
                 'number' => $data['number'],
                 'email' => $data['email'],
-                'password' => $data['password'],
+                'password' => Hash::make($data['password']),
+                'birthdate' => $data['birthdate'],
             ]);
         } else {
             return response()->json(['message' => 'Email tidak valid'], 400);

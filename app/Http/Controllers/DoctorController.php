@@ -51,15 +51,18 @@ class DoctorController extends Controller
 
         return response()->json($doctor);
     }
-    public function countDoctor(){
+    public function countDoctor()
+    {
         $doctorCount = Doctor::all()->count();
         return response()->json($doctorCount);
     }
-    public function countVerified(){
+    public function countVerified()
+    {
         $verCount = Doctor::where('verified', 1)->count();
         return response()->json($verCount);
     }
-    public function countUnverified(){
+    public function countUnverified()
+    {
         $unverCount = Doctor::where('verified', 0)->count();
         return response()->json($unverCount);
     }

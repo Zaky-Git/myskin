@@ -3,8 +3,9 @@ import axiosClient from "../../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
 import getImageUrl from "../functions/getImage";
 import { ClipLoader } from "react-spinners";
+import { Link } from "react-router-dom";
 
-const RiwayatPengajuan = () => {
+const RiwayatDeteksi = () => {
     const { user, logoutUser, role } = useStateContext();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -13,7 +14,7 @@ const RiwayatPengajuan = () => {
         const fetchData = async () => {
             try {
                 const response = await axiosClient.get(
-                    "/pasienVerificationList/" + user.id
+                    "/mySkinAnalysis/" + user.id
                 );
                 setData(response.data);
                 setLoading(false);
@@ -30,7 +31,7 @@ const RiwayatPengajuan = () => {
         <div className="dashboard-content container">
             <div className="card-custom shadow-xl p-3 mt-4">
                 <h3 className="font-bold">
-                    Riwayat Pengajuan
+                    Riwayat Deteksi
                     <hr />
                 </h3>
                 {loading ? (
@@ -46,14 +47,12 @@ const RiwayatPengajuan = () => {
                     <table className="table table-hover">
                         <thead>
                             <tr>
-                                <th className="col-1">Tanggal Pengajuan</th>
-                                <th className="col-1">Persentase</th>
+                                <th className="col-2">Tanggal Deteksi</th>
+                                <th className="col-2">Persentase</th>
                                 <th className="col-2">Gambar</th>
-                                <th className="col-1">Keluhan</th>
-                                <th className="col-1">Status</th>
-                                <th className="col-1">Tanggal Diverifikasi</th>
-                                <th className="col-1">Verified By</th>
-                                <th className="col-2">Catatan Dokter</th>
+                                <th className="col-2">Keluhan</th>
+                                <th className="col-2">Pengajuan</th>
+                                <th className="col-2">Status</th>
                                 <th className="col-1"></th>
                             </tr>
                         </thead>
@@ -62,41 +61,48 @@ const RiwayatPengajuan = () => {
                                 <tr key={index}>
                                     <td>
                                         {new Date(
-                                            item.created_at
+                                            item.updated_at
                                         ).toLocaleDateString()}
                                     </td>
                                     <td>
                                         <span
                                             className={`${
-                                                item.skin_analysis
-                                                    .analysis_percentage < 50
-                                                    ? "text-green-500"
-                                                    : "text-red-500"
+                                                item.analysis_percentage < 50
+                                                    ? "text-red-500"
+                                                    : "text-green-500"
                                             }`}
                                         >
-                                            {
-                                                item.skin_analysis
-                                                    .analysis_percentage
-                                            }
-                                            %{" Melanoma"}
+                                            {item.analysis_percentage}%{" "}
+                                            {" Melanoma"}
                                         </span>
                                     </td>
                                     <td>
                                         <img
                                             height={200}
                                             width={200}
-                                            src={getImageUrl(
-                                                item.skin_analysis.image_path
-                                            )}
+                                            src={getImageUrl(item.image_path)}
                                             alt="Gambar"
                                             className="img-thumbnail"
                                         />
                                     </td>
                                     <td>
-                                        {item.skin_analysis.keluhan == "" ||
-                                        item.skin_analysis.keluhan == null
+                                        {item.keluhan == null ||
+                                        item.keluhan == ""
                                             ? "Tidak ada"
-                                            : item.skin_analysis.keluhan}
+                                            : item.keluhan}
+                                    </td>
+                                    <td>
+                                        <span
+                                            className={`${
+                                                !item.is_sudah_pengajuan
+                                                    ? "text-red-500"
+                                                    : "text-green-500"
+                                            }`}
+                                        >
+                                            {item.is_sudah_pengajuan
+                                                ? "Sudah"
+                                                : "belum"}
+                                        </span>
                                     </td>
                                     <td>
                                         <span
@@ -111,28 +117,15 @@ const RiwayatPengajuan = () => {
                                                 : "Not Verified"}
                                         </span>
                                     </td>
+
                                     <td>
-                                        {item.skin_analysis.verification_date ==
-                                        null
-                                            ? "Not Verified"
-                                            : new Date(
-                                                  item.skin_analysis.verification_date
-                                              ).toLocaleDateString()}
-                                    </td>
-                                    <td>
-                                        {item.verified
-                                            ? item.doctor
-                                                ? item.doctor.firstName +
-                                                  " " +
-                                                  item.doctor.lastName
-                                                : "Dokter"
-                                            : "Not Verified"}
-                                    </td>
-                                    <td>{item.skin_analysis.catatanDokter}</td>
-                                    <td>
-                                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                            Detail
-                                        </button>
+                                        <Link
+                                            to={`/pasien/detailDeteksi/${item.id}`}
+                                        >
+                                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">
+                                                Detail
+                                            </button>
+                                        </Link>
                                     </td>
                                 </tr>
                             ))}
@@ -154,4 +147,4 @@ const RiwayatPengajuan = () => {
     );
 };
 
-export default RiwayatPengajuan;
+export default RiwayatDeteksi;

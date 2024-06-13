@@ -17,9 +17,10 @@ class Verifications extends Model
     protected $fillable = [
         'user_id',
         'doctor_id',
-        'skin_analysis_result_id',
+        'skin_analysis_id',
         'verified',
         'verification_date',
+        'verified_melanoma',
     ];
 
     /**
@@ -41,7 +42,7 @@ class Verifications extends Model
     /**
      * Get the skin analysis result associated with the verification.
      */
-    public function skinAnalysisResult()
+    public function skinAnalysis()
     {
         return $this->belongsTo(SkinAnalysis::class);
     }

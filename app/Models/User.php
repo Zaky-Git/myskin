@@ -25,6 +25,7 @@ class User extends Authenticatable
         'password',
         'verified',
         'birthdate',
+        'profile_picture_path',
     ];
 
     /**

@@ -29,6 +29,7 @@ class AuthController extends Controller
             $role = "admin";
         }
 
+
         if ($user) {
             if (Hash::check($password, $user->password)) {
                 $token = $user->createToken('main')->plainTextToken;
@@ -150,7 +151,7 @@ class AuthController extends Controller
         }
 
         if ($user) {
-            if (Hash::check($user->password, $password)) {
+            if (Hash::check($password, $user->password)) {
                 return response()->json(['error' => 'Password baru tidak boleh sama dengan password lama'], 400);
             }
             $user->password = Hash::make($password);

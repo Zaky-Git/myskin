@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { NavigationBar } from "./NavigationBar";
 import Modal from "react-modal";
 import Login from "../views/Login";
-import Daftar from "../views/Daftar";
+import Signup from "../views/Signup";
 import ResetKataSandi from "../views/ResetKataSandi";
 import Berhasil from "../views/Berhasil";
 
@@ -74,15 +74,15 @@ const GuestLayout = () => {
                 <div className="w-screen flex justify-center">
                     {modal === "login" ? (
                         <Login
-                            openDaftar={() => openModal("daftar")}
+                            openSignup={() => openModal("signup")}
                             closeModal={closeModal}
                             openResetKataSandi={() =>
                                 openModal("resetKataSandi")
                             }
                             openBerhasil={() => openModal("berhasil")}
                         />
-                    ) : modal == "daftar" ? (
-                        <Daftar
+                    ) : modal == "signup" ? (
+                        <Signup
                             openLogin={() => openModal("login")}
                             closeModal={closeModal}
                             openBerhasil={() => openModal("berhasil")}

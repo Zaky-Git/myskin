@@ -21,8 +21,8 @@ export const NavigationBar = ({ openModal }) => {
             activeItem = "about";
         } else if (path === "/pengajuan") {
             activeItem = "daftarPengajuan";
-        }else if (path === "/pasien/riwayatPengajuan"){
-            activeItem = "riwayatPengajuan"
+        } else if (path === "/pasien/riwayatPengajuan") {
+            activeItem = "riwayatPengajuan";
         }
 
         setActiveItem(activeItem);
@@ -36,7 +36,7 @@ export const NavigationBar = ({ openModal }) => {
                         {/* Logo / Brand */}
                         <div>
                             <Link className="navbar-brand" to="/">
-                                Logo
+                                MySkin
                             </Link>
                             {/* Navbar Toggler for small screens */}
                             <button
@@ -58,7 +58,7 @@ export const NavigationBar = ({ openModal }) => {
                                 <ul className="navbar-nav ">
                                     <li className="nav-item">
                                         <Link
-                                            to="/"
+                                            to="/dokter/dashboard"
                                             className={
                                                 "nav-link" +
                                                 (activeItem === "deteksiKanker"
@@ -70,22 +70,7 @@ export const NavigationBar = ({ openModal }) => {
                                             }
                                             onBlur={() => setActiveItem(null)}
                                         >
-                                            Deteksi Kanker
-                                        </Link>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Link
-                                            to="/faq"
-                                            className={
-                                                "nav-link" +
-                                                (activeItem === "faq"
-                                                    ? " focused text-primaryTW"
-                                                    : " text-secondaryTW")
-                                            }
-                                            onFocus={() => setActiveItem("faq")}
-                                            onBlur={() => setActiveItem(null)}
-                                        >
-                                            FAQ
+                                            Dashboard
                                         </Link>
                                     </li>
                                     <li className="nav-item">
@@ -136,7 +121,10 @@ export const NavigationBar = ({ openModal }) => {
                                     <div>
                                         <button
                                             className="btn"
-                                            onClick={logoutUser}
+                                            onClick={() => {
+                                                logoutUser();
+                                                window.location.reload();
+                                            }}
                                         >
                                             Logout
                                         </button>
@@ -159,7 +147,7 @@ export const NavigationBar = ({ openModal }) => {
                         {/* Logo / Brand */}
                         <div>
                             <Link className="navbar-brand" to="/">
-                                Logo
+                                MySkin
                             </Link>
                             {/* Navbar Toggler for small screens */}
                             <button
@@ -198,6 +186,43 @@ export const NavigationBar = ({ openModal }) => {
                                     </li>
                                     <li className="nav-item">
                                         <Link
+                                            to="/pasien/riwayatDeteksi"
+                                            className={
+                                                "nav-link" +
+                                                (activeItem === "riwayatDeteksi"
+                                                    ? " focused text-primaryTW"
+                                                    : " text-secondaryTW")
+                                            }
+                                            onFocus={() =>
+                                                setActiveItem("riwayatDeteksi")
+                                            }
+                                            onBlur={() => setActiveItem(null)}
+                                        >
+                                            Riwayat Deteksi
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link
+                                            to="/pasien/riwayatPengajuan"
+                                            className={
+                                                "nav-link" +
+                                                (activeItem ===
+                                                "riwayatPengajuan"
+                                                    ? " focused text-primaryTW"
+                                                    : " text-secondaryTW")
+                                            }
+                                            onFocus={() =>
+                                                setActiveItem(
+                                                    "riwayatPengajuan"
+                                                )
+                                            }
+                                            onBlur={() => setActiveItem(null)}
+                                        >
+                                            Riwayat Pengajuan
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link
                                             to="/faq"
                                             className={
                                                 "nav-link" +
@@ -209,23 +234,6 @@ export const NavigationBar = ({ openModal }) => {
                                             onBlur={() => setActiveItem(null)}
                                         >
                                             FAQ
-                                        </Link>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Link
-                                            to="/pasien/riwayatPengajuan"
-                                            className={
-                                                "nav-link" +
-                                                (activeItem === "riwayatPengajuan"
-                                                    ? " focused text-primaryTW"
-                                                    : " text-secondaryTW")
-                                            }
-                                            onFocus={() =>
-                                                setActiveItem("riwayatPengajuan")
-                                            }
-                                            onBlur={() => setActiveItem(null)}
-                                        >
-                                            Riwayat Pengajuan
                                         </Link>
                                     </li>
                                 </ul>
@@ -242,7 +250,10 @@ export const NavigationBar = ({ openModal }) => {
                                     <div>
                                         <button
                                             className="btn"
-                                            onClick={logoutUser}
+                                            onClick={() => {
+                                                logoutUser();
+                                                window.location.reload();
+                                            }}
                                         >
                                             Logout
                                         </button>
@@ -265,7 +276,7 @@ export const NavigationBar = ({ openModal }) => {
                         {/* Logo / Brand */}
                         <div>
                             <Link className="navbar-brand" to="/">
-                                Logo
+                                MySkin
                             </Link>
                             {/* Navbar Toggler for small screens */}
                             <button
@@ -347,7 +358,10 @@ export const NavigationBar = ({ openModal }) => {
                                     <div>
                                         <button
                                             className="btn"
-                                            onClick={logoutUser}
+                                            onClick={() => {
+                                                logoutUser();
+                                                window.location.reload();
+                                            }}
                                         >
                                             Logout
                                         </button>
@@ -370,7 +384,7 @@ export const NavigationBar = ({ openModal }) => {
                         {/* Logo / Brand */}
                         <div>
                             <Link className="navbar-brand" to="/">
-                                Logo
+                                MySkin
                             </Link>
                             {/* Navbar Toggler for small screens */}
                             <button
@@ -436,7 +450,10 @@ export const NavigationBar = ({ openModal }) => {
                                     <div>
                                         <button
                                             className="btn"
-                                            onClick={logoutUser}
+                                            onClick={() => {
+                                                logoutUser();
+                                                window.location.reload();
+                                            }}
                                         >
                                             Logout
                                         </button>

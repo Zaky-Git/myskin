@@ -30,6 +30,7 @@ class SkinAnalysis extends Model
         'verified',
         'verified_by',
         'analysis_percentage',
+        'is_sudah_pengajuan',
         'verification_date',
     ];
 

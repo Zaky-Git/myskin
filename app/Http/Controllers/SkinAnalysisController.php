@@ -120,6 +120,7 @@ class SkinAnalysisController extends Controller
             $verif->verified = false;
             $verif->save();
 
+            $skinAnalysis->is_sudah_pengajuan = true;
             $skinAnalysis->keluhan = $request->input('keluhan');
             $skinAnalysis->save();
 

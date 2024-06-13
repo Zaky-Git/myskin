@@ -70,8 +70,8 @@ const RiwayatPengajuan = () => {
                                             className={`${
                                                 item.skin_analysis
                                                     .analysis_percentage < 50
-                                                    ? "text-red-500"
-                                                    : "text-green-500"
+                                                    ? "text-green-500"
+                                                    : "text-red-500"
                                             }`}
                                         >
                                             {

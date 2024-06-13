@@ -51,6 +51,7 @@ const RiwayatDeteksi = () => {
                                 <th className="col-2">Persentase</th>
                                 <th className="col-2">Gambar</th>
                                 <th className="col-2">Keluhan</th>
+                                <th className="col-2">Pengajuan</th>
                                 <th className="col-2">Status</th>
                                 <th className="col-1"></th>
                             </tr>
@@ -89,6 +90,19 @@ const RiwayatDeteksi = () => {
                                         item.keluhan == ""
                                             ? "Tidak ada"
                                             : item.keluhan}
+                                    </td>
+                                    <td>
+                                        <span
+                                            className={`${
+                                                !item.is_sudah_pengajuan
+                                                    ? "text-red-500"
+                                                    : "text-green-500"
+                                            }`}
+                                        >
+                                            {item.is_sudah_pengajuan
+                                                ? "Sudah"
+                                                : "belum"}
+                                        </span>
                                     </td>
                                     <td>
                                         <span

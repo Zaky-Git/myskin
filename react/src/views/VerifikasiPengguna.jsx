@@ -66,7 +66,7 @@ const VerifikasiPengguna = () => {
     };
 
     return (
-        <div className="dashboard-content">
+        <div className="dashboard-content container">
             <ToastContainer />
             <div className="card-custom shadow-xl p-3 mt-4">
                 <h3 className="font-bold">

@@ -104,7 +104,7 @@ export const NavigationBar = ({ openModal }) => {
                                             }
                                             onBlur={() => setActiveItem(null)}
                                         >
-                                            Riwayat
+                                            Riwayat Verifikasi
                                         </Link>
                                     </li>
                                 </ul>
@@ -342,6 +342,21 @@ export const NavigationBar = ({ openModal }) => {
                                             onBlur={() => setActiveItem(null)}
                                         >
                                             Daftar Dokter
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link
+                                            to="/admin/verifikasiPengguna"
+                                            className={
+                                                "nav-link" +
+                                                (activeItem === "faq"
+                                                    ? " focused text-primaryTW"
+                                                    : " text-secondaryTW")
+                                            }
+                                            onFocus={() => setActiveItem("faq")}
+                                            onBlur={() => setActiveItem(null)}
+                                        >
+                                            Verifikasi Pengguna
                                         </Link>
                                     </li>
                                 </ul>

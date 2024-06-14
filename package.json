@@ -21,6 +21,7 @@
         "jquery": "^3.7.1",
         "react-confirm-alert": "^3.0.6",
         "react-icons": "^5.2.1",
+        "react-toastify": "^10.0.5",
         "vue": "^3.4.25",
         "vue-router": "^4.3.0"
     }

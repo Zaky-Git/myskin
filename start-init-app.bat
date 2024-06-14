@@ -1,3 +1,3 @@
 @echo off
 
-start cmd /k "cd myskin && cd react && npm install"
+start cmd /k "cd react && npm install"

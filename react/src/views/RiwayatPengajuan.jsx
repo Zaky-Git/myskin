@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
 import getImageUrl from "../functions/getImage";
 import { ClipLoader } from "react-spinners";
 
 const RiwayatPengajuan = () => {
-    const { user, logoutUser, role } = useStateContext();
+    const { user } = useStateContext();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,7 +26,11 @@ const RiwayatPengajuan = () => {
         };
 
         fetchData();
-    }, []);
+    }, [user.id]);
+
+    const handleDetailClick = (id) => {
+        navigate(`/pasien/detailPengajuan/${id}`);
+    };
 
     return (
         <div className="dashboard-content container">
@@ -120,17 +126,21 @@ const RiwayatPengajuan = () => {
                                               ).toLocaleDateString()}
                                     </td>
                                     <td>
-                                        {item.verified
-                                            ? item.doctor
-                                                ? item.doctor.firstName +
-                                                  " " +
-                                                  item.doctor.lastName
-                                                : "Dokter"
-                                            : "Unverified"}
+                                        {item.doctor
+                                            ? item.doctor.firstName +
+                                              " " +
+                                              item.doctor.lastName
+                                            : "Belum ditentukan"}
+
                                     </td>
                                     <td>{item.skin_analysis.catatanDokter}</td>
                                     <td>
-                                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        <button
+                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                            onClick={() =>
+                                                handleDetailClick(item.id)
+                                            }
+                                        >
                                             Detail
                                         </button>
                                     </td>

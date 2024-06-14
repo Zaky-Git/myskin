@@ -73,7 +73,7 @@ class AuthController extends Controller
         }
 
         if ($user) {
-            return response()->json(['message' => 'Email telah digunakan']);
+            return response()->json(['message' => 'Email telah digunakan'], 400);
         }
 
         $cryptedPassword = bcrypt($data['password']);
@@ -222,7 +222,7 @@ class AuthController extends Controller
         }
 
         if ($user) {
-            return response()->json(['message' => 'Email telah digunakan']);
+            return response()->json(['message' => 'Email telah digunakan'], 400);
         }
 
         if (strpos($data['email'], '@dokter.myskin.ac.id') !== false) {

@@ -23,7 +23,7 @@ const Card = ({ icon1, icon2, icon3, title1, title2, sum1, sum2, sum3 }) => {
         <div className="card-container text-center">
             {cardItems.map((item, index) => (
                 <div
-                    className="card-custom lg:h-56 shadow-xl"
+                    className="card-custom lg:h-64 shadow-xl"
                     key={index}
                     style={{ alignItems: "center" }}
                 >
@@ -31,10 +31,10 @@ const Card = ({ icon1, icon2, icon3, title1, title2, sum1, sum2, sum3 }) => {
                         <FontAwesomeIcon icon={item.icon} />
                     </div>
                     <div className="card--title">
-                        <h2>{item.title}</h2>
-                        <h2 className="card-subtitle text-muted">
+                        <h2 className="card-subtitle text-muted mb-2">
                             {item.jumlah}
                         </h2>
+                        <h2>{item.title}</h2>
                     </div>
                 </div>
             ))}

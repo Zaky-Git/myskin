@@ -2,13 +2,15 @@ import { useState } from "react";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
 import RingLoader from "react-spinners/RingLoader";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = ({
-    openSignup,
-    closeModal,
-    openResetKataSandi,
-    openBerhasil,
-}) => {
+                   openSignup,
+                   closeModal,
+                   openResetKataSandi,
+                   openBerhasil,
+               }) => {
     const { loginUser } = useStateContext();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -30,16 +32,19 @@ const Login = ({
                 email: email,
                 password: password,
             });
-            setLoading(false);
 
-            console.log(response.data);
-            loginUser(
-                response.data.user,
-                response.data.token,
-                response.data.role
-            );
+            const { user, token, role } = response.data;
 
+            if (user.verified !== 1 && role !== 'admin') {
+                setLoading(false);
+                toast.error("Akun sedang diverifikasi oleh Admin");
+                return;
+            }
+
+            console.log("Token received:", token);
+            localStorage.setItem("token", token);
             console.log(response.data);
+            loginUser(user, token, role);
             openBerhasil();
         } catch (error) {
             setLoading(false);
@@ -49,6 +54,7 @@ const Login = ({
 
     return (
         <div className="flex flex-col w-screen">
+            <ToastContainer />
             {loading && (
                 <div className="fixed top-0 left-0 w-full h-screen z-50">
                     <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-40"></div>

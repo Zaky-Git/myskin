@@ -23,7 +23,7 @@ class DoctorController extends Controller
         $patientCount = Verifications::where('doctor_id', $doctor_id)
             ->distinct('user_id')
             ->count('user_id');
-        return response()->json($patientCount);
+        return response()->json(['patient_count' => $patientCount]);
     }
     public function getPatients($doctor_id)
     {

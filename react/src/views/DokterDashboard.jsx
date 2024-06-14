@@ -32,7 +32,7 @@ const DokterDashboard = () => {
                     const pasienResponse = await axiosClient.get(`/listPasien/${user.id}`);
                     const ajuanResponse = await axiosClient.get(`/ajuanVerifikasi/${user.id}`);
 
-                    setSumPasien(userResponse.data);
+                    setSumPasien(userResponse.data.patient_count);
                     setSumUnver(unverResponse.data);
                     setSumVer(verResponse.data);
                     setPasien(pasienResponse.data);
@@ -143,8 +143,7 @@ const DokterDashboard = () => {
                                 <tr>
                                     <th className="col-4">Nama</th>
                                     <th className="col-4">Nomor Telepon</th>
-                                    <th className="col-4">Diagnosis AI</th>
-                                    <th className="col-4"></th>
+                                    <th className="col-4">Jumlah Ajuan</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -157,15 +156,7 @@ const DokterDashboard = () => {
                                             {item.number}
                                         </td>
                                         <td>
-                                            <span
-                                                className={`${
-                                                    item.analysis_percentage < 50
-                                                        ? "text-green-500"
-                                                        : "text-red-500"
-                                                }`}
-                                            >
-                                                {item.analysis_percentage}%{" Melanoma"}
-                                            </span>
+                                            {item.jumlah_ajuan}
                                         </td>
                                     </tr>
                                 ))}

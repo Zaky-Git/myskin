@@ -131,7 +131,6 @@ const RiwayatPengajuan = () => {
                                               " " +
                                               item.doctor.lastName
                                             : "Belum ditentukan"}
-
                                     </td>
                                     <td>{item.skin_analysis.catatanDokter}</td>
                                     <td>

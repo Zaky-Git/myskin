@@ -10,7 +10,7 @@ class DoctorController extends Controller
 {
     public function getAllDoctor()
     {
-        $doctor = Doctor::all();
+        $doctor = Doctor::all()->sortBy('created');
         return response()->json($doctor);
     }
     public function getDoctor($id)
@@ -69,7 +69,7 @@ class DoctorController extends Controller
     public function getPasienByDoctor($doctor_id)
     {
         $daftarPasien = Verifications::where('verifications.doctor_id', $doctor_id)
-            ->join('skin_analysis', function($join) {
+            ->join('skin_analysis', function ($join) {
                 $join->on('verifications.skin_analysis_id', '=', 'skin_analysis.id')
                     ->where('skin_analysis.verified', '=', 0);
             })
@@ -108,6 +108,4 @@ class DoctorController extends Controller
 
         return response()->json($daftarPasien);
     }
-
-
 }

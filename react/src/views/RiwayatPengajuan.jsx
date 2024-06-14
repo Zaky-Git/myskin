@@ -51,27 +51,27 @@ const RiwayatPengajuan = () => {
                 ) : data.length > 0 ? (
                     <table className="table table-hover">
                         <thead>
-                        <tr>
-                            <th className="col-1">Tanggal Pengajuan</th>
-                            <th className="col-1">Persentase</th>
-                            <th className="col-2">Gambar</th>
-                            <th className="col-1">Keluhan</th>
-                            <th className="col-1">Status</th>
-                            <th className="col-1">Tanggal Diverifikasi</th>
-                            <th className="col-1">Verified By</th>
-                            <th className="col-2">Catatan Dokter</th>
-                            <th className="col-1"></th>
-                        </tr>
+                            <tr>
+                                <th className="col-1">Tanggal Pengajuan</th>
+                                <th className="col-1">Persentase</th>
+                                <th className="col-2">Gambar</th>
+                                <th className="col-1">Keluhan</th>
+                                <th className="col-1">Status</th>
+                                <th className="col-1">Tanggal Diverifikasi</th>
+                                <th className="col-1">Verified By</th>
+                                <th className="col-2">Catatan Dokter</th>
+                                <th className="col-1"></th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {data.map((item, index) => (
-                            <tr key={index}>
-                                <td>
-                                    {new Date(
-                                        item.created_at
-                                    ).toLocaleDateString()}
-                                </td>
-                                <td>
+                            {data.map((item, index) => (
+                                <tr key={index}>
+                                    <td>
+                                        {new Date(
+                                            item.created_at
+                                        ).toLocaleDateString()}
+                                    </td>
+                                    <td>
                                         <span
                                             className={`${
                                                 item.skin_analysis
@@ -86,25 +86,25 @@ const RiwayatPengajuan = () => {
                                             }
                                             %{" Melanoma"}
                                         </span>
-                                </td>
-                                <td>
-                                    <img
-                                        height={200}
-                                        width={200}
-                                        src={getImageUrl(
-                                            item.skin_analysis.image_path
-                                        )}
-                                        alt="Gambar"
-                                        className="img-thumbnail"
-                                    />
-                                </td>
-                                <td>
-                                    {item.skin_analysis.keluhan == "" ||
-                                    item.skin_analysis.keluhan == null
-                                        ? "Tidak ada"
-                                        : item.skin_analysis.keluhan}
-                                </td>
-                                <td>
+                                    </td>
+                                    <td>
+                                        <img
+                                            height={200}
+                                            width={200}
+                                            src={getImageUrl(
+                                                item.skin_analysis.image_path
+                                            )}
+                                            alt="Gambar"
+                                            className="img-thumbnail"
+                                        />
+                                    </td>
+                                    <td>
+                                        {item.skin_analysis.keluhan == "" ||
+                                        item.skin_analysis.keluhan == null
+                                            ? "Tidak ada"
+                                            : item.skin_analysis.keluhan}
+                                    </td>
+                                    <td>
                                         <span
                                             className={`${
                                                 !item.verified
@@ -116,37 +116,35 @@ const RiwayatPengajuan = () => {
                                                 ? "Verified"
                                                 : "Not Verified"}
                                         </span>
-                                </td>
-                                <td>
-                                    {item.skin_analysis.verification_date ==
-                                    null
-                                        ? "Not Verified"
-                                        : new Date(
-                                            item.skin_analysis.verification_date
-                                        ).toLocaleDateString()}
-                                </td>
-                                <td>
-                                    {item.verified
-                                        ? item.doctor
+                                    </td>
+                                    <td>
+                                        {item.skin_analysis.verification_date ==
+                                        null
+                                            ? "Not Verified"
+                                            : new Date(
+                                                  item.skin_analysis.verification_date
+                                              ).toLocaleDateString()}
+                                    </td>
+                                    <td>
+                                        {item.doctor
                                             ? item.doctor.firstName +
-                                            " " +
-                                            item.doctor.lastName
-                                            : "Dokter"
-                                        : "Not Verified"}
-                                </td>
-                                <td>{item.skin_analysis.catatanDokter}</td>
-                                <td>
-                                    <button
-                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                        onClick={() =>
-                                            handleDetailClick(item.id)
-                                        }
-                                    >
-                                        Detail
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                                              " " +
+                                              item.doctor.lastName
+                                            : "Belum ditentukan"}
+                                    </td>
+                                    <td>{item.skin_analysis.catatanDokter}</td>
+                                    <td>
+                                        <button
+                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                            onClick={() =>
+                                                handleDetailClick(item.id)
+                                            }
+                                        >
+                                            Detail
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 ) : (

@@ -104,7 +104,7 @@ export const NavigationBar = ({ openModal }) => {
                                             }
                                             onBlur={() => setActiveItem(null)}
                                         >
-                                            Riwayat
+                                            Riwayat Verifikasi
                                         </Link>
                                     </li>
                                 </ul>
@@ -378,7 +378,7 @@ export const NavigationBar = ({ openModal }) => {
                                                 window.location.reload();
                                             }}
                                         >
-                                        Logout
+                                            Logout
                                         </button>
                                     </div>
                                 </div>

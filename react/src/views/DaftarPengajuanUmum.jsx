@@ -76,7 +76,7 @@ const DaftarPengajuanUmum = () => {
                                 {request.user.firstName} {request.user.lastName}
                             </h2>
                             <p className="text-gray-600 mb-2">
-                                Persentase Melanoma:{" "}
+                                Diagnosis Melanoma [AI]:{" "}
                                 <span
                                     className={`font-bold ${
                                         request.skin_analysis

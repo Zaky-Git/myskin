@@ -1,7 +1,11 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
 import Card from "../components/Card.jsx";
-import { faUserDoctor, faHospitalUser, faClipboardList } from "@fortawesome/free-solid-svg-icons";
+import {
+    faUserDoctor,
+    faHospitalUser,
+    faClipboardList,
+} from "@fortawesome/free-solid-svg-icons";
 import axiosClient from "../../axios-client.js";
 import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
@@ -20,13 +24,16 @@ const AdminDashboard = ({ openBerhasil }) => {
     const [sumDoctor, setSumDoctor] = useState(0);
     const [sumPengajuan, setSumPengajuan] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [loadingPasien, setLoadingPasien] = useState(false);
 
     useEffect(() => {
         const fetchCounts = async () => {
             try {
                 const userResponse = await axiosClient.get("/countUser");
                 const doctorResponse = await axiosClient.get("/countDoctor");
-                const pengajuanResponse = await axiosClient.get("/countPengajuan");
+                const pengajuanResponse = await axiosClient.get(
+                    "/countPengajuan"
+                );
 
                 setSumUser(userResponse.data);
                 setSumDoctor(doctorResponse.data);
@@ -66,7 +73,8 @@ const AdminDashboard = ({ openBerhasil }) => {
         }
 
         try {
-            const response = await axiosClient.post("/register", {
+            setLoadingPasien(true);
+            const response = await axiosClient.post("/registerUser", {
                 firstName: namaDepan,
                 lastName: namaBelakang,
                 number: phoneNumber,
@@ -76,9 +84,15 @@ const AdminDashboard = ({ openBerhasil }) => {
             });
             console.log(response.data);
 
-            toast.success("Berhasil menambahkan pengguna");
+            if (response.status === 200) {
+                toast.success("Berhasil menambahkan pengguna");
+            }
+
+            setLoadingPasien(false);
             openBerhasil();
         } catch (error) {
+            setLoadingPasien(false);
+            toast.error(error.response.data.message);
             console.error(error.response.data);
         }
     };
@@ -107,42 +121,63 @@ const AdminDashboard = ({ openBerhasil }) => {
                             </h3>
                             {loading ? (
                                 <div className="flex items-center justify-center">
-                                    <ClipLoader color="#4A90E2" loading={loading} size={35} />
+                                    <ClipLoader
+                                        color="#4A90E2"
+                                        loading={loading}
+                                        size={35}
+                                    />
                                     <span className="ml-2">Memuat data...</span>
                                 </div>
                             ) : (
                                 <table className="table table-hover">
                                     <thead>
-                                    <tr>
-                                        <th className="col-3">Tanggal</th>
-                                        <th className="col-3">Pasien</th>
-                                        <th className="col-3">Diagnosis AI</th>
-                                        <th className="col-3">Dokter</th>
-                                    </tr>
+                                        <tr>
+                                            <th className="col-3">Tanggal</th>
+                                            <th className="col-3">Pasien</th>
+                                            <th className="col-3">
+                                                Diagnosis AI
+                                            </th>
+                                            <th className="col-3">Dokter</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    {dataPatient.map((item, index) => (
-                                        <tr key={index}>
-                                            <td>{new Date(item.created_at).toLocaleDateString()}</td>
-                                            <td>{item.userFirstName + " " + item.userLastName}</td>
-                                            <td>
+                                        {dataPatient.map((item, index) => (
+                                            <tr key={index}>
+                                                <td>
+                                                    {new Date(
+                                                        item.created_at
+                                                    ).toLocaleDateString()}
+                                                </td>
+                                                <td>
+                                                    {item.userFirstName +
+                                                        " " +
+                                                        item.userLastName}
+                                                </td>
+                                                <td>
                                                     <span
                                                         className={`${
-                                                            item.analysis_percentage < 50
+                                                            item.analysis_percentage <
+                                                            50
                                                                 ? "text-green-500"
                                                                 : "text-red-500"
                                                         }`}
                                                     >
-                                                        {item.analysis_percentage}%{" Melanoma"}
+                                                        {
+                                                            item.analysis_percentage
+                                                        }
+                                                        %{" Melanoma"}
                                                     </span>
-                                            </td>
-                                            <td>
-                                                {item.doctorFirstName && item.doctorLastName
-                                                    ? item.doctorFirstName + " " + item.doctorLastName
-                                                    : "Tidak Memilih Dokter"}
-                                            </td>
-                                        </tr>
-                                    ))}
+                                                </td>
+                                                <td>
+                                                    {item.doctorFirstName &&
+                                                    item.doctorLastName
+                                                        ? item.doctorFirstName +
+                                                          " " +
+                                                          item.doctorLastName
+                                                        : "Tidak Memilih Dokter"}
+                                                </td>
+                                            </tr>
+                                        ))}
                                     </tbody>
                                 </table>
                             )}
@@ -150,7 +185,10 @@ const AdminDashboard = ({ openBerhasil }) => {
                     </div>
                 </div>
                 <div className="pasien">
-                    <div className="card-custom shadow-xl p-3" style={{ height: "100%" }}>
+                    <div
+                        className="card-custom shadow-xl p-3"
+                        style={{ height: "100%" }}
+                    >
                         <h3 className="font-bold text-center">
                             Input Pengguna Baru
                             <hr />
@@ -169,7 +207,9 @@ const AdminDashboard = ({ openBerhasil }) => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">Nama Belakang</label>
+                                <label className="form-label">
+                                    Nama Belakang
+                                </label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -181,7 +221,9 @@ const AdminDashboard = ({ openBerhasil }) => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">Alamat Email</label>
+                                <label className="form-label">
+                                    Alamat Email
+                                </label>
                                 <input
                                     type="email"
                                     className="form-control"
@@ -193,9 +235,11 @@ const AdminDashboard = ({ openBerhasil }) => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">Nomor Telepon</label>
+                                <label className="form-label">
+                                    Nomor Telepon
+                                </label>
                                 <input
-                                    type="tel"
+                                    type="number"
                                     className="form-control"
                                     value={phoneNumber}
                                     onChange={(event) => {
@@ -217,7 +261,9 @@ const AdminDashboard = ({ openBerhasil }) => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">Tanggal Lahir</label>
+                                <label className="form-label">
+                                    Tanggal Lahir
+                                </label>
                                 <input
                                     className="form-control"
                                     type="date"
@@ -229,7 +275,7 @@ const AdminDashboard = ({ openBerhasil }) => {
                                 />
                             </div>
                             <button type="submit" className="btn btn-primary">
-                                Submit
+                                {loadingPasien ? "loading..." : "Submit"}
                             </button>
                         </form>
                     </div>

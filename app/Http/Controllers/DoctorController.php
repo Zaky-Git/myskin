@@ -98,6 +98,7 @@ class DoctorController extends Controller
             ->join('skin_analysis', 'verifications.skin_analysis_id', '=', 'skin_analysis.id')
             ->with(['doctor', 'skinAnalysis', 'user'])
             ->get([
+                'verifications.id',
                 'verifications.created_at',
                 'users.firstName',
                 'users.lastName',

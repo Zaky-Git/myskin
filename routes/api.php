@@ -16,7 +16,7 @@ Route::get('/pasienVerificationList/{id}', [VerificationsController::class, 'get
 Route::get('/pengajuanUmum', [VerificationsController::class, 'getPengajuanUmum']);
 Route::get('/verification/{id}', [VerificationsController::class, 'getVerificationBySkinAnalysisID']);
 Route::post('/verifikasiSkin/{id}', [VerificationsController::class, 'verifikasi']);
-
+Route::put('/updateVerification/{id}', [VerificationsController::class, 'updateVerification']);
 # doctor
 Route::get('/doctors', [DoctorController::class, 'getAllDoctor']);
 Route::get('/doctor/{id}', [DoctorController::class, 'getDoctor']);
@@ -30,7 +30,6 @@ Route::get('/countDoctor', [DoctorController::class, 'countDoctor']);
 Route::get('/ajuanVerifikasi/{doctor_id}', [DoctorController::class, 'getPasienByDoctor']);
 Route::get('/listPasien/{doctor_id}', [UserController::class, 'getUserByDoctor']);
 Route::get('/riwayatVerified/{doctor_id}', [DoctorController::class, 'getVerifiedPengajuan']);
-
 # user
 Route::get('/users', [UserController::class, 'getAllUser']);
 Route::get('/countUser', [UserController::class, 'countUser']);

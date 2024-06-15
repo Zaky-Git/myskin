@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useStateContext } from "../contexts/ContextProvider.jsx";
 import axiosClient from "../../axios-client.js";
 import { ClipLoader } from "react-spinners";
+import { Link } from "react-router-dom";
 
 const RiwatVerifikasi = () => {
     const { user } = useStateContext();
@@ -88,9 +89,13 @@ const RiwatVerifikasi = () => {
                                             : "Tidak ada catatan dari Dokter"}
                                     </td>
                                     <td>
-                                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                            Detail{" "}
-                                        </button>
+                                        <Link
+                                            to={`/dokter/detailVerifikasi/${item.id}`}
+                                        >
+                                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                Detail
+                                            </button>
+                                        </Link>
                                     </td>
                                 </tr>
                             ))}

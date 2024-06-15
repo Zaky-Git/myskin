@@ -35,11 +35,11 @@ const Login = ({
 
             const { user, token, role } = response.data;
 
-            if (user.verified !== 1 && role !== "admin") {
-                setLoading(false);
-                toast.error("Akun sedang diverifikasi oleh Admin");
-                return;
-            }
+            // if (user.verified !== 1 && role !== 'admin') {
+            //     setLoading(false);
+            //     toast.error("Akun sedang diverifikasi oleh Admin");
+            //     return;
+            // }
 
             console.log("Token received:", token);
             localStorage.setItem("token", token);

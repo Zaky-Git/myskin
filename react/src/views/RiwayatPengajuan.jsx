@@ -59,7 +59,8 @@ const RiwayatPengajuan = () => {
                                 <th className="col-1">Status</th>
                                 <th className="col-1">Tanggal Diverifikasi</th>
                                 <th className="col-1">Verified By</th>
-                                <th className="col-2">Catatan Dokter</th>
+                                <th className="col-1">Melanoma</th>
+                                <th className="col-1">Catatan Dokter</th>
                                 <th className="col-1"></th>
                             </tr>
                         </thead>
@@ -125,12 +126,20 @@ const RiwayatPengajuan = () => {
                                                   item.skin_analysis.verification_date
                                               ).toLocaleDateString()}
                                     </td>
+
                                     <td>
                                         {item.doctor
                                             ? item.doctor.firstName +
                                               " " +
                                               item.doctor.lastName
                                             : "Belum ditentukan"}
+                                    </td>
+                                    <td>
+                                        {item.verified
+                                            ? item.verified_melanoma == "0"
+                                                ? "Bukan Melanoma"
+                                                : "Melanoma"
+                                            : "Unverified"}
                                     </td>
                                     <td>
                                         {item.skin_analysis.catatanDokter ==
@@ -143,7 +152,9 @@ const RiwayatPengajuan = () => {
                                         <button
                                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                             onClick={() =>
-                                                handleDetailClick(item.id)
+                                                handleDetailClick(
+                                                    item.skin_analysis.id
+                                                )
                                             }
                                         >
                                             Detail

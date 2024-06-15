@@ -6,11 +6,11 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = ({
-                   openSignup,
-                   closeModal,
-                   openResetKataSandi,
-                   openBerhasil,
-               }) => {
+    openSignup,
+    closeModal,
+    openResetKataSandi,
+    openBerhasil,
+}) => {
     const { loginUser } = useStateContext();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -35,7 +35,7 @@ const Login = ({
 
             const { user, token, role } = response.data;
 
-            if (user.verified !== 1 && role !== 'admin') {
+            if (user.verified !== 1 && role !== "admin") {
                 setLoading(false);
                 toast.error("Akun sedang diverifikasi oleh Admin");
                 return;
@@ -145,6 +145,23 @@ const Login = ({
                                         </div>
                                     </button>
                                 </div>
+                            </div>
+                            <div className="mb-4 text-center text-gray-500">
+                                <small>
+                                    Email harus mengandung salah satu dari
+                                    domain berikut:
+                                    <span className="text-primaryTW">
+                                        {" "}
+                                        @pasien.myskin.ac.id
+                                    </span>{" "}
+                                    untuk Login sebagai pasien, atau
+                                    <span className="text-primaryTW">
+                                        {" "}
+                                        <br />
+                                        @dokter.myskin.ac.id
+                                    </span>{" "}
+                                    untuk Login sebagai dokter.
+                                </small>
                             </div>
                             <div>
                                 <small>

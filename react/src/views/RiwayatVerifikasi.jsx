@@ -79,8 +79,8 @@ const RiwatVerifikasi = () => {
                                     </td>
                                     <td>
                                         {item.verified_melanoma === 1
-                                            ? "Verified"
-                                            : "Not Verified"}
+                                            ? "Melanoma"
+                                            : "Not Melanoma"}
                                     </td>
                                     <td>
                                         {item.catatanDokter

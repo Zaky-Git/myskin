@@ -266,11 +266,11 @@ const DetailPengajuan = () => {
                             <div className="mb-1 mt-1">
                                 <h5>Catatan : </h5>
                             </div>
-                            <textarea
-                                readOnly
-                                className="p-3 border border-black h-52 w-full overflow-y-auto"
-                                value={catatan}
-                            />
+                            <div className="p-3 border border-black h-52  overflow-y-auto">
+                                {catatan == null || catatan === ""
+                                    ? "Tidak ada"
+                                    : catatan}
+                            </div>
                         </div>
                     </div>
                 </div>

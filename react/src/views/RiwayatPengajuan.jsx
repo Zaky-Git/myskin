@@ -4,6 +4,11 @@ import axiosClient from "../../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
 import getImageUrl from "../functions/getImage";
 import { ClipLoader } from "react-spinners";
+import { confirmAlert } from "react-confirm-alert";
+import { FaTrashAlt, FaEdit, FaInfoCircle } from "react-icons/fa";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Tooltip } from "react-tooltip";
 
 const RiwayatPengajuan = () => {
     const { user } = useStateContext();
@@ -32,8 +37,51 @@ const RiwayatPengajuan = () => {
         navigate(`/pasien/detailPengajuan/${id}`);
     };
 
+    const deleteVerification = async (id) => {
+        try {
+            confirmAlert({
+                title: "Batalkan Pengajuan Verifikasi",
+                message: "Yakin ingin membatalkan pengajuan?",
+                buttons: [
+                    {
+                        label: "Cancel",
+                        onClick: () => console.log("Cancel clicked"),
+                    },
+                    {
+                        label: "Delete",
+                        onClick: async () => {
+                            const toastId = toast.loading(
+                                "Membatalkan pengajuan verifikasi..."
+                            );
+                            setLoading(true);
+                            await axiosClient.delete(`/verification/${id}`);
+                            setData(
+                                data.filter(
+                                    (item) => item.skin_analysis.id !== id
+                                )
+                            );
+                            setLoading(false);
+                            toast.update(toastId, {
+                                render: "Pengajuan verifikasi berhasil dibatalkan!",
+                                type: "success",
+                                isLoading: false,
+                                autoClose: 5000,
+                            });
+                        },
+                    },
+                ],
+                closeOnClickOutside: true,
+                closeOnEscape: true,
+            });
+        } catch (error) {
+            toast.error("Error deleting verification");
+            console.error("Error deleting the verification", error);
+        }
+    };
+
     return (
         <div className="dashboard-content container">
+            <ToastContainer />
             <div className="card-custom shadow-xl p-3 mt-4">
                 <h3 className="font-bold">
                     Riwayat Pengajuan
@@ -126,7 +174,6 @@ const RiwayatPengajuan = () => {
                                                   item.skin_analysis.verification_date
                                               ).toLocaleDateString()}
                                     </td>
-
                                     <td>
                                         {item.doctor
                                             ? item.doctor.firstName +
@@ -149,16 +196,36 @@ const RiwayatPengajuan = () => {
                                             : item.skin_analysis.catatanDokter}
                                     </td>
                                     <td>
-                                        <button
-                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                            onClick={() =>
-                                                handleDetailClick(
-                                                    item.skin_analysis.id
-                                                )
-                                            }
-                                        >
-                                            Detail
-                                        </button>
+                                        <div className="flex flex-row gap-2 justify-items-center items-center">
+                                            <button
+                                                data-tooltip-id="detail-tooltip"
+                                                data-tooltip-content="Detail Pengajuan"
+                                                data-tooltip-place="top"
+                                                className="p-2 bg-blue-500 hover:bg-blue-700 text-white rounded-full"
+                                                onClick={() =>
+                                                    handleDetailClick(
+                                                        item.skin_analysis.id
+                                                    )
+                                                }
+                                            >
+                                                <FaInfoCircle />
+                                            </button>
+                                            <Tooltip id="detail-tooltip" />
+                                            <button
+                                                data-tooltip-id="delete-tooltip"
+                                                data-tooltip-content="Batalkan pengajuan"
+                                                data-tooltip-place="top"
+                                                className="p-2 bg-red-500 hover:bg-red-700 text-white rounded-full"
+                                                onClick={() =>
+                                                    deleteVerification(
+                                                        item.skin_analysis.id
+                                                    )
+                                                }
+                                            >
+                                                <FaTrashAlt />
+                                            </button>
+                                            <Tooltip id="delete-tooltip" />
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

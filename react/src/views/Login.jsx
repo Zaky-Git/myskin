@@ -47,6 +47,7 @@ const Login = ({
             loginUser(user, token, role);
             openBerhasil();
         } catch (error) {
+            toast.error(error.response.data.message);
             setLoading(false);
             console.error(error.response.data);
         }

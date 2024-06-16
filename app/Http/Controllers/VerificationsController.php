@@ -110,4 +110,24 @@ class VerificationsController extends Controller
         }
     }
 
+    public function deleteVerificationBySkinAnalysisId($id)
+    {
+        $verif = Verifications::where('skin_analysis_id', $id)->first();
+        $skinAnalysis = SkinAnalysis::find($id);
+
+        if (!$skinAnalysis) {
+            return response()->json(['message' => 'Skin analysis not found'], 404);
+        }
+        if ($verif) {
+            $verif->delete();
+            $skinAnalysis->verified = false;
+            $skinAnalysis->verified_by = null;
+            $skinAnalysis->catatanDokter = null;
+            $skinAnalysis->save();
+
+            return response()->json(['message' => 'Berhasil menghapus verifikasi'], 200);
+        } else {
+            return response()->json(['message' => 'Verifikasi tidak ditemukan'], 404);
+        }
+    }
 }

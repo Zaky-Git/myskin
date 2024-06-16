@@ -168,4 +168,41 @@ class SkinAnalysisController extends Controller
 
         return response()->json($verifications);
     }
+
+    public function deleteSkinAnalysisById($id)
+    {
+        $skinAnalysis = SkinAnalysis::find($id);
+
+        if (!$skinAnalysis) {
+            return response()->json(['message' => 'Skin analysis not found'], 404);
+        }
+
+        if (file_exists(public_path($skinAnalysis->image_path))) {
+            unlink(public_path($skinAnalysis->image_path));
+        }
+
+        if (Verifications::where('skin_analysis_id', $id)->exists()) {
+            $verifications = Verifications::where('skin_analysis_id', $id)->get();
+            foreach ($verifications as $verification) {
+                $verification->delete();
+            }
+        }
+
+        $skinAnalysis->delete();
+        return response()->json(['message' => 'Skin analysis deleted'], 200);
+    }
+
+    public function updateKeluhanById($id, Request $request)
+    {
+        $skinAnalysis = SkinAnalysis::find($id);
+
+        if (!$skinAnalysis) {
+            return response()->json(['message' => 'Skin analysis not found'], 404);
+        }
+
+        $skinAnalysis->keluhan = $request->input('keluhan');
+        $skinAnalysis->save();
+
+        return response()->json(['message' => 'Keluhan updated'], 200);
+    }
 }

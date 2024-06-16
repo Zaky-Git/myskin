@@ -78,6 +78,7 @@ const DeteksiKanker = () => {
             setLoading(false);
             setState("analisa");
         } catch (e) {
+            toast.error("Gagal menganalisa gambar");
             setLoading(false);
             console.error(e);
         }

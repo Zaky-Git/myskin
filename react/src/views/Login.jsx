@@ -90,7 +90,7 @@ const Login = ({
                                 </div>
                             </div>
                             <div className="flex flex-col w-full mb-3">
-                                <h7>Email</h7>
+                                <div>Email</div>
                                 <div className="input-group pt-1">
                                     <input
                                         className="p-2 border-2 w-full rounded-md border-primaryTW"
@@ -100,7 +100,7 @@ const Login = ({
                                 </div>
                             </div>
                             <div className="flex flex-col w-full mb-3">
-                                <h7>Kata Sandi</h7>
+                                <div>Kata Sandi</div>
                                 <div className="input-group pt-1">
                                     <input
                                         className="p-2 border-2 w-full rounded-md border-primaryTW"

@@ -294,7 +294,7 @@ const DeteksiKanker = () => {
                     <div className="homepage-container m-3">
                         <div className="hero-section relative h-[60vh] rounded-lg bg-cover bg-center flex items-center justify-center overflow-hidden">
                             <div className="overlay absolute inset-0 bg-black opacity-65 rounded-lg"></div>
-                            <div className="container relative z-10">
+                            <div className="container relative">
                                 <h1 className="text-5xl font-bold text-primaryTW">
                                     MySkin
                                 </h1>
@@ -369,7 +369,7 @@ const DeteksiKanker = () => {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="container carousel-section">
+                                    <div className="container carousel-section z-0">
                                         <Carousel
                                             activeIndex={activeIndex}
                                             onSelect={handleSelect}

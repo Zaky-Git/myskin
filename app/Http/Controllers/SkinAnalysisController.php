@@ -25,6 +25,16 @@ class SkinAnalysisController extends Controller
             $image = $request->file('image');
 
             $client = new Client();
+            // $response = $client->post('https://39d8-103-233-100-230.ngrok-free.app', [
+            //     'multipart' => [
+            //         [
+            //             'name'     => 'image',
+            //             'contents' => fopen($image->getPathname(), 'r'),
+            //             'filename' => $image->getClientOriginalName()
+            //         ]
+            //     ]
+            // ]);
+
             $response = $client->post('http://127.0.0.1:7000/predict', [
                 'multipart' => [
                     [

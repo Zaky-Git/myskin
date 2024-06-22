@@ -462,7 +462,11 @@ const DeteksiKanker = () => {
                                                             : "text-green-500"
                                                     }`}
                                                 >
-                                                    : {keakuratan}%
+                                                    : {keakuratan}% Melanoma (
+                                                    {keakuratan > 60
+                                                        ? "Berbahaya"
+                                                        : "Aman"}
+                                                    )
                                                 </div>
                                             </div>
                                         </div>

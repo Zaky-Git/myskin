@@ -13,7 +13,9 @@ import RingLoader from "react-spinners/RingLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Carousel } from "react-bootstrap";
-
+import femaleDoctor from "../assets/female-doctor-diagnosing-melanoma-body-female-patient.jpg";
+import doctorGloves from "../assets/doctor-getting-hand-gloves.jpg";
+import biorobots from "../assets/3d-rendering-biorobots-concept.jpg";
 const ITEMS_PER_PAGE = 8;
 
 const DeteksiKanker = () => {
@@ -261,11 +263,7 @@ const DeteksiKanker = () => {
         });
     };
     let [color, setColor] = useState("#2AA8FF");
-    const images = [
-        "../src/assets/female-doctor-diagnosing-melanoma-body-female-patient.jpg",
-        "../src/assets/doctor-getting-hand-gloves.jpg",
-        "../src/assets/3d-rendering-biorobots-concept.jpg",
-    ];
+    const images = [femaleDoctor, doctorGloves, biorobots];
 
     const [activeIndex, setActiveIndex] = useState(0);
 

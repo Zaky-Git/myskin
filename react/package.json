@@ -28,6 +28,7 @@
         "react-router-dom": "^6.23.0",
         "react-spinners": "^0.13.8",
         "react-toastify": "^10.0.5",
+        "react-bootstrap": "^2.10.3",
         "react-tooltip": "^5.26.4"
     },
     "devDependencies": {

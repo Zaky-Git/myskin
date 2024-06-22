@@ -296,7 +296,7 @@ const DeteksiKanker = () => {
                         <div
                             className="hero-section relative h-[60vh] rounded-lg bg-cover bg-center flex items-center justify-center overflow-hidden">
                             <div className="overlay absolute inset-0 bg-black opacity-65 rounded-lg"></div>
-                            <div className="container relative z-10">
+                            <div className="container relative">
                                 <h1 className="text-5xl font-bold text-primaryTW">MySkin</h1>
                                 <p className="text-lg text-white max-w-md">
                                     Deteksi penyakit kulit Melanoma online dengan teknologi kecerdasan buatan
@@ -304,7 +304,6 @@ const DeteksiKanker = () => {
                                 <div className="mb-4 poppin-font text-white">
                                     <button className="bg-primaryTW w-40 rounded-md px-4 py-2" onClick={handleScrollToTargetSection}>
                                         Coba Sekarang
-
                                     </button>
                                 </div>
                             </div>
@@ -333,7 +332,7 @@ const DeteksiKanker = () => {
                                             <p className="text-gray-600">MySkin menggunakan kecerdasan buatan yang andal untuk menganalisa kulit Anda</p>
                                         </div>
                                     </div>
-                                    <div className="container carousel-section">
+                                    <div className="container carousel-section z-0">
                                         <Carousel activeIndex={activeIndex} onSelect={handleSelect}>
                                             {images.map((image, index) => (
                                                 <Carousel.Item key={index}>
